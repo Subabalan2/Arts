@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/layout :: head('My Profile - SSartz Gallery')}"></head>
+<body class="bg-dark text-white">
+
+<nav th:replace="~{fragments/layout :: navbar(0)}"></nav>
+
+<section class="detail-section" style="margin-top: 100px; padding-bottom: 80px;">
+
+    <div class="profile-header" style="text-align: center; margin-bottom: 50px;">
+        <div class="profile-avatar-wrap">
+            <div class="profile-avatar">
+                <i class="fas fa-user-circle"></i>
+            </div>
+        </div>
+        <h1 class="about-title" th:text="${user.name}">User Name</h1>
+        <p style="color: var(--white2); font-weight: 300; letter-spacing: 1px;" th:text="${user.email}">user@email.com</p>
+        <div style="margin-top: 15px;">
+            <span class="pill pill-gold" th:text="${user.role}">USER</span>
+        </div>
+    </div>
+
+    <div style="margin-top: 60px;">
+        <div class="section-label">YOUR ART JOURNEY</div>
+        <h2 class="section-title" style="margin-bottom: 30px;">Order <em>History</em></h2>
+
+        <div th:if="${#lists.isEmpty(userOrders)}" class="order-history-card" style="text-align: center; padding: 60px;">
+            <i class="fas fa-box-open" style="font-size: 3rem; color: var(--border-gold); margin-bottom: 20px;"></i>
+            <p style="color: var(--muted); font-size: 1.1rem;">You haven't placed any orders yet.</p>
+            <a th:href="@{/gallery}" class="btn-primary" style="margin-top: 25px;">Explore Collection</a>
+        </div>
+
+        <div class="order-history-card" th:if="${!#lists.isEmpty(userOrders)}">
+            <table class="profile-table">
+                <thead>
+                <tr style="background: transparent; border-bottom: 1px solid var(--border);">
+                    <th style="padding: 1rem; text-align: left; font-size: 0.7rem; color: var(--gold); letter-spacing: 2px;">ORDER ID</th>
+                    <th style="text-align: left; font-size: 0.7rem; color: var(--gold); letter-spacing: 2px;">DATE</th>
+                    <th style="text-align: left; font-size: 0.7rem; color: var(--gold); letter-spacing: 2px;">TOTAL AMOUNT</th>
+                    <th style="text-align: left; font-size: 0.7rem; color: var(--gold); letter-spacing: 2px;">STATUS</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order : ${userOrders}">
+                    <td>
+                        <strong th:text="'#SS-' + ${order.id}" style="color: var(--white); font-family: var(--sans);">#SS-101</strong>
+                    </td>
+                    <td style="color: var(--white2); font-weight: 300;"
+                        th:text="${#temporals.format(order.orderDate, 'dd MMMM yyyy')}">Date</td>
+                    <td>
+                                <span class="text-gold" style="font-weight: 700; font-size: 1.1rem;"
+                                      th:text="'₹' + ${#numbers.formatDecimal(order.totalAmount, 0, 'COMMA', 0, 'POINT')}">₹0</span>
+                    </td>
+                    <td>
+                                <span th:class="${order.status == 'SUCCESS' ? 'status-pill status-success' : 'status-pill status-pending'}"
+                                      th:text="${order.status}">STATUS</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+</section>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+
+</body>
+</html>

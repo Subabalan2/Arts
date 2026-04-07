@@ -1,0 +1,115 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org" lang="en">-->
+<!--<head th:replace="~{fragments/layout :: head('Register - SSartz')}"></head>-->
+<!--<body class="bg-dark text-white">-->
+<!--<nav th:replace="~{fragments/layout :: navbar(0)}"></nav>-->
+
+<!--<section class="checkout-section" style="margin-top: 100px; max-width: 500px; margin-left: auto; margin-right: auto;">-->
+<!--    <h1 class="about-title" style="text-align: center;">Join the <em>Gallery</em></h1>-->
+
+<!--    <form th:action="@{/register}" th:object="${user}" method="post" class="checkout-form">-->
+
+<!--        <div class="form-group">-->
+<!--            <label>Full Name</label>-->
+<!--            <input type="text" th:field="*{name}" required>-->
+<!--            <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: #e05c5c; font-size: 0.8rem;"></p>-->
+<!--        </div>-->
+
+<!--        <div class="form-group">-->
+<!--            <label>Email Address</label>-->
+<!--            <input type="email" th:field="*{email}" required>-->
+
+<!--            <p th:if="${emailError}" style="color: #e05c5c; font-size: 0.8rem; margin-top: 5px;" th:text="${emailError}"></p>-->
+
+<!--            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color: #e05c5c; font-size: 0.8rem;"></p>-->
+<!--        </div>-->
+
+<!--        <div class="form-group">-->
+<!--            <label>Password</label>-->
+<!--            <input type="password" th:field="*{password}" required>-->
+<!--            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: #e05c5c; font-size: 0.8rem;"></p>-->
+<!--        </div>-->
+
+<!--        <button type="submit" class="btn-primary" style="width: 100%;">Create Account</button>-->
+<!--    </form>-->
+
+<!--    <p style="text-align: center; margin-top: 1.5rem; color: var(&#45;&#45;muted);">-->
+<!--        Already have an account? <a th:href="@{/login}" style="color: var(&#45;&#45;gold);">Login here</a>-->
+<!--    </p>-->
+<!--</section>-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/layout :: head('Register - SSartz Gallery')}"></head>
+<body class="bg-dark text-white" style="overflow: hidden;"> <nav th:replace="~{fragments/layout :: navbar(0)}"></nav>
+
+<section style="display: flex; height: 100vh; width: 100vw; align-items: stretch; flex-direction: row-reverse;">
+
+    <div style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 20px; background: #07070a; z-index: 2;">
+
+        <div style="width: 100%; max-width: 360px;"> <div style="margin-bottom: 25px; text-align: left;">
+            <p style="letter-spacing: 3px; color: #c8a951; font-size: 0.7rem; font-weight: bold; margin-bottom: 5px;">JOIN THE COLLECTIVE</p>
+            <h2 style="font-family: 'Playfair Display', serif; font-size: 2.4rem; line-height: 1.1; color: #f0ead8;">Create <em style="color: #c8a951; font-style: italic;">Account</em></h2>
+        </div>
+
+            <form th:action="@{/register}" method="post" style="display: flex; flex-direction: column; gap: 14px;"> <div style="display: flex; flex-direction: column; gap: 5px;">
+                <label style="color: #8c8575; font-size: 0.65rem; letter-spacing: 1.2px; text-transform: uppercase; font-weight: 600;">Full Name</label>
+                <input type="text" name="name" placeholder="Your name" required
+                       style="width: 100%; background: #121217; border: 1px solid rgba(255,255,255,0.05); padding: 12px 16px; border-radius: 10px; color: #f0ead8; outline: none; transition: 0.3s; font-size: 0.9rem;">
+            </div>
+
+                <div style="display: flex; flex-direction: column; gap: 5px;">
+                    <label style="color: #8c8575; font-size: 0.65rem; letter-spacing: 1.2px; text-transform: uppercase; font-weight: 600;">Email Address</label>
+                    <input type="email" name="email" placeholder="artist@ssartz.com" required
+                           style="width: 100%; background: #121217; border: 1px solid rgba(255,255,255,0.05); padding: 12px 16px; border-radius: 10px; color: #f0ead8; outline: none; transition: 0.3s; font-size: 0.9rem;">
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 5px;">
+                    <label style="color: #8c8575; font-size: 0.65rem; letter-spacing: 1.2px; text-transform: uppercase; font-weight: 600;">Password</label>
+                    <input type="password" name="password" placeholder="••••••••" required
+                           style="width: 100%; background: #121217; border: 1px solid rgba(255,255,255,0.05); padding: 12px 16px; border-radius: 10px; color: #f0ead8; outline: none; transition: 0.3s; font-size: 0.9rem;">
+                </div>
+
+                <button type="submit" class="btn-primary" style="margin-top: 10px; padding: 14px; border-radius: 10px; font-weight: 600; letter-spacing: 1px; cursor: pointer; border: none; background: linear-gradient(135deg, #c8a951 0%, #9a7b30 100%); color: #05050a; font-size: 0.85rem;">
+                    SIGN UP NOW
+                </button>
+            </form>
+
+            <p style="margin-top: 25px; text-align: center; color: #45433d; font-size: 0.8rem;">
+                Member? <a th:href="@{/login}" style="color: #c8a951; text-decoration: none; font-weight: 600; margin-left: 5px;">Login</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="register-visual" style="flex: 1.4; position: relative; background: #0e0e12; overflow: hidden;">
+        <img th:src="@{/images/paintings.png}" alt="Creative Process"
+             style="width: 100%; height: 100%; object-fit: cover; filter: brightness(0.5);">
+
+        <div style="position: absolute; inset: 0; background: linear-gradient(to left, #07070a 0%, transparent 25%);"></div>
+
+        <div style="position: absolute; bottom: 60px; left: 60px; right: 40px; z-index: 5;">
+            <h3 style="font-family: 'Playfair Display', serif; font-size: 2.2rem; color: #f0ead8; margin-bottom: 10px; line-height: 1.2;">
+                Begin Your <br> <em style="color: #c8a951;">Creative Legacy</em>
+            </h3>
+            <p style="color: rgba(240,234,216,0.5); font-size: 0.9rem; max-width: 380px; line-height: 1.5;">
+                Join the exclusive community of art lovers and collectors today.
+            </p>
+        </div>
+    </div>
+
+</section>
+
+<style>
+    /* 📱 Mobile - Always allow scroll */
+    @media (max-width: 992px) {
+        section { flex-direction: column !important; height: auto !important; }
+        .register-visual { display: none !important; }
+        body { overflow: auto !important; }
+    }
+    input:focus { border-color: rgba(200, 169, 81, 0.4) !important; background: #15151c !important; }
+</style>
+
+</body>
+</html>

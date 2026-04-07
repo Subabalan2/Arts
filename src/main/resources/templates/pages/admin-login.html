@@ -1,0 +1,124 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org" lang="en">-->
+<!--<head th:replace="~{fragments/layout :: head('Admin Login - SSartz')}"></head>-->
+<!--<body class="bg-dark text-white">-->
+
+<!--<div class="login-container" style="max-width: 400px; margin: 150px auto; padding: 2rem; background: var(&#45;&#45;surface); border: 1px solid var(&#45;&#45;gold); border-radius: 15px;">-->
+<!--    <h2 style="text-align: center; font-family: var(&#45;&#45;serif); color: var(&#45;&#45;gold); margin-bottom: 2rem;">-->
+<!--        <i class="fas fa-user-shield"></i> Admin Access-->
+<!--    </h2>-->
+
+<!--    <form th:action="@{/admin/login}" method="post">-->
+<!--        <div class="form-group" style="margin-bottom: 1.5rem;">-->
+<!--            <label>Admin Email</label>-->
+<!--            <input type="email" name="email" required style="width: 100%; padding: 10px; background: transparent; border: 1px solid var(&#45;&#45;border); color: white;">-->
+<!--        </div>-->
+<!--        <div class="form-group" style="margin-bottom: 2rem;">-->
+<!--            <label>Security Password</label>-->
+<!--            <input type="password" name="password" required style="width: 100%; padding: 10px; background: transparent; border: 1px solid var(&#45;&#45;border); color: white;">-->
+<!--        </div>-->
+<!--        <button type="submit" class="btn-primary" style="width: 100%; background: var(&#45;&#45;gold); color: black; font-weight: bold;">-->
+<!--            AUTHORIZE LOGIN-->
+<!--        </button>-->
+<!--    </form>-->
+
+<!--    <p th:if="${error}" style="color: var(&#45;&#45;red); text-align: center; margin-top: 1rem; font-size: 0.8rem;">-->
+<!--        Access Denied! Invalid Admin Credentials.-->
+<!--    </p>-->
+<!--</div>-->
+
+<!--</body>-->
+<!--</html>-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/layout :: head('Admin Access - SSartz')}"></head>
+<body class="bg-dark text-white" style="overflow: hidden;">
+
+<nav th:replace="~{fragments/layout :: navbar(0)}"></nav>
+
+<section style="display: flex; height: 100vh; width: 100vw; align-items: stretch;">
+
+    <div style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px; background: #050507; z-index: 2; border-right: 1px solid rgba(200, 169, 81, 0.1);">
+
+        <div style="width: 100%; max-width: 360px;">
+            <div style="margin-bottom: 40px; text-align: left;">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                    <i class="fas fa-user-shield" style="color: #c8a951; font-size: 1.2rem;"></i>
+                    <p style="letter-spacing: 4px; color: #c8a951; font-size: 0.7rem; font-weight: bold; text-transform: uppercase;">Secure Portal</p>
+                </div>
+                <h2 style="font-family: 'Playfair Display', serif; font-size: 2.6rem; line-height: 1.1; color: #f0ead8;">Admin <em style="color: #c8a951; font-style: italic;">Access</em></h2>
+            </div>
+
+            <div th:if="${error}" style="background: rgba(255, 77, 77, 0.05); color: #ff4d4d; padding: 14px; border-radius: 8px; margin-bottom: 25px; font-size: 0.8rem; border: 1px solid rgba(255, 77, 77, 0.2); display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-lock"></i> Access Denied! Unauthorized credentials.
+            </div>
+
+            <form th:action="@{/admin/login}" method="post" style="display: flex; flex-direction: column; gap: 20px;">
+
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <label style="color: #8c8575; font-size: 0.65rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600;">Admin Identity</label>
+                    <input type="email" name="email" placeholder="admin@ssartz.com" required
+                           style="width: 100%; background: #0e0e12; border: 1px solid rgba(200, 169, 81, 0.2); padding: 15px; border-radius: 10px; color: #f0ead8; outline: none; transition: 0.3s; font-family: 'Outfit', sans-serif;">
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <label style="color: #8c8575; font-size: 0.65rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600;">Security Key</label>
+                    <input type="password" name="password" placeholder="••••••••" required
+                           style="width: 100%; background: #0e0e12; border: 1px solid rgba(200, 169, 81, 0.2); padding: 15px; border-radius: 10px; color: #f0ead8; outline: none; transition: 0.3s; font-family: 'Outfit', sans-serif;">
+                </div>
+
+                <button type="submit" class="btn-primary" style="margin-top: 15px; padding: 16px; border-radius: 10px; font-weight: 700; letter-spacing: 2px; cursor: pointer; border: none; background: #c8a951; color: #05050a; transition: 0.3s; text-transform: uppercase; font-size: 0.8rem;">
+                    AUTHORIZE ACCESS
+                </button>
+            </form>
+
+            <p style="margin-top: 40px; text-align: center; color: #45433d; font-size: 0.75rem; letter-spacing: 1px;">
+                Strictly for Authorized Personnel Only.
+            </p>
+        </div>
+    </div>
+
+    <div class="admin-visual" style="flex: 1.5; position: relative; background: #000; overflow: hidden;">
+        <img th:src="@{/images/96image.jpeg}" alt="Security Protocol"
+             style="width: 100%; height: 100%; object-fit: cover; filter: brightness(0.4) sepia(0.3) hue-rotate(-20deg);">
+
+        <div style="position: absolute; inset: 0; background: linear-gradient(to right, #050507 0%, transparent 40%, rgba(0,0,0,0.8) 100%);"></div>
+
+        <div style="position: absolute; bottom: 80px; left: 80px; right: 80px; z-index: 5;">
+            <div style="width: 50px; height: 2px; background: #c8a951; margin-bottom: 25px;"></div>
+            <h3 style="font-family: 'Playfair Display', serif; font-size: 2.8rem; color: #f0ead8; margin-bottom: 15px; line-height: 1.1; font-weight: 400;">
+                Control the <br> <em style="color: #c8a951;">Masterpieces</em>
+            </h3>
+            <p style="color: rgba(200, 169, 81, 0.6); font-size: 0.95rem; max-width: 450px; line-height: 1.7; font-weight: 300; letter-spacing: 0.5px;">
+                SSartz Admin Panel. Manage your inventory, track orders, and maintain the soul of your gallery from this secure hub.
+            </p>
+        </div>
+
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: rgba(200, 169, 81, 0.1); box-shadow: 0 0 15px #c8a951; animation: scanMove 4s linear infinite; pointer-events: none;"></div>
+    </div>
+
+</section>
+
+<style>
+
+
+    @media (max-width: 992px) {
+        .admin-visual { display: none !important; }
+        body { overflow: auto; }
+    }
+
+    input:focus {
+        border-color: #c8a951 !important;
+        background: #111116 !important;
+        box-shadow: 0 0 15px rgba(200, 169, 81, 0.1);
+    }
+
+    .btn-primary:hover {
+        background: #e8d48a !important;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(200, 169, 81, 0.4);
+    }
+</style>
+
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/layout :: head('Contact')}"></head>
+<body>
+
+<nav th:replace="~{fragments/layout :: navbar(${cartCount})}"></nav>
+
+<section class="contact-section">
+    <div class="contact-grid">
+
+        <!-- INFO -->
+        <div class="contact-info">
+            <h1>Let's Talk<br><em style="font-style:italic; color:var(--accent);">About Art</em></h1>
+            <p>
+                Have a question about a piece? Want a custom commission?
+                Interested in collaborating? We'd love to hear from you.
+            </p>
+            <div class="contact-detail">
+                <div class="contact-item">
+                    <span>Email</span>
+                    <span>hello@ssartz.gallery</span>
+                </div>
+                <div class="contact-item">
+                    <span>Location</span>
+                    <span>Tamil Nadu, India</span>
+                </div>
+                <div class="contact-item">
+                    <span>Instagram</span>
+                    <span>@ssartz.gallery</span>
+                </div>
+                <div class="contact-item">
+                    <span>Response Time</span>
+                    <span>Within 24 hours</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- FORM -->
+        <div>
+            <!-- Success message -->
+            <div class="success-banner" th:if="${success}">
+                ✓ Thank you! Your message has been sent. We'll get back to you soon.
+            </div>
+
+            <form th:action="@{/contact}" method="post" th:object="${contactMessage}" class="contact-form">
+                <div class="form-group">
+                    <label>Your Name</label>
+                    <input type="text" th:field="*{name}" placeholder="Full name">
+                    <span class="error-msg" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" th:field="*{email}" placeholder="you@email.com">
+                    <span class="error-msg" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                </div>
+                <div class="form-group">
+                    <label>Message</label>
+                    <textarea th:field="*{message}" placeholder="Tell us about the artwork you're interested in, or ask us anything..."></textarea>
+                    <span class="error-msg" th:if="${#fields.hasErrors('message')}" th:errors="*{message}"></span>
+                </div>
+                <button type="submit" class="btn-primary">Send Message</button>
+            </form>
+        </div>
+
+    </div>
+</section>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

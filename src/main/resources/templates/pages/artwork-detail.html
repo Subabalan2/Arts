@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/layout :: head(${artwork.title})}"></head>
+<body class="bg-dark text-white">
+
+<nav th:replace="~{fragments/layout :: navbar(${cartCount})}"></nav>
+
+<section class="detail-section" style="margin-top: 120px; padding: 2rem 0; min-height: 90vh;">
+    <div class="detail-container" style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; padding: 0 2rem;">
+
+        <div class="detail-image" style="background: var(--surface); padding: 2rem; border-radius: 20px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;">
+            <img th:src="@{'/' + ${artwork.imagePath}}"
+                 th:alt="${artwork.title}"
+                 style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); object-fit: contain;">
+        </div>
+
+        <div class="detail-info">
+            <div style="margin-bottom: 2rem;">
+                <span class="detail-category"
+                      style="color: var(--gold); letter-spacing: 3px; font-size: 0.8rem; text-transform: uppercase; border-bottom: 1px solid var(--gold); padding-bottom: 5px;"
+                      th:text="${artwork.category != null ? artwork.category.name().replace('_',' ') : 'PAINTING'}">Category</span>
+
+                <h1 class="detail-title"
+                    style="font-family: var(--serif); font-size: 4rem; margin: 1rem 0 0.5rem; color: var(--white);"
+                    th:text="${artwork.title}">Title</h1>
+
+                <p class="detail-artist" style="font-size: 1.2rem; color: var(--muted); font-style: italic;">
+                    by <span th:text="${artwork.artist != null ? artwork.artist : 'SSartz Artist'}">Artist</span>
+                </p>
+            </div>
+
+            <p class="detail-desc"
+               style="color: var(--white2); line-height: 1.8; margin-bottom: 2.5rem; font-size: 1rem;"
+               th:text="${artwork.description}">Description</p>
+
+            <div class="detail-specs" style="border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 1.5rem 0; margin-bottom: 2.5rem;">
+                <div class="spec" style="display: flex; justify-content: space-between; margin-bottom: 0.8rem;">
+                    <span style="color: var(--muted); font-size: 0.9rem;">Medium</span>
+                    <span style="color: var(--white2);" th:text="${artwork.medium}">-</span>
+                </div>
+                <div class="spec" style="display: flex; justify-content: space-between; margin-bottom: 0.8rem;">
+                    <span style="color: var(--muted); font-size: 0.9rem;">Dimensions</span>
+                    <span style="color: var(--white2);" th:text="${artwork.dimensions}">-</span>
+                </div>
+                <div class="spec" style="display: flex; justify-content: space-between;">
+                    <span style="color: var(--muted); font-size: 0.9rem;">Availability</span>
+                    <span th:if="${artwork.available}" style="color: #5cb88a; font-weight: 500;">✓ Available</span>
+                    <span th:unless="${artwork.available}" style="color: var(--red);">Sold</span>
+                </div>
+            </div>
+
+            <div class="detail-price-row" style="margin-bottom: 2.5rem;">
+                <span class="detail-price" style="font-family: var(--serif); font-size: 2.5rem; color: var(--gold);">
+                    ₹<span th:text="${artwork.price != null ? #numbers.formatDecimal(artwork.price,1,'COMMA',0,'POINT') : '0'}">0</span>
+                </span>
+            </div>
+
+            <div class="detail-actions" th:if="${artwork.available}" style="display: flex; gap: 1rem; align-items: center;">
+
+                <form th:action="@{/cart/buy-now/{id}(id=${artwork.id})}" method="post" style="flex: 2;">
+                    <button type="submit" class="btn-primary"
+                            style="width: 100%; padding: 1.2rem; background: var(--gold); color: black; font-weight: bold; border-radius: 30px; border: none; cursor: pointer; transition: transform 0.3s;">
+                        BUY NOW
+                    </button>
+                </form>
+
+                <form th:action="@{/cart/add/{id}(id=${artwork.id})}" method="post" style="flex: 2;">
+                    <button type="submit" class="btn-ghost"
+                            style="width: 100%; padding: 1.2rem; background: transparent; color: var(--gold); border: 1px solid var(--gold); font-weight: bold; border-radius: 30px; cursor: pointer;">
+                        ADD TO CART
+                    </button>
+                </form>
+
+                <a th:href="@{/contact}"
+                   style="flex: 1; text-align: center; padding: 1.1rem; border: 1px solid var(--border); border-radius: 30px; color: var(--white2); text-decoration: none;">
+                    ENQUIRE
+                </a>
+            </div>
+
+            <div style="margin-top: 3rem;">
+                <a th:href="@{/gallery}" style="color: var(--muted); text-decoration: none; font-size: 0.9rem; letter-spacing: 1px;">
+                    <span style="color: var(--gold); margin-right: 5px;">—</span> BACK TO GALLERY
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

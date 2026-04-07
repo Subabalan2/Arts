@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/layout :: head('Admin - Edit Art')}"></head>
+<body class="bg-dark text-white">
+<nav th:replace="~{fragments/layout :: navbar(0)}"></nav>
+
+<section class="checkout-section" style="margin-top: 100px;">
+    <h1 class="about-title">Edit <em>Artwork</em></h1>
+
+    <form th:action="@{/admin/update/{id}(id=${artwork.id})}" th:object="${artwork}" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label>Artwork Title</label>
+            <input type="text" th:field="*{title}" required>
+        </div>
+
+        <div class="form-group">
+            <label>Price (₹)</label>
+            <input type="number" th:field="*{price}" required>
+        </div>
+
+        <div class="form-group">
+            <label>Description</label>
+            <textarea th:field="*{description}"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Current Image</label><br>
+            <img th:src="@{'/' + ${artwork.imagePath}}" style="width: 100px; margin-bottom: 10px; border-radius: 5px;">
+            <br>
+            <label>Change Image (Optional)</label>
+            <input type="file" name="imageFile" accept="image/*">
+        </div>
+
+        <button type="submit" class="btn-primary" style="width: 100%;">UPDATE ARTWORK</button>
+        <a th:href="@{/admin/dashboard}" style="display: block; text-align: center; margin-top: 15px; color: var(--muted);">Cancel</a>
+    </form>
+</section>
+</body>
+</html>

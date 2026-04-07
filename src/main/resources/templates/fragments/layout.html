@@ -1,0 +1,512 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org" lang="en">-->
+<!--<head th:fragment="head(title)">-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title th:text="${title} + ' | SSartz Gallery'">SSartz Gallery</title>-->
+<!--    <link rel="preconnect" href="https://fonts.googleapis.com">-->
+<!--    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">-->
+<!--    <link rel="stylesheet" th:href="@{/css/main.css}">-->
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">-->
+
+<!--    <style>-->
+<!--        /* ✨ CUSTOM THEE PORI (SPARKLES) CSS ✨ */-->
+<!--        #sparkle-overlay {-->
+<!--            position: fixed;-->
+<!--            top: 0; left: 0;-->
+<!--            width: 100%; height: 100%;-->
+<!--            pointer-events: none; /* Allows clicking links behind sparkles */-->
+<!--            z-index: 9999;-->
+<!--            overflow: hidden;-->
+<!--            background: transparent !important;-->
+<!--        }-->
+
+<!--        .sparkle-particle {-->
+<!--            position: absolute;-->
+<!--            background: radial-gradient(circle, #f5e0a0 0%, #c9a84c 100%);-->
+<!--            border-radius: 50%;-->
+<!--            opacity: 0;-->
+<!--            box-shadow: 0 0 10px #c9a84c;-->
+<!--            animation: spark-rise linear infinite;-->
+<!--        }-->
+
+<!--        @keyframes spark-rise {-->
+<!--            0% { transform: translateY(110vh) scale(0); opacity: 0; }-->
+<!--            20% { opacity: 1; }-->
+<!--            80% { opacity: 0.8; }-->
+<!--            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+
+<!--<body>-->
+
+<!--<nav th:fragment="navbar(cartCount)" class="navbar" id="mainNavbar">-->
+<!--    <div id="sparkle-overlay"></div>-->
+
+<!--    <div class="nav-container">-->
+<!--        <a th:href="@{/}" class="nav-logo">-->
+<!--            <span class="logo-s">S</span>Sartz<span class="logo-sub">Gallery</span>-->
+<!--        </a>-->
+
+<!--        <ul class="nav-links" id="navLinks">-->
+<!--            <li><a th:href="@{/}" th:classappend="${currentPage == 'home'} ? 'active'">Home</a></li>-->
+<!--            <li><a th:href="@{/gallery}" th:classappend="${currentPage == 'gallery'} ? 'active'">Gallery</a></li>-->
+<!--            <li><a th:href="@{/about}" th:classappend="${currentPage == 'about'} ? 'active'">About</a></li>-->
+<!--            <li><a th:href="@{/contact}" th:classappend="${currentPage == 'contact'} ? 'active'">Contact</a></li>-->
+
+<!--            <li th:if="${session.loggedInUser != null and session.loggedInUser.role == 'ADMIN'}">-->
+<!--                <a th:href="@{/admin/dashboard}" class="nav-admin-link"><i class="fas fa-user-shield"></i> Admin</a>-->
+<!--            </li>-->
+
+<!--            <th:block th:if="${session.loggedInUser == null}">-->
+<!--                <li><a th:href="@{/login}">Login</a></li>-->
+<!--                <li><a th:href="@{/register}" class="nav-join-btn">Join Free</a></li>-->
+<!--            </th:block>-->
+
+<!--            <th:block th:if="${session.loggedInUser != null}">-->
+<!--                <li class="nav-user-greeting">-->
+<!--                    <a th:href="@{/profile}" style="display: flex; align-items: center; gap: 8px; text-decoration: none;">-->
+<!--                        <i class="fas fa-user-circle" style="color: var(&#45;&#45;gold);"></i>-->
+<!--                        <span>Hi, <span th:text="${session.loggedInUser.name}" style="color: var(&#45;&#45;gold); font-weight: 600;">User</span></span>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--                <li><a th:href="@{/logout}" class="nav-logout-link" style="margin-left: 10px;">Logout</a></li>-->
+<!--            </th:block>-->
+<!--        </ul>-->
+
+<!--        <a th:href="@{/cart}" class="cart-btn">-->
+<!--            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">-->
+<!--                <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>-->
+<!--            </svg>-->
+<!--            <span class="cart-count" th:text="${cartCount}" th:if="${cartCount != null and cartCount > 0}">0</span>-->
+<!--        </a>-->
+
+<!--        <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>-->
+<!--    </div>-->
+<!--</nav>-->
+
+<!--<th:block th:fragment="footer">-->
+<!--    <div class="marquee-strip">-->
+<!--        <div class="marquee-inner">-->
+<!--            <span>✦ SSartz Gallery</span><span>✦ Handcrafted Stories</span><span>✦ Free Shipping</span>-->
+<!--            <span>✦ SSartz Gallery</span><span>✦ Handcrafted Stories</span><span>✦ Free Shipping</span>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <footer class="footer">-->
+<!--        <div class="footer-inner">-->
+<!--            <div class="footer-bottom">-->
+<!--                <p class="footer-copy">&copy; 2026 <strong>SSartz Gallery</strong>. All rights reserved.</p>-->
+<!--                <p class="footer-made">Made with <span style="color:var(&#45;&#45;gold);">♥</span> in Chennai</p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </footer>-->
+
+<!--    <script>-->
+<!--        (function() {-->
+<!--            /* 1. Navbar Scroll FX */-->
+<!--            const nav = document.getElementById('mainNavbar');-->
+<!--            window.addEventListener('scroll', () => {-->
+<!--                if (window.scrollY > 60) nav.classList.add('scrolled');-->
+<!--                else nav.classList.remove('scrolled');-->
+<!--            });-->
+
+<!--            /* 2. Sparkle Creation Logic (No Library Needed) */-->
+<!--            const container = document.getElementById('sparkle-overlay');-->
+<!--            const particleCount = 40;-->
+
+<!--            function createParticle() {-->
+<!--                const particle = document.createElement('div');-->
+<!--                particle.classList.add('sparkle-particle');-->
+
+<!--                const size = Math.random() * 3 + 1 + 'px';-->
+<!--                const left = Math.random() * 100 + '%';-->
+<!--                const duration = Math.random() * 5 + 4 + 's';-->
+<!--                const delay = Math.random() * 5 + 's';-->
+
+<!--                particle.style.width = size;-->
+<!--                particle.style.height = size;-->
+<!--                particle.style.left = left;-->
+<!--                particle.style.animationDuration = duration;-->
+<!--                particle.style.animationDelay = delay;-->
+
+<!--                container.appendChild(particle);-->
+<!--            }-->
+
+<!--            if (container) {-->
+<!--                for (let i = 0; i < particleCount; i++) {-->
+<!--                    createParticle();-->
+<!--                }-->
+<!--            }-->
+<!--        })();-->
+<!--    </script>-->
+<!--</th:block>-->
+
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title} + ' | SSartz Gallery'">SSartz Gallery</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        #sparkle-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+            background: transparent !important;
+        }
+        .sparkle-particle {
+            position: absolute;
+            background: radial-gradient(circle, #f5e0a0 0%, #c9a84c 100%);
+            border-radius: 50%;
+            opacity: 0;
+            box-shadow: 0 0 10px #c9a84c;
+            animation: spark-rise linear infinite;
+        }
+        @keyframes spark-rise {
+            0%   { transform: translateY(110vh) scale(0); opacity: 0; }
+            20%  { opacity: 1; }
+            80%  { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ═══════════════════════════════════════
+     NAVBAR FRAGMENT — unchanged from original
+     ═══════════════════════════════════════ -->
+<nav th:fragment="navbar(cartCount)" class="navbar" id="mainNavbar">
+    <div id="sparkle-overlay"></div>
+
+    <div class="nav-container">
+        <a th:href="@{/}" class="nav-logo">
+            <span class="logo-s">S</span>Sartz<span class="logo-sub">Gallery</span>
+        </a>
+
+        <ul class="nav-links" id="navLinks">
+            <li><a th:href="@{/}"       th:classappend="${currentPage == 'home'}    ? 'active'">Home</a></li>
+            <li><a th:href="@{/gallery}" th:classappend="${currentPage == 'gallery'} ? 'active'">Gallery</a></li>
+            <li><a th:href="@{/about}"  th:classappend="${currentPage == 'about'}   ? 'active'">About</a></li>
+            <li><a th:href="@{/contact}" th:classappend="${currentPage == 'contact'} ? 'active'">Contact</a></li>
+
+            <li th:if="${session.loggedInUser != null and session.loggedInUser.role == 'ADMIN'}">
+                <a th:href="@{/admin/dashboard}" class="nav-admin-link">
+                    <i class="fas fa-user-shield"></i> Admin
+                </a>
+            </li>
+
+            <th:block th:if="${session.loggedInUser == null}">
+                <li><a th:href="@{/login}">Login</a></li>
+                <li><a th:href="@{/register}" class="nav-join-btn">Join Free</a></li>
+            </th:block>
+
+            <th:block th:if="${session.loggedInUser != null}">
+                <li class="nav-user-greeting">
+                    <a th:href="@{/profile}" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
+                        <i class="fas fa-user-circle" style="color:var(--gold);"></i>
+                        <span>Hi, <span th:text="${session.loggedInUser.name}" style="color:var(--gold);font-weight:600;">User</span></span>
+                    </a>
+                </li>
+                <li><a th:href="@{/logout}" class="nav-logout-link" style="margin-left:10px;">Logout</a></li>
+            </th:block>
+        </ul>
+
+        <a th:href="@{/cart}" class="cart-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                <line x1="3" y1="6" x2="21" y2="6"/>
+                <path d="M16 10a4 4 0 01-8 0"/>
+            </svg>
+            <span class="cart-count" th:text="${cartCount}"
+                  th:if="${cartCount != null and cartCount > 0}">0</span>
+        </a>
+
+        <button class="hamburger" id="hamburger">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+
+<!-- ═══════════════════════════════════════
+     FOOTER FRAGMENT — new wave design
+     ═══════════════════════════════════════ -->
+<th:block th:fragment="footer">
+
+    <!-- Gold marquee strip -->
+    <div class="marquee-strip">
+        <div class="marquee-inner">
+            <span>SSartz Gallery</span>
+            <span>Handcrafted Stories</span>
+            <span>Free Shipping</span>
+            <span>Original Art</span>
+            <span>SSartz Gallery</span>
+            <span>Handcrafted Stories</span>
+            <span>Free Shipping</span>
+            <span>Original Art</span>
+        </div>
+    </div>
+
+    <!-- SVG Wave transition — page bg → footer bg -->
+    <div class="footer-wave-wrap">
+        <svg viewBox="0 0 1440 90" preserveAspectRatio="none"
+             xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;">
+            <defs>
+                <linearGradient id="waveGold" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%"   stop-color="rgba(201,168,76,0)"/>
+                    <stop offset="30%"  stop-color="rgba(201,168,76,0.22)"/>
+                    <stop offset="70%"  stop-color="rgba(201,168,76,0.22)"/>
+                    <stop offset="100%" stop-color="rgba(201,168,76,0)"/>
+                </linearGradient>
+            </defs>
+            <!-- page background fill above the wave -->
+            <rect width="1440" height="90" fill="#080808"/>
+            <!-- wave filled with footer background colour -->
+            <path d="M0,90 L0,55 Q180,10 360,40 Q540,70 720,30 Q900,-10 1080,30 Q1260,65 1440,28 L1440,90 Z"
+                  fill="#060608"/>
+            <!-- gold shimmer line along the wave crest -->
+            <path d="M0,55 Q180,10 360,40 Q540,70 720,30 Q900,-10 1080,30 Q1260,65 1440,28"
+                  fill="none" stroke="url(#waveGold)" stroke-width="1.2"/>
+        </svg>
+    </div>
+
+    <!-- Main footer -->
+    <footer class="site-footer">
+        <div class="sf-inner">
+
+            <!-- ── TOP GRID: Brand · Trust · Newsletter ── -->
+            <div class="sf-top">
+
+                <!-- Brand column -->
+                <div class="sf-brand">
+                    <a th:href="@{/}" class="sf-logo">
+                        <span class="logo-s">S</span>Sartz
+                        <span class="sf-logo-sub">Gallery</span>
+                    </a>
+                    <p class="sf-tagline">"Where every stroke tells a story."</p>
+                    <p class="sf-desc">
+                        Curated original artworks from Chennai's finest artists.
+                        Paintings, digital art, photography and mixed media — all under one roof.
+                    </p>
+                    <div class="sf-socials">
+                        <a href="#" class="sf-social" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="sf-social" aria-label="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="sf-social" aria-label="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="sf-social" aria-label="Pinterest">
+                            <i class="fab fa-pinterest-p"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Trust badges column -->
+                <div class="sf-trust">
+                    <div class="sf-col-label">Why Us</div>
+                    <div class="sf-trust-list">
+                        <div class="sf-trust-item">
+                            <div class="sf-trust-icon"><i class="fas fa-shield-halved"></i></div>
+                            <div>
+                                <div class="sf-trust-main">100% Authentic</div>
+                                <div class="sf-trust-sub">Verified originals only</div>
+                            </div>
+                        </div>
+                        <div class="sf-trust-item">
+                            <div class="sf-trust-icon"><i class="fas fa-truck"></i></div>
+                            <div>
+                                <div class="sf-trust-main">Free Shipping</div>
+                                <div class="sf-trust-sub">Pan India delivery</div>
+                            </div>
+                        </div>
+                        <div class="sf-trust-item">
+                            <div class="sf-trust-icon"><i class="fas fa-rotate-left"></i></div>
+                            <div>
+                                <div class="sf-trust-main">Easy Returns</div>
+                                <div class="sf-trust-sub">7-day return policy</div>
+                            </div>
+                        </div>
+                        <div class="sf-trust-item">
+                            <div class="sf-trust-icon"><i class="fas fa-lock"></i></div>
+                            <div>
+                                <div class="sf-trust-main">Secure Payments</div>
+                                <div class="sf-trust-sub">UPI · Cards · NetBanking</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Newsletter column -->
+                <div class="sf-newsletter">
+                    <div class="sf-col-label">Stay Inspired</div>
+                    <div class="sf-nl-title">Get New Art<br>in Your Inbox</div>
+                    <p class="sf-nl-desc">
+                        Weekly drops of new artworks, artist stories, and exclusive
+                        offers — straight to you.
+                    </p>
+                    <form class="sf-nl-form" onsubmit="return false;">
+                        <input class="sf-nl-input" type="email" placeholder="your@email.com">
+                        <button class="sf-nl-btn" type="submit">Subscribe to Gallery</button>
+                    </form>
+                    <p class="sf-nl-note">No spam. Unsubscribe anytime.</p>
+                </div>
+            </div>
+
+            <!-- ── STATS STRIP ── -->
+            <div class="sf-stats">
+                <div class="sf-stat">
+                    <div class="sf-stat-num">124+</div>
+                    <div class="sf-stat-lbl">Artworks</div>
+                </div>
+                <div class="sf-stat">
+                    <div class="sf-stat-num">48</div>
+                    <div class="sf-stat-lbl">Artists</div>
+                </div>
+                <div class="sf-stat">
+                    <div class="sf-stat-num">830+</div>
+                    <div class="sf-stat-lbl">Happy Buyers</div>
+                </div>
+                <div class="sf-stat">
+                    <div class="sf-stat-num">6yr</div>
+                    <div class="sf-stat-lbl">Established</div>
+                </div>
+            </div>
+
+            <!-- ── NAV LINKS ROW ── -->
+            <div class="sf-nav">
+                <div>
+                    <div class="sf-nav-title">Explore</div>
+                    <ul class="sf-nav-links">
+                        <li><a th:href="@{/}">Home</a></li>
+                        <li><a th:href="@{/gallery}">Gallery</a></li>
+                        <li><a th:href="@{/gallery}">New Arrivals</a></li>
+                        <li><a th:href="@{/gallery}">Categories</a></li>
+                        <li><a th:href="@{/gallery}">Featured Art</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="sf-nav-title">Account</div>
+                    <ul class="sf-nav-links">
+                        <li><a th:href="@{/login}">Login</a></li>
+                        <li><a th:href="@{/register}">Register</a></li>
+                        <li><a th:href="@{/profile}">My Profile</a></li>
+                        <li><a th:href="@{/profile}">Order History</a></li>
+                        <li><a th:href="@{/cart}">My Cart</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="sf-nav-title">Company</div>
+                    <ul class="sf-nav-links">
+                        <li><a th:href="@{/about}">About Us</a></li>
+                        <li><a th:href="@{/about}">Our Artists</a></li>
+                        <li><a th:href="@{/contact}">Contact</a></li>
+                        <li><a th:href="@{/about}">Blog</a></li>
+                        <li><a th:href="@{/about}">Press</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="sf-nav-title">Contact</div>
+                    <div class="sf-contact-list">
+                        <div class="sf-contact-item">
+                            <div class="sf-contact-ico"><i class="fas fa-location-dot"></i></div>
+                            <div>
+                                <span class="sf-contact-lbl">Address</span>
+                                Chennai, Tamil Nadu
+                            </div>
+                        </div>
+                        <div class="sf-contact-item">
+                            <div class="sf-contact-ico"><i class="fas fa-envelope"></i></div>
+                            <div>
+                                <span class="sf-contact-lbl">Email</span>
+                                hello@ssartz.com
+                            </div>
+                        </div>
+                        <div class="sf-contact-item">
+                            <div class="sf-contact-ico"><i class="fas fa-phone"></i></div>
+                            <div>
+                                <span class="sf-contact-lbl">Phone</span>
+                                +91 98765 43210
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── BOTTOM BAR ── -->
+            <div class="sf-bottom">
+                <p class="sf-copy">
+                    &copy; 2026 <strong>SSartz Gallery</strong>. All rights reserved.
+                </p>
+                <div class="sf-legal">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Use</a>
+                    <a href="#">Refund Policy</a>
+                </div>
+                <p class="sf-made">
+                    Made with <span style="color:var(--gold);">♥</span> in Chennai
+                </p>
+            </div>
+
+        </div>
+    </footer>
+
+    <script>
+        (function () {
+            /* 1. Navbar Scroll FX */
+            const nav = document.getElementById('mainNavbar');
+            if (nav) {
+                window.addEventListener('scroll', () => {
+                    nav.classList.toggle('scrolled', window.scrollY > 60);
+                });
+            }
+
+            /* 2. Hamburger toggle */
+            const hamburger = document.getElementById('hamburger');
+            const navLinks  = document.getElementById('navLinks');
+            if (hamburger && navLinks) {
+                hamburger.addEventListener('click', () => {
+                    hamburger.classList.toggle('active');
+                    navLinks.classList.toggle('open');
+                });
+            }
+
+            /* 3. Sparkle / Thee-pori particles */
+            const container = document.getElementById('sparkle-overlay');
+            if (container) {
+                for (let i = 0; i < 40; i++) {
+                    const p = document.createElement('div');
+                    p.classList.add('sparkle-particle');
+                    const size = (Math.random() * 3 + 1) + 'px';
+                    p.style.cssText = [
+                        'width:'  + size,
+                        'height:' + size,
+                        'left:'   + (Math.random() * 100) + '%',
+                        'animation-duration:' + (Math.random() * 5 + 4) + 's',
+                        'animation-delay:'    + (Math.random() * 5)     + 's'
+                    ].join(';');
+                    container.appendChild(p);
+                }
+            }
+        })();
+    </script>
+</th:block>
+
+</body>
+</html>

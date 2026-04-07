@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/layout :: head('About')}"></head>
+<body>
+
+<nav th:replace="~{fragments/layout :: navbar(${cartCount})}"></nav>
+
+<section class="about-section">
+
+    <div class="about-grid">
+        <div class="about-img">
+            <img th:src="@{/images/Butterfly.jpg}" alt="ss Artwork" style="object-fit:cover; object-position:center;"/>
+        </div>
+        <div class="about-content">
+            <p class="about-eyebrow">The Artist</p>
+            <h1 class="about-title">Stories told<br>through colour &amp; form</h1>
+            <p class="about-text">
+                SSartz Gallery is an independent art space celebrating original works across painting,
+                digital art, photography, and mixed media. Each piece is created with intention —
+                capturing moments, emotions, and stories that words alone cannot hold.
+            </p>
+            <p class="about-text">
+                Based in Tamil Nadu, the work draws deeply from South Indian landscapes, light, and
+                heritage — translated into contemporary visual language that resonates across cultures.
+            </p>
+            <p class="about-text">
+                Every artwork sold is shipped directly from the studio, handled with care,
+                and comes with a certificate of authenticity.
+            </p>
+            <a th:href="@{/gallery}" class="btn-primary" style="margin-top:1rem;">Explore the Collection</a>
+        </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="about-stats">
+        <div>
+            <div class="stat-num">50+</div>
+            <div class="stat-label">Original Works</div>
+        </div>
+        <div>
+            <div class="stat-num">120+</div>
+            <div class="stat-label">Happy Collectors</div>
+        </div>
+        <div>
+            <div class="stat-num">5+</div>
+            <div class="stat-label">Years Creating</div>
+        </div>
+    </div>
+
+    <!-- PROCESS -->
+    <div style="margin-top:5rem; max-width:640px;">
+        <h2 class="section-title">The Process</h2>
+        <p style="color:var(--gray); line-height:1.9; margin-bottom:1rem;">
+            Each piece begins as an observation — a play of afternoon light, the texture of weathered
+            wood, a fleeting human expression. Sketches evolve into studies, studies into finished works.
+        </p>
+        <p style="color:var(--gray); line-height:1.9;">
+            Whether oil on canvas or a digital composition, the commitment remains the same:
+            every piece must hold its own story, viewable across all sizes and spaces.
+        </p>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

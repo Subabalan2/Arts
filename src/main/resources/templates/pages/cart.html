@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/layout :: head('Your Cart')}"></head>
+<body>
+
+<nav th:replace="~{fragments/layout :: navbar(${cartCount})}"></nav>
+
+<section class="cart-section">
+    <div class="section-header">
+        <div>
+            <p class="section-label">Review</p>
+            <h1 class="about-title">Your <em>Shopping Cart</em></h1>
+        </div>
+    </div>
+
+    <div class="cart-empty" th:if="${cartItems == null or cartItems.isEmpty()}">
+        <p>Your sanctuary is currently empty.</p>
+        <a th:href="@{/gallery}" class="btn-primary">Explore Gallery</a>
+    </div>
+
+    <div th:if="${cartItems != null and !cartItems.isEmpty()}">
+        <table class="cart-table">
+            <thead>
+            <tr>
+                <th>Artwork</th>
+                <th>Details</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${cartItems}">
+                <td>
+                    <div class="cart-item-img">
+                        <img th:src="@{'/' + ${item.imageUrl}}" th:alt="${item.title}">
+                    </div>
+                </td>
+                <td>
+                    <div class="cart-item-title" th:text="${item.title}">Title</div>
+                    <p class="cart-item-sub">Original Work</p>
+                </td>
+                <td>
+                    <span class="white-text">₹<span th:text="${#numbers.formatDecimal(item.price,1,'COMMA',0,'POINT')}">0</span></span>
+                </td>
+                <td>
+                    <span class="white-text" th:text="${item.quantity}">1</span>
+                </td>
+                <td>
+                    <strong class="gold-text">₹<span th:text="${#numbers.formatDecimal(item.subtotal,1,'COMMA',0,'POINT')}">0</span></strong>
+                </td>
+                <td>
+                    <form th:action="@{/cart/remove/{id}(id=${item.artworkId})}" method="post">
+                        <button type="submit" class="cart-remove">Remove</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="cart-total-row">
+            <span class="cart-total-label">Grand Total</span>
+            <span class="cart-total-amt">₹<span th:text="${#numbers.formatDecimal(total,1,'COMMA',0,'POINT')}">0</span></span>
+        </div>
+
+        <div class="cart-actions">
+            <a th:href="@{/gallery}" class="btn-ghost">Continue Shopping</a>
+            <a th:href="@{/cart/checkout}" class="btn-primary">Proceed to Checkout</a>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

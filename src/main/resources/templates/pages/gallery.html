@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/layout :: head('Gallery')}"></head>
+<body class="bg-dark">
+
+<nav th:replace="~{fragments/layout :: navbar(${cartCount})}"></nav>
+
+<div class="page-hero-mini">
+    <h1>Gallery</h1>
+    <p>Explore original artworks available for purchase</p>
+</div>
+
+<section class="gallery-section" style="padding-bottom: 0;">
+    <div style="display: flex; flex-direction: column; gap: 20px; margin-bottom: 40px; background: var(--surface); padding: 30px; border-radius: 20px; border: 1px solid var(--border);">
+
+        <div style="display: flex; width: 100%; gap: 15px; flex-wrap: wrap; align-items: center;">
+            <form th:action="@{/gallery}" method="get" style="flex: 1; display: flex; gap: 10px; min-width: 300px;">
+                <div style="position: relative; flex: 1;">
+                    <i class="fas fa-search" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--gold); opacity: 0.7;"></i>
+                    <input type="text" name="search" th:value="${param.search}" placeholder="Search by artwork name or medium..."
+                           style="width: 100%; background: var(--bg); border: 1px solid var(--border-gold); padding: 14px 20px 14px 50px; border-radius: 99px; color: white; outline: none; font-family: var(--sans);">
+                </div>
+                <button type="submit" class="btn-primary" style="padding: 14px 30px; box-shadow: none;">Find Art</button>
+            </form>
+
+            <form th:action="@{/gallery}" method="get" id="sortForm">
+                <input type="hidden" name="search" th:if="${param.search}" th:value="${param.search}">
+                <select name="sort" onchange="this.form.submit()"
+                        style="background: var(--surface2); border: 1px solid var(--border-gold); padding: 14px 25px; border-radius: 99px; color: var(--gold); outline: none; cursor: pointer; font-family: var(--sans); font-weight: 600;">
+                    <option value="" th:selected="${param.sort == null or param.sort[0] == ''}">Default Sorting</option>
+                    <option value="price_low" th:selected="${param.sort != null and param.sort[0] == 'price_low'}">Price: Low to High</option>
+                    <option value="price_high" th:selected="${param.sort != null and param.sort[0] == 'price_high'}">Price: High to Low</option>
+                </select>
+            </form>
+        </div>
+    </div>
+
+    <div class="filter-bar">
+        <a th:href="@{/gallery}" th:classappend="${selectedCategory == 'ALL'} ? 'active'" class="filter-btn">All</a>
+        <a th:href="@{/gallery(category='PAINTING')}" th:classappend="${selectedCategory == 'PAINTING'} ? 'active'" class="filter-btn">Paintings</a>
+        <a th:href="@{/gallery(category='DIGITAL')}" th:classappend="${selectedCategory == 'DIGITAL'} ? 'active'" class="filter-btn">Digital</a>
+        <a th:href="@{/gallery(category='PHOTOGRAPHY')}" th:classappend="${selectedCategory == 'PHOTOGRAPHY'} ? 'active'" class="filter-btn">Photography</a>
+        <a th:href="@{/gallery(category='MIXED_MEDIA')}" th:classappend="${selectedCategory == 'MIXED_MEDIA'} ? 'active'" class="filter-btn">Mixed Media</a>
+    </div>
+
+    <div class="artworks-grid gallery-grid" th:if="${!artworks.isEmpty()}">
+        <div class="artwork-card" th:each="art : ${artworks}">
+            <a th:href="@{/gallery/{id}(id=${art.id})}" class="card-img-link">
+                <img th:src="@{'/' + ${art.imagePath}}" alt="Artwork">
+                <div class="card-overlay"><span>View Details</span></div>
+            </a>
+            <div class="card-info">
+                <div class="card-meta">
+                    <span class="card-category" th:text="${art.category.name().replace('_',' ')}">Category</span>
+                    <span class="card-dims" th:text="${art.dimensions}">Dimensions</span>
+                </div>
+                <h3 class="card-title" th:text="${art.title}">Title</h3>
+                <div class="card-bottom">
+                    <span class="card-price">₹<span th:text="${#numbers.formatDecimal(art.price,1,'COMMA',0,'POINT')}">0</span></span>
+                    <form th:action="@{/cart/add/{id}(id=${art.id})}" method="post">
+                        <button type="submit" class="add-cart-btn">Add to Cart</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="empty-state" th:if="${artworks.isEmpty()}">
+        <i class="fas fa-search-minus" style="font-size: 3rem; color: var(--muted); margin-bottom: 20px;"></i>
+        <p>No artworks found for your search/category.</p>
+        <a th:href="@{/gallery}" class="btn-primary" style="margin-top: 20px;">View Full Gallery</a>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

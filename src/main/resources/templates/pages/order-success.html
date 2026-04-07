@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/layout :: head('Order Confirmed')}"></head>
+<body>
+
+<nav th:replace="~{fragments/layout :: navbar(${cartCount})}"></nav>
+
+<section class="success-section">
+    <div class="success-inner">
+        <div class="success-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+        </div>
+        <h1>Order Placed!</h1>
+        <p>
+            Thank you for your purchase. We've received your order and will
+            reach out to you within 24 hours to confirm payment and shipping details.
+        </p>
+        <p style="font-size:0.85rem; color:var(--gray);">
+            Each artwork is packed with care and shipped directly from our studio. 🎨
+        </p>
+        <a th:href="@{/gallery}" class="btn-primary">Continue Browsing</a>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

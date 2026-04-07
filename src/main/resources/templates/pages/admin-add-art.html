@@ -1,0 +1,736 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org" lang="en">-->
+<!--<head th:replace="~{fragments/layout :: head('Add New Artwork - Admin')}"></head>-->
+<!--<body class="bg-dark text-white">-->
+
+<!--<nav th:replace="~{fragments/layout :: navbar(0)}"></nav>-->
+
+<!--<section class="checkout-section" style="margin-top: 100px; padding-bottom: 80px;">-->
+<!--    <div class="container">-->
+<!--        <div class="section-header" style="margin-bottom: 40px;">-->
+<!--            <p class="section-label">ADMIN PANEL</p>-->
+<!--            <h2 class="section-title">Upload <em>New Masterpiece</em></h2>-->
+<!--        </div>-->
+
+<!--        <div class="checkout-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: start;">-->
+
+<!--            <div class="checkout-summary" style="background: var(&#45;&#45;surface); border: 1px solid var(&#45;&#45;border-gold); padding: 40px; border-radius: 20px;">-->
+<!--                <form th:action="@{/admin/artworks/add}" method="post" enctype="multipart/form-data" class="checkout-form">-->
+
+<!--                    <div class="form-group">-->
+<!--                        <label>Artwork Title</label>-->
+<!--                        <input type="text" name="title" placeholder="e.g. Divine Murugan" required>-->
+<!--                    </div>-->
+
+<!--                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">-->
+<!--                        <div class="form-group">-->
+<!--                            <label>Category</label>-->
+<!--                            <select name="category" style="width: 100%; background: var(&#45;&#45;bg); border: 1px solid var(&#45;&#45;border); padding: 12px; border-radius: 8px; color: white;">-->
+<!--                                <option value="PAINTING">Painting</option>-->
+<!--                                <option value="DIGITAL">Digital Art</option>-->
+<!--                                <option value="PHOTOGRAPHY">Photography</option>-->
+<!--                                <option value="MIXED_MEDIA">Mixed Media</option>-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                        <div class="form-group">-->
+<!--                            <label>Price (₹)</label>-->
+<!--                            <input type="number" name="price" placeholder="5000" required>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="form-group">-->
+<!--                        <label>Dimensions</label>-->
+<!--                        <input type="text" name="dimensions" placeholder="e.g. 24x36 inches">-->
+<!--                    </div>-->
+
+<!--                    <div class="form-group">-->
+<!--                        <label>Select Artwork Image</label>-->
+<!--                        <input type="file" name="imageFile" accept="image/*" required-->
+<!--                               style="padding: 10px; background: var(&#45;&#45;bg2); border: 1px dashed var(&#45;&#45;gold); border-radius: 8px; cursor: pointer;">-->
+<!--                    </div>-->
+
+<!--                    <button type="submit" class="btn-primary" style="width: 100%; margin-top: 20px; padding: 15px;">-->
+<!--                        <i class="fas fa-cloud-upload-alt"></i> Publish to Gallery-->
+<!--                    </button>-->
+<!--                </form>-->
+<!--            </div>-->
+
+<!--            <div class="hero-visual" style="height: 100%; position: sticky; top: 120px;">-->
+<!--                <div class="hero-frame" style="height: 550px; position: relative; border-radius: 25px; overflow: hidden; border: 2px solid var(&#45;&#45;border-gold); box-shadow: 0 30px 60px rgba(0,0,0,0.8);">-->
+
+<!--                    <img th:src="@{/images/addartwork.png}" alt="Creating Art"-->
+<!--                         style="width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6);">-->
+
+<!--                    <div style="position: absolute; bottom: 40px; left: 30px; right: 30px; z-index: 5;">-->
+<!--                        <h3 style="font-family: var(&#45;&#45;serif); font-size: 1.8rem; color: var(&#45;&#45;gold); margin-bottom: 10px;">Capturing <em>Emotions</em></h3>-->
+<!--                        <p style="font-size: 0.9rem; color: var(&#45;&#45;white2); line-height: 1.6; font-weight: 300;">-->
+<!--                            "Art is the only way to run away without leaving home." Upload your latest creation and share it with the world.-->
+<!--                        </p>-->
+<!--                    </div>-->
+
+<!--                    <div class="hero-badge" style="bottom: 20px; right: -10px; left: auto;">-->
+<!--                        <div class="hero-badge-num"><i class="fas fa-paint-brush"></i></div>-->
+<!--                        <div class="hero-badge-label">Live Preview</div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div id="particles-js" style="position: absolute; inset: 0; z-index: -1;"></div>-->
+<!--            </div>-->
+
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>-->
+
+<!--<footer th:replace="~{fragments/layout :: footer}"></footer>-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/layout :: head('Add New Artwork - Admin')}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Artwork – Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+
+    :root{
+      --gold:#c8a951;
+      --gold2:#e8d48a;
+      --gold-dim:rgba(200,169,81,0.2);
+      --gold-glow:rgba(200,169,81,0.07);
+      --bg:#07070a;
+      --bg2:#0e0e12;
+      --card:#121217;
+      --card2:#18181f;
+      --border:rgba(255,255,255,0.055);
+      --border-g:rgba(200,169,81,0.22);
+      --t1:#f0ead8;
+      --t2:#8c8575;
+      --t3:#45433d;
+      --serif:'Playfair Display',Georgia,serif;
+      --sans:'Outfit',sans-serif;
+    }
+
+    html{scroll-behavior:smooth;}
+    body{
+      background:var(--bg);
+      color:var(--t1);
+      font-family:var(--sans);
+      font-weight:300;
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+
+    /* subtle grain overlay */
+    body::before{
+      content:'';
+      position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity:0.55;
+    }
+
+    /* ── NAVBAR ── */
+    .lx-nav{
+      position:fixed;top:0;left:0;right:0;z-index:200;
+      height:66px;padding:0 52px;
+      display:flex;align-items:center;justify-content:space-between;
+      background:rgba(7,7,10,0.9);backdrop-filter:blur(28px);
+      border-bottom:1px solid var(--border);
+    }
+    .lx-logo{
+      font-family:var(--serif);font-size:1.3rem;
+      color:var(--gold);letter-spacing:0.12em;text-decoration:none;
+    }
+    .lx-nav-right{display:flex;align-items:center;gap:20px;}
+    .lx-back{
+      display:flex;align-items:center;gap:7px;
+      font-size:11px;letter-spacing:0.13em;text-transform:uppercase;
+      color:var(--t2);text-decoration:none;transition:color 0.2s;
+    }
+    .lx-back:hover{color:var(--gold);}
+    .lx-badge{
+      padding:5px 15px;border-radius:100px;
+      border:1px solid var(--border-g);background:var(--gold-glow);
+      font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);
+    }
+
+    /* ── PAGE ── */
+    .lx-page{
+      position:relative;z-index:1;
+      min-height:100vh;
+      display:flex;align-items:center;justify-content:center;
+      padding:100px 24px 80px;
+    }
+
+    /* ambient glow blobs */
+    .lx-blob{
+      position:fixed;border-radius:50%;filter:blur(120px);
+      pointer-events:none;z-index:0;
+    }
+    .lx-blob-1{
+      width:600px;height:600px;
+      top:-150px;right:-100px;
+      background:radial-gradient(circle,rgba(200,169,81,0.055) 0%,transparent 70%);
+    }
+    .lx-blob-2{
+      width:500px;height:500px;
+      bottom:-100px;left:-80px;
+      background:radial-gradient(circle,rgba(200,169,81,0.04) 0%,transparent 70%);
+    }
+
+    /* ── MAIN CARD ── */
+    .lx-card{
+      position:relative;z-index:2;
+      width:100%;max-width:980px;
+      background:var(--card);
+      border:1px solid var(--border-g);
+      border-radius:28px;
+      overflow:hidden;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.025),
+        0 60px 120px rgba(0,0,0,0.9),
+        inset 0 1px 0 rgba(200,169,81,0.08);
+    }
+
+    /* gold top line accent */
+    .lx-card::before{
+      content:'';
+      position:absolute;top:0;left:10%;right:10%;height:1px;
+      background:linear-gradient(90deg,transparent,rgba(200,169,81,0.6),transparent);
+    }
+
+    /* ── IMAGE AREA (top half of card) ── */
+    .lx-img-area{
+      position:relative;
+      width:100%;height:380px;
+      background:var(--bg2);
+      display:flex;align-items:center;justify-content:center;
+      overflow:hidden;cursor:pointer;
+    }
+    .lx-img-area input[type="file"]{
+      position:absolute;inset:0;opacity:0;cursor:pointer;z-index:10;width:100%;height:100%;
+    }
+
+    /* image preview */
+    #lx-img-preview{
+      position:absolute;inset:0;
+      background-size:cover;background-position:center;
+      opacity:0;transition:opacity 0.6s ease;z-index:1;
+    }
+    /* gradient at bottom of image so form area blends */
+    .lx-img-grad{
+      position:absolute;bottom:0;left:0;right:0;height:50%;z-index:2;
+      background:linear-gradient(to bottom,transparent,var(--card));
+      pointer-events:none;
+    }
+
+    /* decorative corner marks */
+    .lx-corner{position:absolute;width:20px;height:20px;z-index:3;}
+    .lx-corner-tl{top:18px;left:18px;border-top:1px solid var(--gold);border-left:1px solid var(--gold);}
+    .lx-corner-tr{top:18px;right:18px;border-top:1px solid var(--gold);border-right:1px solid var(--gold);}
+    .lx-corner-bl{bottom:18px;left:18px;border-bottom:1px solid var(--gold);border-left:1px solid var(--gold);}
+    .lx-corner-br{bottom:18px;right:18px;border-bottom:1px solid var(--gold);border-right:1px solid var(--gold);}
+
+    /* upload prompt */
+    .lx-upload-prompt{
+      position:relative;z-index:4;
+      display:flex;flex-direction:column;align-items:center;gap:16px;
+      pointer-events:none;user-select:none;
+      transition:opacity 0.35s,transform 0.35s;
+    }
+    .lx-upload-prompt.hidden{opacity:0;transform:scale(0.92);}
+
+    .lx-upload-icon{
+      width:72px;height:72px;border-radius:50%;
+      border:1px solid rgba(200,169,81,0.3);
+      display:flex;align-items:center;justify-content:center;
+      position:relative;
+    }
+    .lx-upload-icon::before{
+      content:'';position:absolute;inset:-9px;border-radius:50%;
+      border:1px dashed rgba(200,169,81,0.15);
+      animation:lx-spin 16s linear infinite;
+    }
+    @keyframes lx-spin{to{transform:rotate(360deg);}}
+    .lx-upload-icon i{font-size:22px;color:var(--gold);}
+
+    .lx-upload-prompt h3{
+      font-family:var(--serif);font-size:1.55rem;font-weight:400;
+      color:var(--t1);text-align:center;
+    }
+    .lx-upload-prompt p{font-size:11px;color:var(--t3);letter-spacing:0.1em;text-align:center;}
+
+    /* after-upload: image name overlay */
+    .lx-img-meta{
+      position:absolute;bottom:24px;left:28px;z-index:5;
+      opacity:0;transform:translateY(8px);
+      transition:opacity 0.45s,transform 0.45s;pointer-events:none;
+    }
+    .lx-img-meta.show{opacity:1;transform:translateY(0);}
+    .lx-img-meta-name{
+      font-family:var(--serif);font-size:1.25rem;font-weight:400;
+      color:#fff;text-shadow:0 2px 20px rgba(0,0,0,0.95);
+      max-width:460px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .lx-img-meta-size{font-size:10px;color:rgba(255,255,255,0.32);letter-spacing:0.1em;margin-top:3px;}
+
+    /* change btn */
+    .lx-change-btn{
+      position:absolute;top:18px;right:18px;z-index:11;
+      display:none;align-items:center;gap:7px;
+      padding:7px 16px;border-radius:100px;
+      background:rgba(7,7,10,0.75);backdrop-filter:blur(12px);
+      border:1px solid var(--border-g);color:var(--gold);
+      font-family:var(--sans);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;
+      cursor:pointer;transition:background 0.2s;
+    }
+    .lx-change-btn:hover{background:rgba(200,169,81,0.1);}
+    .lx-change-btn.show{display:flex;}
+
+    /* drag highlight */
+    .lx-img-area.dragover{outline:2px solid var(--gold);outline-offset:-2px;}
+
+    /* ── FORM AREA (bottom half of card) ── */
+    .lx-form-area{padding:0 48px 48px;}
+
+    /* header row */
+    .lx-form-head{
+      display:flex;align-items:flex-end;justify-content:space-between;
+      margin-bottom:36px;gap:16px;flex-wrap:wrap;
+    }
+    .lx-label-tag{
+      display:inline-flex;align-items:center;gap:6px;
+      padding:4px 13px;border-radius:100px;
+      border:1px solid var(--border-g);background:var(--gold-glow);
+      font-size:9px;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;
+      margin-bottom:10px;
+    }
+    .lx-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);animation:lx-pulse 2s infinite;}
+    @keyframes lx-pulse{0%,100%{opacity:1;}50%{opacity:0.25;}}
+    .lx-form-title{
+      font-family:var(--serif);font-size:2rem;font-weight:400;
+      color:var(--t1);line-height:1.15;
+    }
+    .lx-form-title em{color:var(--gold);font-style:italic;}
+    .lx-step-hint{
+      font-size:11px;letter-spacing:0.1em;color:var(--t3);
+      text-align:right;display:flex;align-items:center;gap:6px;
+    }
+    .lx-step-hint span{
+      width:22px;height:22px;border-radius:50%;
+      border:1px solid var(--border-g);background:var(--gold-glow);
+      color:var(--gold);font-size:10px;
+      display:inline-flex;align-items:center;justify-content:center;
+    }
+
+    /* field grid */
+    .lx-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 26px;}
+    .lx-span2{grid-column:1/-1;}
+
+    .lx-field{display:flex;flex-direction:column;gap:7px;}
+    .lx-field label{
+      font-size:9px;letter-spacing:0.18em;text-transform:uppercase;
+      color:var(--t3);font-family:var(--sans);
+    }
+    .lx-field input,
+    .lx-field select{
+      background:var(--card2) !important;
+      border:1px solid var(--border) !important;
+      border-radius:10px !important;
+      padding:12px 15px !important;
+      color:var(--t1) !important;
+      font-family:var(--sans) !important;
+      font-size:13px !important;font-weight:300 !important;
+      outline:none !important;
+      transition:border-color 0.2s,background 0.2s;
+      appearance:none;-webkit-appearance:none;width:100%;
+    }
+    .lx-field input:focus,.lx-field select:focus{
+      border-color:rgba(200,169,81,0.45) !important;
+      background:#15151c !important;
+    }
+    .lx-field input::placeholder{color:var(--t3);}
+    .lx-field select option{background:#18181f;}
+
+    .lx-price-wrap{position:relative;}
+    .lx-rupee{
+      position:absolute;left:13px;top:50%;transform:translateY(-50%);
+      color:var(--gold);font-size:13px;pointer-events:none;
+    }
+    .lx-price-wrap input{padding-left:24px !important;}
+
+    /* category pills */
+    .lx-pills{display:flex;gap:7px;flex-wrap:wrap;}
+    .lx-pill{
+      padding:6px 16px;border-radius:100px;font-size:11px;
+      border:1px solid var(--border);background:var(--card2);
+      color:var(--t2);cursor:pointer;transition:all 0.15s;user-select:none;
+    }
+    .lx-pill:hover,.lx-pill.active{
+      border-color:rgba(200,169,81,0.45);
+      color:var(--gold);background:rgba(200,169,81,0.07);
+    }
+
+    /* ornamental divider */
+    .lx-orn{
+      display:flex;align-items:center;gap:14px;margin:28px 0;
+    }
+    .lx-orn-line{flex:1;height:1px;background:var(--border);}
+    .lx-orn-diamond{
+      width:7px;height:7px;background:var(--gold-dim);
+      transform:rotate(45deg);border:1px solid var(--gold-dim);flex-shrink:0;
+    }
+
+    /* footer */
+    .lx-form-footer{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+    .lx-file-status{display:flex;align-items:center;gap:9px;font-size:11px;color:var(--t3);}
+    .lx-file-status i{color:var(--gold);font-size:12px;}
+    #lx-foot-name{max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+    .lx-submit{
+      display:inline-flex !important;align-items:center;gap:10px;
+      padding:13px 34px !important;border-radius:11px !important;border:none !important;
+      background:linear-gradient(135deg,#c8a951 0%,#9a7b30 100%) !important;
+      color:#05050a !important;cursor:pointer;
+      font-family:var(--sans) !important;font-size:12px !important;font-weight:500 !important;
+      letter-spacing:0.08em;text-transform:uppercase;
+      transition:transform 0.15s,box-shadow 0.15s;
+      position:relative;overflow:hidden;
+    }
+    .lx-submit::before{
+      content:'';
+      position:absolute;top:0;left:-100%;width:100%;height:100%;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,0.12),transparent);
+      transition:left 0.45s;
+    }
+    .lx-submit:hover::before{left:100%;}
+    .lx-submit:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(200,169,81,0.3);}
+    .lx-submit:active{transform:translateY(0);}
+
+    /* responsive */
+    @media(max-width:700px){
+      .lx-nav{padding:0 20px;}
+      .lx-page{padding:90px 12px 60px;}
+      .lx-img-area{height:260px;}
+      .lx-form-area{padding:0 22px 36px;}
+      .lx-grid{grid-template-columns:1fr;}
+      .lx-span2{grid-column:1;}
+      .lx-form-title{font-size:1.6rem;}
+      .lx-form-head{flex-direction:column;align-items:flex-start;}
+    }
+</style>
+
+<!-- NAVBAR -->
+<nav class="lx-nav" th:replace="~{fragments/layout :: navbar(0)}">
+    <a href="#" class="lx-logo">KALAIGHAR</a>
+    <div class="lx-nav-right">
+        <a href="/admin/artworks" class="lx-back"><i class="fas fa-arrow-left"></i> Gallery</a>
+        <span class="lx-badge">Admin</span>
+    </div>
+</nav>
+
+<!-- ambient blobs -->
+<div class="lx-blob lx-blob-1"></div>
+<div class="lx-blob lx-blob-2"></div>
+
+<!-- PAGE -->
+<!--<main class="lx-page">-->
+<!--    <div class="lx-card">-->
+
+<!--        &lt;!&ndash; ══ IMAGE SECTION ══ &ndash;&gt;-->
+<!--        <div class="lx-img-area" id="lxImgArea">-->
+<!--            <input type="file" id="lxFileInput" name="imageFile" accept="image/*" required>-->
+
+<!--            &lt;!&ndash; corners &ndash;&gt;-->
+<!--            <div class="lx-corner lx-corner-tl"></div>-->
+<!--            <div class="lx-corner lx-corner-tr"></div>-->
+<!--            <div class="lx-corner lx-corner-bl"></div>-->
+<!--            <div class="lx-corner lx-corner-br"></div>-->
+
+<!--            <div id="lx-img-preview"></div>-->
+<!--            <div class="lx-img-grad"></div>-->
+
+<!--            <div class="lx-upload-prompt" id="lxPrompt">-->
+<!--                <div class="lx-upload-icon"><i class="fas fa-image"></i></div>-->
+<!--                <h3>Click to select artwork</h3>-->
+<!--                <p>PNG · JPG · WEBP &nbsp;·&nbsp; drag &amp; drop supported</p>-->
+<!--            </div>-->
+
+<!--            <div class="lx-img-meta" id="lxMeta">-->
+<!--                <div class="lx-img-meta-name" id="lxMetaName">—</div>-->
+<!--                <div class="lx-img-meta-size" id="lxMetaSize">—</div>-->
+<!--            </div>-->
+
+<!--            <button type="button" class="lx-change-btn" id="lxChangeBtn"-->
+<!--                    onclick="document.getElementById('lxFileInput').click();event.stopPropagation();">-->
+<!--                <i class="fas fa-rotate" style="font-size:9px;"></i> Change-->
+<!--            </button>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; ══ FORM SECTION ══ &ndash;&gt;-->
+<!--        <div class="lx-form-area">-->
+
+<!--            <div class="lx-form-head">-->
+<!--                <div>-->
+<!--                    <div class="lx-label-tag"><span class="lx-dot"></span>New Artwork</div>-->
+<!--                    <h2 class="lx-form-title">Upload <em>New Masterpiece</em></h2>-->
+<!--                </div>-->
+<!--                <div class="lx-step-hint">-->
+<!--                    <span>2</span> Fill in the details-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <form th:action="@{/admin/artworks/save}"-->
+<!--                  method="post"-->
+<!--                  enctype="multipart/form-data">-->
+<!--                <div class="lx-grid">-->
+
+<!--                    <div class="lx-field lx-span2">-->
+<!--                        <label>Artwork Title</label>-->
+<!--                        <input type="text" name="title" placeholder="e.g. Divine Murugan" required>-->
+<!--                    </div>-->
+
+<!--                    <div class="lx-field">-->
+<!--                        <label>Price (₹)</label>-->
+<!--                        <div class="lx-price-wrap">-->
+<!--                            <span class="lx-rupee">₹</span>-->
+<!--                            <input type="number" name="price" placeholder="5000" min="0" required>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="lx-field">-->
+<!--                        <label>Dimensions</label>-->
+<!--                        <input type="text" name="dimensions" placeholder="e.g. 24 × 36 inches">-->
+<!--                    </div>-->
+
+<!--                    <div class="lx-field lx-span2">-->
+<!--                        <label>Category</label>-->
+<!--                        <select name="category" id="lxCatSel" style="display:none;" aria-hidden="true">-->
+<!--                            <option value="PAINTING">Painting</option>-->
+<!--                            <option value="DIGITAL">Digital Art</option>-->
+<!--                            <option value="PHOTOGRAPHY">Photography</option>-->
+<!--                            <option value="MIXED_MEDIA">Mixed Media</option>-->
+<!--                        </select>-->
+<!--                        <div class="lx-pills">-->
+<!--                            <div class="lx-pill active" data-val="PAINTING">Painting</div>-->
+<!--                            <div class="lx-pill" data-val="DIGITAL">Digital Art</div>-->
+<!--                            <div class="lx-pill" data-val="PHOTOGRAPHY">Photography</div>-->
+<!--                            <div class="lx-pill" data-val="MIXED_MEDIA">Mixed Media</div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                </div>-->
+
+<!--                &lt;!&ndash; ornamental divider &ndash;&gt;-->
+<!--                <div class="lx-orn">-->
+<!--                    <div class="lx-orn-line"></div>-->
+<!--                    <div class="lx-orn-diamond"></div>-->
+<!--                    <div class="lx-orn-line"></div>-->
+<!--                </div>-->
+
+<!--                <div class="lx-form-footer">-->
+<!--                    <div class="lx-file-status">-->
+<!--                        <i class="fas fa-image"></i>-->
+<!--                        <span id="lx-foot-name">No image selected yet</span>-->
+<!--                    </div>-->
+<!--                    <button type="submit" class="btn-primary lx-submit">-->
+<!--                        <i class="fas fa-cloud-upload-alt"></i> Publish to Gallery-->
+<!--                    </button>-->
+<!--                </div>-->
+
+<!--            </form>-->
+<!--        </div>-->
+
+<!--    </div>&lt;!&ndash; /lx-card &ndash;&gt;-->
+<!--</main>-->
+
+<!--<footer th:replace="~{fragments/layout :: footer}"></footer>-->
+
+<!--<script>-->
+<!--    (function(){-->
+<!--      var area    = document.getElementById('lxImgArea');-->
+<!--      var fileIn  = document.getElementById('lxFileInput');-->
+<!--      var preview = document.getElementById('lx-img-preview');-->
+<!--      var prompt  = document.getElementById('lxPrompt');-->
+<!--      var meta    = document.getElementById('lxMeta');-->
+<!--      var metaN   = document.getElementById('lxMetaName');-->
+<!--      var metaS   = document.getElementById('lxMetaSize');-->
+<!--      var changeB = document.getElementById('lxChangeBtn');-->
+<!--      var footN   = document.getElementById('lx-foot-name');-->
+<!--      var catSel  = document.getElementById('lxCatSel');-->
+<!--      var pills   = document.querySelectorAll('.lx-pill');-->
+<!--      var form    = document.getElementById('lxForm');-->
+
+<!--      function applyFile(file){-->
+<!--        if(!file||!file.type.startsWith('image/')) return;-->
+<!--        var url = URL.createObjectURL(file);-->
+<!--        preview.style.backgroundImage    = 'url('+url+')';-->
+<!--        preview.style.backgroundSize     = 'cover';-->
+<!--        preview.style.backgroundPosition = 'center';-->
+<!--        preview.style.opacity = '1';-->
+<!--        prompt.classList.add('hidden');-->
+<!--        changeB.classList.add('show');-->
+<!--        meta.classList.add('show');-->
+<!--        metaN.textContent = file.name;-->
+<!--        metaS.textContent = (file.size/1048576).toFixed(2)+' MB';-->
+<!--        footN.textContent = file.name;-->
+<!--        form.appendChild(fileIn);-->
+<!--        fileIn.style.display='none';-->
+<!--      }-->
+
+<!--      fileIn.addEventListener('change',function(){-->
+<!--        if(this.files&&this.files[0]) applyFile(this.files[0]);-->
+<!--      });-->
+
+<!--      area.addEventListener('dragover',function(e){e.preventDefault();this.classList.add('dragover');});-->
+<!--      area.addEventListener('dragleave',function(){this.classList.remove('dragover');});-->
+<!--      area.addEventListener('drop',function(e){-->
+<!--        e.preventDefault();this.classList.remove('dragover');-->
+<!--        var f=e.dataTransfer.files[0];-->
+<!--        if(f&&f.type.startsWith('image/')){-->
+<!--          var dt=new DataTransfer();dt.items.add(f);-->
+<!--          fileIn.files=dt.files;applyFile(f);-->
+<!--        }-->
+<!--      });-->
+
+<!--      pills.forEach(function(p){-->
+<!--        p.addEventListener('click',function(){-->
+<!--          pills.forEach(function(x){x.classList.remove('active');});-->
+<!--          this.classList.add('active');-->
+<!--          catSel.value=this.dataset.val;-->
+<!--        });-->
+<!--      });-->
+
+<!--      form.addEventListener('submit',function(e){-->
+<!--        if(!fileIn.files||!fileIn.files[0]){-->
+<!--          e.preventDefault();-->
+<!--          alert('Please select an artwork image before publishing.');-->
+<!--          area.scrollIntoView({behavior:'smooth',block:'center'});-->
+<!--        }-->
+<!--      });-->
+<!--    })();-->
+<!--</script>-->
+<main class="lx-page">
+    <div class="lx-card">
+        <form th:action="@{/admin/artworks/save}"
+              method="post"
+              enctype="multipart/form-data"
+              id="lxForm">
+
+            <div class="lx-img-area" id="lxImgArea">
+                <input type="file" id="lxFileInput" name="imageFile" accept="image/*" required>
+
+                <div class="lx-corner lx-corner-tl"></div>
+                <div class="lx-corner lx-corner-tr"></div>
+                <div class="lx-corner lx-corner-bl"></div>
+                <div class="lx-corner lx-corner-br"></div>
+
+                <div id="lx-img-preview"></div>
+                <div class="lx-img-grad"></div>
+
+                <div class="lx-upload-prompt" id="lxPrompt">
+                    <div class="lx-upload-icon"><i class="fas fa-image"></i></div>
+                    <h3>Click to select artwork</h3>
+                    <p>PNG · JPG · WEBP · drag & drop supported</p>
+                </div>
+
+                <div class="lx-img-meta" id="lxMeta">
+                    <div class="lx-img-meta-name" id="lxMetaName">—</div>
+                    <div class="lx-img-meta-size" id="lxMetaSize">—</div>
+                </div>
+
+                <button type="button" class="lx-change-btn" id="lxChangeBtn"
+                        onclick="document.getElementById('lxFileInput').click(); event.stopPropagation();">
+                    <i class="fas fa-rotate" style="font-size:9px;"></i> Change
+                </button>
+            </div>
+
+            <div class="lx-form-area">
+                <div class="lx-form-head">
+                    <div>
+                        <div class="lx-label-tag"><span class="lx-dot"></span>New Artwork</div>
+                        <h2 class="lx-form-title">Upload <em>New Masterpiece</em></h2>
+                    </div>
+                </div>
+
+                <div class="lx-grid">
+                    <div class="lx-field lx-span2">
+                        <label>Artwork Title</label>
+                        <input type="text" name="title" placeholder="e.g. Divine Murugan" required>
+                    </div>
+                    <div class="lx-field">
+                        <label>Price (₹)</label>
+                        <input type="number" name="price" placeholder="5000" min="0" required>
+                    </div>
+                    <div class="lx-field">
+                        <label>Dimensions</label>
+                        <input type="text" name="dimensions" placeholder="e.g. 24 × 36 inches">
+                    </div>
+                    <div class="lx-field lx-span2">
+                        <label>Category</label>
+                        <select name="category" id="lxCatSel" style="background:var(--card2); border:1px solid var(--border); color:white; padding:10px; border-radius:10px;">
+                            <option value="PAINTING">Painting</option>
+                            <option value="DIGITAL">Digital Art</option>
+                            <option value="PHOTOGRAPHY">Photography</option>
+                            <option value="MIXED_MEDIA">Mixed Media</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="lx-orn"><div class="lx-orn-line"></div><div class="lx-orn-diamond"></div><div class="lx-orn-line"></div></div>
+
+                <div class="lx-form-footer">
+                    <div class="lx-file-status"><i class="fas fa-image"></i><span id="lx-foot-name">No image selected</span></div>
+                    <button type="submit" class="lx-submit"><i class="fas fa-cloud-upload-alt"></i> Publish to Gallery</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>
+
+<script>
+    (function(){
+      var area = document.getElementById('lxImgArea'),
+          fileIn = document.getElementById('lxFileInput'),
+          preview = document.getElementById('lx-img-preview'),
+          prompt = document.getElementById('lxPrompt'),
+          meta = document.getElementById('lxMeta'),
+          metaN = document.getElementById('lxMetaName'),
+          metaS = document.getElementById('lxMetaSize'),
+          changeB = document.getElementById('lxChangeBtn'),
+          footN = document.getElementById('lx-foot-name');
+
+      function applyFile(file){
+        if(!file || !file.type.startsWith('image/')) return;
+        var url = URL.createObjectURL(file);
+        preview.style.backgroundImage = 'url('+url+')';
+        preview.style.opacity = '1';
+        prompt.classList.add('hidden');
+        changeB.classList.add('show');
+        meta.classList.add('show');
+        metaN.textContent = file.name;
+        metaS.textContent = (file.size/1048576).toFixed(2)+' MB';
+        footN.textContent = file.name;
+      }
+
+      fileIn.addEventListener('change', function(){
+        if(this.files && this.files[0]) applyFile(this.files[0]);
+      });
+
+      // Drag and Drop support
+      area.addEventListener('dragover', function(e){ e.preventDefault(); });
+      area.addEventListener('drop', function(e){
+        e.preventDefault();
+        var f = e.dataTransfer.files[0];
+        if(f){ fileIn.files = e.dataTransfer.files; applyFile(f); }
+      });
+    })();
+</script>
+</body>
+</html>
+

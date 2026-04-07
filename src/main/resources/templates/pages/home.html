@@ -1,0 +1,271 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org" lang="en">-->
+<!--<head th:replace="~{fragments/layout :: head('Home')}"></head>-->
+<!--<body class="bg-dark">-->
+
+<!--<nav th:replace="~{fragments/layout :: navbar(${cartCount})}"></nav>-->
+
+<!--<section class="hero">-->
+<!--    <div class="hero-content">-->
+<!--        <p class="hero-eyebrow">Original Artworks</p>-->
+<!--        <h1 class="hero-title">Art That-->
+<!--            <em>Moves You</em>-->
+<!--        </h1>-->
+<!--        <p class="hero-sub">Paintings, Photography, Digital &amp; Mixed Media — each piece tells a story waiting to find its home.</p>-->
+<!--        <div class="hero-actions">-->
+<!--            <a th:href="@{/gallery}" class="btn-primary">Explore Gallery</a>-->
+<!--            <a th:href="@{/about}" class="btn-ghost">Meet the Artist</a>-->
+<!--        </div>-->
+<!--        <div class="hero-scroll-hint">-->
+<!--            <span class="scroll-line"></span>-->
+<!--            Scroll to explore-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="hero-visual">-->
+<!--        <div class="hero-frame">-->
+<!--            <img th:src="@{/images/Murugan1.jpg}" alt="Featured Artwork" style="object-fit:cover; object-position:center;"/>-->
+<!--        </div>-->
+<!--        <div class="hero-badge">-->
+<!--            <div class="hero-badge-num">50+</div>-->
+<!--            <div class="hero-badge-label">Original Works</div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>-->
+
+<!--<section class="categories-section">-->
+<!--    <div class="section-header">-->
+<!--        <div>-->
+<!--            <p class="section-label">Collections</p>-->
+<!--            <h2 class="section-title">Browse by <em>Medium</em></h2>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="categories-grid">-->
+<!--        <a th:href="@{/gallery(category='PAINTING')}" class="cat-card">-->
+<!--            <img th:src="@{/images/paintings.png}" alt="Paintings">-->
+<!--            <div class="cat-content">-->
+<!--                <div class="cat-label">Paintings</div>-->
+<!--                <div class="cat-count">Canvas &amp; Watercolor</div>-->
+<!--                <div class="cat-arrow">→</div>-->
+<!--            </div>-->
+<!--        </a>-->
+<!--        <a th:href="@{/gallery(category='DIGITAL')}" class="cat-card">-->
+<!--            <img src="https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=400" alt="Digital Art">-->
+<!--            <div class="cat-content">-->
+<!--                <div class="cat-label">Digital Art</div>-->
+<!--                <div class="cat-count">Prints &amp; Editions</div>-->
+<!--                <div class="cat-arrow">→</div>-->
+<!--            </div>-->
+<!--        </a>-->
+<!--        <a th:href="@{/gallery(category='PHOTOGRAPHY')}" class="cat-card">-->
+<!--            <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?w=400" alt="Photography">-->
+<!--            <div class="cat-content">-->
+<!--                <div class="cat-label">Photography</div>-->
+<!--                <div class="cat-count">Fine Art Prints</div>-->
+<!--                <div class="cat-arrow">→</div>-->
+<!--            </div>-->
+<!--        </a>-->
+<!--        <a th:href="@{/gallery(category='MIXED_MEDIA')}" class="cat-card">-->
+<!--            <img src="https://images.unsplash.com/photo-1549490349-8643362247b5?w=600" alt="Mixed Media">-->
+<!--            <div class="cat-content">-->
+<!--                <div class="cat-label">Mixed Media</div>-->
+<!--                <div class="cat-count">Experimental Works</div>-->
+<!--                <div class="cat-arrow">→</div>-->
+<!--            </div>-->
+<!--        </a>-->
+<!--    </div>-->
+<!--</section>-->
+
+<!--<section class="featured-section" th:if="${session.loggedInUser != null}">-->
+<!--    <div class="section-header">-->
+<!--        <div>-->
+<!--            <p class="section-label">CURATED COLLECTION</p>-->
+<!--            <h2 class="section-title">Featured <em>Works</em></h2>-->
+<!--        </div>-->
+<!--        <a th:href="@{/gallery}" class="view-all">View Full Gallery</a>-->
+<!--    </div>-->
+<!--    <div class="artworks-grid">-->
+<!--        <div class="artwork-card" th:each="art : ${featured}">-->
+<!--            <a th:href="@{/gallery/{id}(id=${art.id})}" class="card-img-link">-->
+<!--                <img th:src="@{'/' + ${art.imagePath}}" th:alt="${art.title}">-->
+<!--            </a>-->
+<!--            <div class="card-info">-->
+<!--                <h3 class="card-title" th:text="${art.title}">Title</h3>-->
+<!--                <div class="card-bottom">-->
+<!--                    <span class="card-price">₹<span th:text="${art.price}">0</span></span>-->
+<!--                    <form th:action="@{/cart/add/{id}(id=${art.id})}" method="post">-->
+<!--                        <button type="submit" class="add-cart-btn">Add to Cart</button>-->
+<!--                    </form>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>-->
+
+<!--<section class="quote-band" th:if="${session.loggedInUser == null}">-->
+<!--    <div style="max-width: 600px; margin: 0 auto;">-->
+<!--        <i class="fas fa-lock" style="color: var(&#45;&#45;gold); font-size: 2rem; margin-bottom: 1.5rem;"></i>-->
+<!--        <h2 class="section-title">Exclusive <em>Access</em></h2>-->
+<!--        <p style="color: var(&#45;&#45;white2); margin-bottom: 2rem;">Log in to view our curated featured collection.</p>-->
+<!--        <a th:href="@{/login}" class="btn-primary">Login to View Collection</a>-->
+<!--    </div>-->
+<!--</section>-->
+
+<!--<footer th:replace="~{fragments/layout :: footer}"></footer>-->
+<!--<script th:src="@{/js/main.js}"></script>-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/layout :: head('Home')}"></head>
+<body class="bg-dark">
+
+<style>
+    @keyframes goldGlowPulse {
+        0% {
+            box-shadow: 0 0 10px rgba(200, 169, 81, 0.3);
+            border: 2px solid rgba(200, 169, 81, 0.4);
+        }
+        50% {
+            box-shadow: 0 0 35px rgba(200, 169, 81, 0.8);
+            border: 2px solid rgba(200, 169, 81, 1);
+        }
+        100% {
+            box-shadow: 0 0 10px rgba(200, 169, 81, 0.3);
+            border: 2px solid rgba(200, 169, 81, 0.4);
+        }
+    }
+
+    .hero-visual .hero-frame {
+        position: relative;
+        border-radius: 24px;
+        overflow: hidden;
+        display: block;
+        width: 100%;
+        height: 700px; /* Adjust height based on your design */
+        animation: goldGlowPulse 3s infinite ease-in-out;
+        transition: transform 0.5s ease;
+        background: #111;
+    }
+
+    .hero-visual .hero-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .hero-visual .hero-frame:hover {
+        transform: scale(1.03);
+    }
+</style>
+
+<nav th:replace="~{fragments/layout :: navbar(${cartCount})}"></nav>
+
+<section class="hero">
+    <div class="hero-content">
+        <p class="hero-eyebrow">Original Artworks</p>
+        <h1 class="hero-title">Art That <em>Moves You</em></h1>
+        <p class="hero-sub">Paintings, Photography, Digital &amp; Mixed Media — each piece tells a story waiting to find its home.</p>
+        <div class="hero-actions">
+            <a th:href="@{/gallery}" class="btn-primary">Explore Gallery</a>
+            <a th:href="@{/about}" class="btn-ghost">Meet the Artist</a>
+        </div>
+        <div class="hero-scroll-hint">
+            <span class="scroll-line"></span>
+            Scroll to explore
+        </div>
+    </div>
+
+    <div class="hero-visual">
+        <div class="hero-frame">
+            <img th:src="@{/images/Murugan1.jpg}" alt="Featured Artwork" />
+        </div>
+        <div class="hero-badge">
+            <div class="hero-badge-num">50+</div>
+            <div class="hero-badge-label">Original Works</div>
+        </div>
+    </div>
+</section>
+
+<section class="categories-section">
+    <div class="section-header">
+        <div>
+            <p class="section-label">Collections</p>
+            <h2 class="section-title">Browse by <em>Medium</em></h2>
+        </div>
+    </div>
+    <div class="categories-grid">
+        <a th:href="@{/gallery(category='PAINTING')}" class="cat-card">
+            <img th:src="@{/images/paintings.png}" alt="Paintings">
+            <div class="cat-content">
+                <div class="cat-label">Paintings</div>
+                <div class="cat-count">Canvas &amp; Watercolor</div>
+                <div class="cat-arrow">→</div>
+            </div>
+        </a>
+        <a th:href="@{/gallery(category='DIGITAL')}" class="cat-card">
+            <img src="https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=400" alt="Digital Art">
+            <div class="cat-content">
+                <div class="cat-label">Digital Art</div>
+                <div class="cat-count">Prints &amp; Editions</div>
+                <div class="cat-arrow">→</div>
+            </div>
+        </a>
+        <a th:href="@{/gallery(category='PHOTOGRAPHY')}" class="cat-card">
+            <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?w=400" alt="Photography">
+            <div class="cat-content">
+                <div class="cat-label">Photography</div>
+                <div class="cat-count">Fine Art Prints</div>
+                <div class="cat-arrow">→</div>
+            </div>
+        </a>
+        <a th:href="@{/gallery(category='MIXED_MEDIA')}" class="cat-card">
+            <img src="https://images.unsplash.com/photo-1549490349-8643362247b5?w=600" alt="Mixed Media">
+            <div class="cat-content">
+                <div class="cat-label">Mixed Media</div>
+                <div class="cat-count">Experimental Works</div>
+                <div class="cat-arrow">→</div>
+            </div>
+        </a>
+    </div>
+</section>
+
+<section class="featured-section" th:if="${session.loggedInUser != null}">
+    <div class="section-header">
+        <div>
+            <p class="section-label">CURATED COLLECTION</p>
+            <h2 class="section-title">Featured <em>Works</em></h2>
+        </div>
+        <a th:href="@{/gallery}" class="view-all">View Full Gallery</a>
+    </div>
+    <div class="artworks-grid">
+        <div class="artwork-card" th:each="art : ${featured}">
+            <a th:href="@{/gallery/{id}(id=${art.id})}" class="card-img-link">
+                <img th:src="@{'/' + ${art.imagePath}}" th:alt="${art.title}">
+            </a>
+            <div class="card-info">
+                <h3 class="card-title" th:text="${art.title}">Title</h3>
+                <div class="card-bottom">
+                    <span class="card-price">₹<span th:text="${art.price}">0</span></span>
+                    <form th:action="@{/cart/add/{id}(id=${art.id})}" method="post">
+                        <button type="submit" class="add-cart-btn">Add to Cart</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="quote-band" th:if="${session.loggedInUser == null}">
+    <div style="max-width: 600px; margin: 0 auto;">
+        <i class="fas fa-lock" style="color: #c8a951; font-size: 2rem; margin-bottom: 1.5rem;"></i>
+        <h2 class="section-title">Exclusive <em>Access</em></h2>
+        <p style="color: #8c8575; margin-bottom: 2rem;">Log in to view our curated featured collection.</p>
+        <a th:href="@{/login}" class="btn-primary">Login to View Collection</a>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>
