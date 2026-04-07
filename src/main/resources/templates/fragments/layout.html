@@ -181,6 +181,18 @@
             80%  { opacity: 0.8; }
             100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
         }
+        .admin-btn {
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    padding: 5px 10px !important;
+    color: #333 !important;
+    font-weight: bold;
+    margin-left: 10px;
+}
+.admin-btn:hover {
+    background-color: #343a40;
+    color: white !important;
+}
     </style>
 </head>
 
@@ -205,6 +217,11 @@
 
             <li th:if="${session.loggedInUser != null and session.loggedInUser.role == 'ADMIN'}">
                 <a th:href="@{/admin/dashboard}" class="nav-admin-link">
+                    <i class="fas fa-user-shield"></i> Admin
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link admin-btn" th:href="@{/admin/login}">
                     <i class="fas fa-user-shield"></i> Admin
                 </a>
             </li>

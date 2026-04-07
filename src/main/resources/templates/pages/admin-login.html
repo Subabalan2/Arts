@@ -1,34 +1,4 @@
-<!--<!DOCTYPE html>-->
-<!--<html xmlns:th="http://www.thymeleaf.org" lang="en">-->
-<!--<head th:replace="~{fragments/layout :: head('Admin Login - SSartz')}"></head>-->
-<!--<body class="bg-dark text-white">-->
 
-<!--<div class="login-container" style="max-width: 400px; margin: 150px auto; padding: 2rem; background: var(&#45;&#45;surface); border: 1px solid var(&#45;&#45;gold); border-radius: 15px;">-->
-<!--    <h2 style="text-align: center; font-family: var(&#45;&#45;serif); color: var(&#45;&#45;gold); margin-bottom: 2rem;">-->
-<!--        <i class="fas fa-user-shield"></i> Admin Access-->
-<!--    </h2>-->
-
-<!--    <form th:action="@{/admin/login}" method="post">-->
-<!--        <div class="form-group" style="margin-bottom: 1.5rem;">-->
-<!--            <label>Admin Email</label>-->
-<!--            <input type="email" name="email" required style="width: 100%; padding: 10px; background: transparent; border: 1px solid var(&#45;&#45;border); color: white;">-->
-<!--        </div>-->
-<!--        <div class="form-group" style="margin-bottom: 2rem;">-->
-<!--            <label>Security Password</label>-->
-<!--            <input type="password" name="password" required style="width: 100%; padding: 10px; background: transparent; border: 1px solid var(&#45;&#45;border); color: white;">-->
-<!--        </div>-->
-<!--        <button type="submit" class="btn-primary" style="width: 100%; background: var(&#45;&#45;gold); color: black; font-weight: bold;">-->
-<!--            AUTHORIZE LOGIN-->
-<!--        </button>-->
-<!--    </form>-->
-
-<!--    <p th:if="${error}" style="color: var(&#45;&#45;red); text-align: center; margin-top: 1rem; font-size: 0.8rem;">-->
-<!--        Access Denied! Invalid Admin Credentials.-->
-<!--    </p>-->
-<!--</div>-->
-
-<!--</body>-->
-<!--</html>-->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/layout :: head('Admin Access - SSartz')}"></head>
@@ -103,10 +73,62 @@
 
 
     @media (max-width: 992px) {
-        .admin-visual { display: none !important; }
-        body { overflow: auto; }
+        section {
+            flex-direction: column !important;
+            height: auto !important;
+            min-height: 100vh;
+        }
+
+        /* 1. Admin Visual (Security Image) - Mobile-la mela show aagum */
+        .admin-visual {
+            display: block !important;
+            flex: none !important;
+            width: 100% !important;
+            height: 250px !important;
+            order: 1; /* Security image first */
+            border-bottom: 1px solid rgba(200, 169, 81, 0.2);
+        }
+
+        .admin-visual img {
+            height: 100% !important;
+            width: 100% !important;
+            object-fit: cover !important;
+        }
+
+        /* Admin text and Scanning line adjustments for mobile */
+        .admin-visual div[style*="bottom: 80px"] {
+            bottom: 20px !important;
+            left: 20px !important;
+            right: 20px !important;
+        }
+
+        .admin-visual h3 {
+            font-size: 1.6rem !important;
+        }
+
+        .admin-visual p {
+            display: none; /* Hide description on mobile */
+        }
+
+        /* Scanning animation line-ah mobile-la konjam subtle-ah maathuróm */
+        div[style*="animation: scanMove"] {
+            opacity: 0.5;
+        }
+
+        /* 2. Admin Form Section - Mobile-la keezha varum */
+        div[style*="flex: 1"] {
+            flex: none !important;
+            width: 100% !important;
+            padding: 30px 20px !important;
+            order: 2; /* Form second */
+            background: #050507 !important;
+            border-right: none !important;
+        }
+
+        body { overflow: auto !important; }
     }
 
+    /* Standard Interactive Effects */
     input:focus {
         border-color: #c8a951 !important;
         background: #111116 !important;
