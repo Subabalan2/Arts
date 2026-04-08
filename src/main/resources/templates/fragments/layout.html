@@ -56,7 +56,8 @@
 <!-- ═══════════════════════════════════════
      NAVBAR FRAGMENT — unchanged from original
      ═══════════════════════════════════════ -->
-<nav th:fragment="navbar(cartCount)" class="navbar" id="mainNavbar" style="z-index: 10001 !important;">
+<nav th:fragment="navbar(cartCount)" class="navbar" id="mainNavbar" style="background-color: #000000 !important; z-index: 1000;">
+<!--<nav th:fragment="navbar(cartCount)" class="navbar" id="mainNavbar" style="z-index: 10001 !important;">-->
     <div id="sparkle-overlay"></div>
 
     <div class="nav-container">
@@ -72,7 +73,7 @@
 
             <li th:if="${session.loggedInUser != null and session.loggedInUser.role == 'ADMIN'}">
                 <a th:href="@{/admin/dashboard}" class="nav-admin-link">
-                    <i class="fas fa-user-shield"></i> Admin
+                    <i class="fas fa-user-shield"></i> Dashboard
                 </a>
             </li>
 
