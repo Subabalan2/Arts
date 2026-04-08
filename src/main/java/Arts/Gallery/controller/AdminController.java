@@ -25,35 +25,52 @@ public class AdminController {
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
 
-    // 1. ADMIN LOGIN PAGE
+    // 1. ADMIN LOGIN PAGE - Lowercase path for Render/Linux
     @GetMapping("/login")
     public String adminLoginPage() {
         return "pages/admin-login";
     }
 
-    // 2. ADMIN LOGIN LOGIC
+    // 2. UPDATED ADMIN LOGIN LOGIC (Database + Master Admin Backup)
     @PostMapping("/login")
     public String handleAdminLogin(@RequestParam String email,
                                    @RequestParam String password,
                                    HttpSession session,
                                    Model model) {
-        Optional<User> adminOpt = userRepository.findByEmail(email);
+
+        Optional<User> adminOpt = userRepository.findByEmail(email.trim());
+
         if (adminOpt.isPresent()) {
             User admin = adminOpt.get();
+            // DB check for ADMIN role
             if (admin.getPassword().equals(password) && "ADMIN".equals(admin.getRole())) {
                 session.setAttribute("loggedInUser", admin);
                 return "redirect:/admin/dashboard";
             }
         }
+
+        // Master Admin (Safe Backup)
+        if ("sivabalan@gmail.com".equals(email) && "admin@123".equals(password)) {
+            User master = new User();
+            master.setName("Master Admin");
+            master.setEmail(email);
+            master.setRole("ADMIN");
+            session.setAttribute("loggedInUser", master);
+            return "redirect:/admin/dashboard";
+        }
+
         model.addAttribute("error", true);
         return "pages/admin-login";
     }
 
-    // 3. ADMIN DASHBOARD
+    // 3. ADMIN DASHBOARD - Security Check Added
     @GetMapping("/dashboard")
     public String adminDashboard(Model model, HttpSession session) {
         User user = (User) session.getAttribute("loggedInUser");
-        if (user == null || !"ADMIN".equals(user.getRole())) return "redirect:/admin/login";
+        // Role check pannala-na yaaru venaalum dashboard URL poga mudiyum, adhan indha check:
+        if (user == null || !"ADMIN".equals(user.getRole())) {
+            return "redirect:/admin/login";
+        }
 
         model.addAttribute("artworks", artworkService.getAllAvailable());
         model.addAttribute("orders", orderRepository.findAll());
@@ -70,7 +87,7 @@ public class AdminController {
         return "pages/admin-add-art";
     }
 
-    // 5. SAVE ARTWORK WITH IMAGE UPLOAD (Action Fix)
+    // 5. SAVE ARTWORK WITH IMAGE UPLOAD (As per your request, path not changed)
     @PostMapping("/artworks/save")
     public String saveArtwork(@ModelAttribute Artwork artwork,
                               @RequestParam("imageFile") MultipartFile file,
@@ -81,6 +98,7 @@ public class AdminController {
         try {
             if (!file.isEmpty()) {
                 String rootPath = System.getProperty("user.dir");
+                // API Path remains same as your original code
                 Path uploadPath = Paths.get(rootPath, "src", "main", "resources", "static", "images");
 
                 if (!Files.exists(uploadPath)) Files.createDirectories(uploadPath);
@@ -105,18 +123,17 @@ public class AdminController {
         session.invalidate();
         return "redirect:/admin/login";
     }
+
     @PostMapping("/delete/{id}")
     public String deleteArtwork(@PathVariable Long id, HttpSession session) {
-        // Security Check: Login pannama delete panna koodathu
         User user = (User) session.getAttribute("loggedInUser");
         if (user == null || !"ADMIN".equals(user.getRole())) {
             return "redirect:/admin/login";
         }
 
         try {
-            // Service moolama delete pannuvom
             artworkService.deleteById(id);
-            System.out.println("Artwork ID: " + id + " deleted successfully!");
+            System.out.println("Artwork ID: " + id + " deleted!");
         } catch (Exception e) {
             e.printStackTrace();
             return "redirect:/admin/dashboard?error=delete_failed";

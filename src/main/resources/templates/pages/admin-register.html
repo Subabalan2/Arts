@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/layout :: head('Admin Registration - SSartz')}"></head>
+<body class="bg-dark text-white" style="overflow: auto;">
+
+<nav th:replace="~{fragments/layout :: navbar(0)}"></nav>
+
+<section style="display: flex; min-height: 100vh; width: 100vw; align-items: stretch; flex-direction: row-reverse;">
+
+    <div style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 60px 40px; background: #07070a; z-index: 2;">
+
+        <div style="width: 100%; max-width: 400px;">
+            <div style="margin-bottom: 30px; text-align: left;">
+                <p style="letter-spacing: 3px; color: #c8a951; font-size: 0.7rem; font-weight: bold; margin-bottom: 5px;">ADMINISTRATION ONLY</p>
+                <h2 style="font-family: 'Playfair Display', serif; font-size: 2.4rem; line-height: 1.1; color: #f0ead8;">Create <em style="color: #c8a951; font-style: italic;">Admin</em></h2>
+            </div>
+
+            <div th:if="${keyError}" style="color: #ff4d4d; background: rgba(255,77,77,0.1); padding: 10px; border-radius: 8px; margin-bottom: 20px; font-size: 0.85rem; border: 1px solid rgba(255,77,77,0.2);">
+                <i class="fas fa-exclamation-triangle"></i> <span th:text="${keyError}">Invalid Key</span>
+            </div>
+            <div th:if="${emailError}" style="color: #ff4d4d; background: rgba(255,77,77,0.1); padding: 10px; border-radius: 8px; margin-bottom: 20px; font-size: 0.85rem; border: 1px solid rgba(255,77,77,0.2);">
+                <i class="fas fa-user-times"></i> <span th:text="${emailError}">Email Exists</span>
+            </div>
+
+            <form th:action="@{/admin/register-secret}" th:object="${user}" method="post" style="display: flex; flex-direction: column; gap: 15px;">
+
+                <div style="display: flex; flex-direction: column; gap: 5px;">
+                    <label style="color: #8c8575; font-size: 0.65rem; letter-spacing: 1.2px; text-transform: uppercase; font-weight: 600;">Full Name</label>
+                    <input type="text" th:field="*{name}" placeholder="Admin Full Name" required
+                           style="width: 100%; background: #121217; border: 1px solid rgba(200, 169, 81, 0.2); padding: 12px 16px; border-radius: 10px; color: #f0ead8; outline: none;">
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 5px;">
+                    <label style="color: #8c8575; font-size: 0.65rem; letter-spacing: 1.2px; text-transform: uppercase; font-weight: 600;">Admin Email</label>
+                    <input type="email" th:field="*{email}" placeholder="admin@ssartz.com" required
+                           style="width: 100%; background: #121217; border: 1px solid rgba(200, 169, 81, 0.2); padding: 12px 16px; border-radius: 10px; color: #f0ead8; outline: none;">
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 5px;">
+                    <label style="color: #8c8575; font-size: 0.65rem; letter-spacing: 1.2px; text-transform: uppercase; font-weight: 600;">Create Password</label>
+                    <input type="password" th:field="*{password}" placeholder="••••••••" required
+                           style="width: 100%; background: #121217; border: 1px solid rgba(200, 169, 81, 0.2); padding: 12px 16px; border-radius: 10px; color: #f0ead8; outline: none;">
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 5px; margin-top: 10px; border-top: 1px solid rgba(200, 169, 81, 0.1); padding-top: 15px;">
+                    <label style="color: #c8a951; font-size: 0.65rem; letter-spacing: 1.2px; text-transform: uppercase; font-weight: 800;">Secret Authorization Key</label>
+                    <input type="password" name="secretKey" placeholder="Enter SSartz Secret Key" required
+                           style="width: 100%; background: #1a1a24; border: 2px solid #c8a951; padding: 12px 16px; border-radius: 10px; color: #f0ead8; outline: none;">
+                </div>
+
+                <button type="submit" class="btn-primary" style="margin-top: 10px; padding: 15px; border-radius: 10px; font-weight: 700; letter-spacing: 1.5px; cursor: pointer; border: none; background: #c8a951; color: #05050a; font-size: 0.85rem; text-transform: uppercase;">
+                    REGISTER AS ADMIN
+                </button>
+            </form>
+
+            <p style="margin-top: 25px; text-align: center; color: #45433d; font-size: 0.8rem;">
+                Already an Admin? <a th:href="@{/admin/login}" style="color: #c8a951; text-decoration: none; font-weight: 600; margin-left: 5px;">Login here</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="admin-visual" style="flex: 1.2; position: relative; background: #0e0e12; overflow: hidden;">
+        <img th:src="@{/images/radha.jpeg}" alt="Admin Registration"
+             style="width: 100%; height: 100%; object-fit: cover; filter: brightness(0.3) grayscale(0.5);">
+        <div style="position: absolute; inset: 0; background: linear-gradient(to left, #07070a 0%, transparent 50%);"></div>
+        <div style="position: absolute; bottom: 60px; left: 60px; right: 40px; z-index: 5;">
+            <h3 style="font-family: 'Playfair Display', serif; font-size: 2.2rem; color: #f0ead8; margin-bottom: 10px;">
+                Secure <br> <em style="color: #c8a951;">Management</em>
+            </h3>
+            <p style="color: rgba(240,234,216,0.4); font-size: 0.9rem; max-width: 350px;">
+                Only authorized personnel can create an administrative account for the SSartz Gallery management portal.
+            </p>
+        </div>
+    </div>
+
+</section>
+
+<style>
+    @media (max-width: 992px) {
+        section { flex-direction: column !important; }
+        .admin-visual { height: 250px !important; flex: none !important; }
+        .admin-visual p { display: none; }
+        body { overflow: auto !important; }
+    }
+    input:focus { border-color: #f0ead8 !important; box-shadow: 0 0 10px rgba(200, 169, 81, 0.2); }
+</style>
+
+</body>
+</html>

@@ -1,150 +1,4 @@
-<!--<!DOCTYPE html>-->
-<!--<html xmlns:th="http://www.thymeleaf.org" lang="en">-->
-<!--<head th:fragment="head(title)">-->
-<!--    <meta charset="UTF-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<!--    <title th:text="${title} + ' | SSartz Gallery'">SSartz Gallery</title>-->
-<!--    <link rel="preconnect" href="https://fonts.googleapis.com">-->
-<!--    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">-->
-<!--    <link rel="stylesheet" th:href="@{/css/main.css}">-->
-<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">-->
 
-<!--    <style>-->
-<!--        /* ✨ CUSTOM THEE PORI (SPARKLES) CSS ✨ */-->
-<!--        #sparkle-overlay {-->
-<!--            position: fixed;-->
-<!--            top: 0; left: 0;-->
-<!--            width: 100%; height: 100%;-->
-<!--            pointer-events: none; /* Allows clicking links behind sparkles */-->
-<!--            z-index: 9999;-->
-<!--            overflow: hidden;-->
-<!--            background: transparent !important;-->
-<!--        }-->
-
-<!--        .sparkle-particle {-->
-<!--            position: absolute;-->
-<!--            background: radial-gradient(circle, #f5e0a0 0%, #c9a84c 100%);-->
-<!--            border-radius: 50%;-->
-<!--            opacity: 0;-->
-<!--            box-shadow: 0 0 10px #c9a84c;-->
-<!--            animation: spark-rise linear infinite;-->
-<!--        }-->
-
-<!--        @keyframes spark-rise {-->
-<!--            0% { transform: translateY(110vh) scale(0); opacity: 0; }-->
-<!--            20% { opacity: 1; }-->
-<!--            80% { opacity: 0.8; }-->
-<!--            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }-->
-<!--        }-->
-<!--    </style>-->
-<!--</head>-->
-
-<!--<body>-->
-
-<!--<nav th:fragment="navbar(cartCount)" class="navbar" id="mainNavbar">-->
-<!--    <div id="sparkle-overlay"></div>-->
-
-<!--    <div class="nav-container">-->
-<!--        <a th:href="@{/}" class="nav-logo">-->
-<!--            <span class="logo-s">S</span>Sartz<span class="logo-sub">Gallery</span>-->
-<!--        </a>-->
-
-<!--        <ul class="nav-links" id="navLinks">-->
-<!--            <li><a th:href="@{/}" th:classappend="${currentPage == 'home'} ? 'active'">Home</a></li>-->
-<!--            <li><a th:href="@{/gallery}" th:classappend="${currentPage == 'gallery'} ? 'active'">Gallery</a></li>-->
-<!--            <li><a th:href="@{/about}" th:classappend="${currentPage == 'about'} ? 'active'">About</a></li>-->
-<!--            <li><a th:href="@{/contact}" th:classappend="${currentPage == 'contact'} ? 'active'">Contact</a></li>-->
-
-<!--            <li th:if="${session.loggedInUser != null and session.loggedInUser.role == 'ADMIN'}">-->
-<!--                <a th:href="@{/admin/dashboard}" class="nav-admin-link"><i class="fas fa-user-shield"></i> Admin</a>-->
-<!--            </li>-->
-
-<!--            <th:block th:if="${session.loggedInUser == null}">-->
-<!--                <li><a th:href="@{/login}">Login</a></li>-->
-<!--                <li><a th:href="@{/register}" class="nav-join-btn">Join Free</a></li>-->
-<!--            </th:block>-->
-
-<!--            <th:block th:if="${session.loggedInUser != null}">-->
-<!--                <li class="nav-user-greeting">-->
-<!--                    <a th:href="@{/profile}" style="display: flex; align-items: center; gap: 8px; text-decoration: none;">-->
-<!--                        <i class="fas fa-user-circle" style="color: var(&#45;&#45;gold);"></i>-->
-<!--                        <span>Hi, <span th:text="${session.loggedInUser.name}" style="color: var(&#45;&#45;gold); font-weight: 600;">User</span></span>-->
-<!--                    </a>-->
-<!--                </li>-->
-<!--                <li><a th:href="@{/logout}" class="nav-logout-link" style="margin-left: 10px;">Logout</a></li>-->
-<!--            </th:block>-->
-<!--        </ul>-->
-
-<!--        <a th:href="@{/cart}" class="cart-btn">-->
-<!--            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">-->
-<!--                <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>-->
-<!--            </svg>-->
-<!--            <span class="cart-count" th:text="${cartCount}" th:if="${cartCount != null and cartCount > 0}">0</span>-->
-<!--        </a>-->
-
-<!--        <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>-->
-<!--    </div>-->
-<!--</nav>-->
-
-<!--<th:block th:fragment="footer">-->
-<!--    <div class="marquee-strip">-->
-<!--        <div class="marquee-inner">-->
-<!--            <span>✦ SSartz Gallery</span><span>✦ Handcrafted Stories</span><span>✦ Free Shipping</span>-->
-<!--            <span>✦ SSartz Gallery</span><span>✦ Handcrafted Stories</span><span>✦ Free Shipping</span>-->
-<!--        </div>-->
-<!--    </div>-->
-
-<!--    <footer class="footer">-->
-<!--        <div class="footer-inner">-->
-<!--            <div class="footer-bottom">-->
-<!--                <p class="footer-copy">&copy; 2026 <strong>SSartz Gallery</strong>. All rights reserved.</p>-->
-<!--                <p class="footer-made">Made with <span style="color:var(&#45;&#45;gold);">♥</span> in Chennai</p>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </footer>-->
-
-<!--    <script>-->
-<!--        (function() {-->
-<!--            /* 1. Navbar Scroll FX */-->
-<!--            const nav = document.getElementById('mainNavbar');-->
-<!--            window.addEventListener('scroll', () => {-->
-<!--                if (window.scrollY > 60) nav.classList.add('scrolled');-->
-<!--                else nav.classList.remove('scrolled');-->
-<!--            });-->
-
-<!--            /* 2. Sparkle Creation Logic (No Library Needed) */-->
-<!--            const container = document.getElementById('sparkle-overlay');-->
-<!--            const particleCount = 40;-->
-
-<!--            function createParticle() {-->
-<!--                const particle = document.createElement('div');-->
-<!--                particle.classList.add('sparkle-particle');-->
-
-<!--                const size = Math.random() * 3 + 1 + 'px';-->
-<!--                const left = Math.random() * 100 + '%';-->
-<!--                const duration = Math.random() * 5 + 4 + 's';-->
-<!--                const delay = Math.random() * 5 + 's';-->
-
-<!--                particle.style.width = size;-->
-<!--                particle.style.height = size;-->
-<!--                particle.style.left = left;-->
-<!--                particle.style.animationDuration = duration;-->
-<!--                particle.style.animationDelay = delay;-->
-
-<!--                container.appendChild(particle);-->
-<!--            }-->
-
-<!--            if (container) {-->
-<!--                for (let i = 0; i < particleCount; i++) {-->
-<!--                    createParticle();-->
-<!--                }-->
-<!--            }-->
-<!--        })();-->
-<!--    </script>-->
-<!--</th:block>-->
-
-<!--</body>-->
-<!--</html>-->
 
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
@@ -155,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/mobile-fixes.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
@@ -201,7 +56,7 @@
 <!-- ═══════════════════════════════════════
      NAVBAR FRAGMENT — unchanged from original
      ═══════════════════════════════════════ -->
-<nav th:fragment="navbar(cartCount)" class="navbar" id="mainNavbar">
+<nav th:fragment="navbar(cartCount)" class="navbar" id="mainNavbar" style="z-index: 10001 !important;">
     <div id="sparkle-overlay"></div>
 
     <div class="nav-container">
@@ -220,11 +75,7 @@
                     <i class="fas fa-user-shield"></i> Admin
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link admin-btn" th:href="@{/admin/login}">
-                    <i class="fas fa-user-shield"></i> Admin
-                </a>
-            </li>
+
 
             <th:block th:if="${session.loggedInUser == null}">
                 <li><a th:href="@{/login}">Login</a></li>
@@ -477,7 +328,11 @@
                     <a href="#">Refund Policy</a>
                 </div>
                 <p class="sf-made">
-                    Made with <span style="color:var(--gold);">♥</span> in Chennai
+                    Made with <span style="color:var(--gold);">♥</span> in Chennai |
+                    <a th:href="@{/admin/login}"
+                       style="color:#45433d;text-decoration:none;font-size:0.7rem;">
+                        Staff Portal
+                    </a>
                 </p>
             </div>
 
@@ -498,9 +353,17 @@
             const hamburger = document.getElementById('hamburger');
             const navLinks  = document.getElementById('navLinks');
             if (hamburger && navLinks) {
-                hamburger.addEventListener('click', () => {
-                    hamburger.classList.toggle('active');
-                    navLinks.classList.toggle('open');
+                hamburger.onclick = function(e) {
+                e.preventDefault(); // Default action block panna
+                hamburger.classList.toggle('active');
+                navLinks.classList.toggle('open');
+            };
+}
+
+            const nav = document.getElementById('mainNavbar');
+            if (nav) {
+                window.addEventListener('scroll', () => {
+                nav.classList.toggle('scrolled', window.scrollY > 60);
                 });
             }
 

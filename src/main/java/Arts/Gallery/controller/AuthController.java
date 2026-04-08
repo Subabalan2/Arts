@@ -23,54 +23,69 @@ public class AuthController {
         return "pages/login";
     }
 
+    // Normal User Login
     @PostMapping("/login")
     public String login(@RequestParam String username,
                         @RequestParam String password,
                         HttpSession session,
                         Model model) {
-
-        Optional<User> userOpt = userRepository.findByEmail(username);
-
+        Optional<User> userOpt = userRepository.findByEmail(username.trim());
         if (userOpt.isPresent()) {
             User user = userOpt.get();
             if (user.getPassword().equals(password)) {
                 session.setAttribute("loggedInUser", user);
-                if ("ADMIN".equals(user.getRole())) {
-                    return "redirect:/admin/dashboard";
-                }
-                return "redirect:/gallery";
+                return "ADMIN".equals(user.getRole()) ? "redirect:/admin/dashboard" : "redirect:/gallery";
             }
         }
-
         model.addAttribute("error", true);
         return "pages/login";
     }
 
-    // FIX 1: Indha method-la 'Model' add panni 'new User()' anuppanum
     @GetMapping("/register")
     public String registerPage(Model model) {
         model.addAttribute("user", new User());
         return "pages/register";
     }
 
-    // FIX 2: Path-ah HTML-ku thagundha maari '/register' nu maathittaen
     @PostMapping("/register")
     public String register(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
-
-        // Validation errors (Email format, Password size etc.)
-        if (result.hasErrors()) {
-            return "pages/register";
-        }
-
-        // Duplicate Email Check
+        if (result.hasErrors()) return "pages/register";
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             model.addAttribute("emailError", "Email already exists!");
             return "pages/register";
         }
-
         user.setRole("USER");
         userRepository.save(user);
         return "redirect:/login?success";
+    }
+
+    // 🔥 SECRET ADMIN REGISTRATION (Only for you)
+    // Intha path-ah yaarkittayum solladha: /admin/register-secret
+    @GetMapping("/admin/register-secret")
+    public String adminRegisterPage(Model model) {
+        model.addAttribute("user", new User());
+        return "pages/admin-register"; // Intha HTML-ah namma create pannanum
+    }
+
+    @PostMapping("/admin/register-secret")
+    public String registerAdmin(@Valid @ModelAttribute("user") User user,
+                                @RequestParam String secretKey,
+                                BindingResult result, Model model) {
+
+        // Intha key match aana thaan ADMIN role kidaikkum
+        if (!"SSARTZ@2026".equals(secretKey)) {
+            model.addAttribute("keyError", "Invalid Secret Key!");
+            return "pages/admin-register";
+        }
+
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            model.addAttribute("emailError", "Email already exists!");
+            return "pages/admin-register";
+        }
+
+        user.setRole("ADMIN"); // 🛡️ Force Admin Role
+        userRepository.save(user);
+        return "redirect:/admin/login?success";
     }
 
     @GetMapping("/logout")
