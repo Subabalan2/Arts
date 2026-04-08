@@ -7,14 +7,18 @@ import Arts.Gallery.repository.UserRepository;
 import Arts.Gallery.service.ArtworkService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.Map;
 import java.util.Optional;
+import com.cloudinary.Cloudinary;
 
 @Controller
 @RequiredArgsConstructor
@@ -87,36 +91,82 @@ public class AdminController {
         return "pages/admin-add-art";
     }
 
+    @Value("${cloudinary.cloud-name}")
+    private String cloudName;
+
+    @Value("${cloudinary.api-key}")
+    private String apiKey;
+
+    @Value("${cloudinary.api-secret}")
+    private String apiSecret;
     // 5. SAVE ARTWORK WITH IMAGE UPLOAD (As per your request, path not changed)
     @PostMapping("/artworks/save")
     public String saveArtwork(@ModelAttribute Artwork artwork,
                               @RequestParam("imageFile") MultipartFile file,
                               HttpSession session) {
+
+        // 1. Security Check (Unga logic apdiye irukku)
         User user = (User) session.getAttribute("loggedInUser");
         if (user == null || !"ADMIN".equals(user.getRole())) return "redirect:/admin/login";
 
         try {
             if (!file.isEmpty()) {
-                String rootPath = System.getProperty("user.dir");
-                // API Path remains same as your original code
-                Path uploadPath = Paths.get(rootPath, "src", "main", "resources", "static", "images");
+                // 🚩 ObjectUtils conflict varaama irukka full path use pannirukkaen
+                System.out.println("🔥 Image backend-kku vandhuduchu! Uploading...");
+                Cloudinary cloudinary = new Cloudinary(com.cloudinary.utils.ObjectUtils.asMap(
+                        "cloud_name", cloudName,
+                        "api_key", apiKey,
+                        "api_secret", apiSecret
+                ));
 
-                if (!Files.exists(uploadPath)) Files.createDirectories(uploadPath);
+                // Image upload
+                Map uploadResult = cloudinary.uploader().upload(file.getBytes(), com.cloudinary.utils.ObjectUtils.emptyMap());
 
-                String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename().replaceAll("\\s+", "_");
-                Path filePath = uploadPath.resolve(fileName);
-
-                Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-                artwork.setImagePath("images/" + fileName);
+                // URL-ah DB-la save pandrom
+                artwork.setImagePath(uploadResult.get("url").toString());
             }
+            else {
+                System.out.println("❌ Image backend-kku varave illai! File is Empty!"); // Itha add pannu
+            }
+
             artwork.setAvailable(true);
             artworkService.save(artwork);
-        } catch (IOException e) {
+
+        } catch (Exception e) {
             e.printStackTrace();
             return "redirect:/admin/artworks/add?error";
         }
         return "redirect:/admin/dashboard";
     }
+//    @PostMapping("/artworks/save")
+//    public String saveArtwork(@ModelAttribute Artwork artwork,
+//                              @RequestParam("imageFile") MultipartFile file,
+//                              HttpSession session) {
+//        User user = (User) session.getAttribute("loggedInUser");
+//        if (user == null || !"ADMIN".equals(user.getRole())) return "redirect:/admin/login";
+//
+//        try {
+//            if (!file.isEmpty()) {
+//                String rootPath = System.getProperty("user.dir");
+//                // API Path remains same as your original code
+//                Path uploadPath = Paths.get(rootPath, "src", "main", "resources", "static", "images");
+//
+//                if (!Files.exists(uploadPath)) Files.createDirectories(uploadPath);
+//
+//                String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename().replaceAll("\\s+", "_");
+//                Path filePath = uploadPath.resolve(fileName);
+//
+//                Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+//                artwork.setImagePath("images/" + fileName);
+//            }
+//            artwork.setAvailable(true);
+//            artworkService.save(artwork);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return "redirect:/admin/artworks/add?error";
+//        }
+//        return "redirect:/admin/dashboard";
+//    }
 
     @GetMapping("/logout")
     public String adminLogout(HttpSession session) {

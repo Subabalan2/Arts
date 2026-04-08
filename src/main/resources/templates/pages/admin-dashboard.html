@@ -45,7 +45,7 @@
       <tbody>
       <tr th:each="art : ${artworks}">
         <td>
-          <img th:src="@{'/' + ${art.imagePath}}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 5px; border: 1px solid var(--border);">
+          <img th:src="${art.imagePath}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 5px; border: 1px solid var(--border);">
         </td>
         <td th:text="${art.title}" style="font-weight: 500;">Artwork Title</td>
         <td th:text="'₹' + ${art.price}" style="color: var(--gold); font-weight: bold;">₹0.00</td>

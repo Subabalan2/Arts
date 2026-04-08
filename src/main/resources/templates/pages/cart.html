@@ -34,7 +34,7 @@
             <tr th:each="item : ${cartItems}">
                 <td>
                     <div class="cart-item-img">
-                        <img th:src="@{'/' + ${item.imageUrl}}" th:alt="${item.title}">
+                        <img th:src="${item.imageUrl}" th:alt="${item.title}">
                     </div>
                 </td>
                 <td>

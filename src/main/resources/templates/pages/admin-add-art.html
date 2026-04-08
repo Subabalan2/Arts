@@ -617,10 +617,7 @@
 <!--</script>-->
 <main class="lx-page">
     <div class="lx-card">
-        <form th:action="@{/admin/artworks/save}"
-              method="post"
-              enctype="multipart/form-data"
-              id="lxForm">
+        <form th:action="@{/admin/artworks/save}" method="post" enctype="multipart/form-data">
 
             <div class="lx-img-area" id="lxImgArea">
                 <input type="file" id="lxFileInput" name="imageFile" accept="image/*" required>

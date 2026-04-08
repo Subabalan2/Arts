@@ -46,7 +46,7 @@
     <div class="artworks-grid gallery-grid" th:if="${!artworks.isEmpty()}">
         <div class="artwork-card" th:each="art : ${artworks}">
             <a th:href="@{/gallery/{id}(id=${art.id})}" class="card-img-link">
-                <img th:src="@{'/' + ${art.imagePath}}" alt="Artwork">
+                <img th:src="${art.imagePath}" alt="Artwork">
                 <div class="card-overlay"><span>View Details</span></div>
             </a>
             <div class="card-info">

@@ -241,7 +241,7 @@
     <div class="artworks-grid">
         <div class="artwork-card" th:each="art : ${featured}">
             <a th:href="@{/gallery/{id}(id=${art.id})}" class="card-img-link">
-                <img th:src="@{'/' + ${art.imagePath}}" th:alt="${art.title}">
+                <img th:src="${art.imagePath}"  th:alt="${art.title}">
             </a>
             <div class="card-info">
                 <h3 class="card-title" th:text="${art.title}">Title</h3>
