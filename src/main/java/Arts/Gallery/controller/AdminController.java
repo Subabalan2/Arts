@@ -141,4 +141,56 @@ public class AdminController {
 
         return "redirect:/admin/dashboard?deleted";
     }
+    // 6. SHOW EDIT FORM (Idhu unga code-la illa, adhaan 404 varudhu)
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable Long id, Model model, HttpSession session) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if (user == null || !"ADMIN".equals(user.getRole())) {
+            return "redirect:/admin/login";
+        }
+
+        // Database-la irundhu antha artwork-ah edukkurom
+        Artwork artwork = artworkService.getById(id);
+        if (artwork == null) {
+            return "redirect:/admin/dashboard?error=notfound";
+        }
+
+        model.addAttribute("artwork", artwork);
+        return "pages/admin-edit-art"; // Inga unga HTML file name correct-ah irukanum
+    }
+
+    // 7. HANDLE UPDATE ACTION
+    @PostMapping("/update/{id}")
+    public String updateArtwork(@PathVariable Long id,
+                                @ModelAttribute Artwork artwork,
+                                @RequestParam("imageFile") MultipartFile file,
+                                HttpSession session) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if (user == null || !"ADMIN".equals(user.getRole())) return "redirect:/admin/login";
+
+        try {
+            Artwork existingArtwork = artworkService.getById(id);
+
+            // Artwork basic details update
+            existingArtwork.setTitle(artwork.getTitle());
+            existingArtwork.setPrice(artwork.getPrice());
+            existingArtwork.setDescription(artwork.getDescription());
+
+            // Pudhu image upload panna mattum path-ah mathuvom
+            if (!file.isEmpty()) {
+                String rootPath = System.getProperty("user.dir");
+                Path uploadPath = Paths.get(rootPath, "src", "main", "resources", "static", "images");
+                String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename().replaceAll("\\s+", "_");
+                Path filePath = uploadPath.resolve(fileName);
+                Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+                existingArtwork.setImagePath("images/" + fileName);
+            }
+
+            artworkService.save(existingArtwork);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "redirect:/admin/edit/" + id + "?error";
+        }
+        return "redirect:/admin/dashboard?updated";
+    }
 }
