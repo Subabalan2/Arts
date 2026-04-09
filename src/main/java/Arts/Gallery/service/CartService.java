@@ -34,18 +34,26 @@ public class CartService {
 
     public void addToCart(Long artworkId, HttpSession session) {
         List<CartItem> cart = getCart(session);
+
+        // 🚩 'getArtworkId()' use பண்ணி filter பண்ணுங்க (CartItem-ல இருக்கிற variable name-க்கு ஏத்த மாதிரி)
         Optional<CartItem> existing = cart.stream()
-                .filter(i -> i.getArtworkId().equals(artworkId))
+                .filter(i -> i.getArtworkId() != null && i.getArtworkId().equals(artworkId))
                 .findFirst();
 
         if (existing.isPresent()) {
             existing.get().setQuantity(existing.get().getQuantity() + 1);
         } else {
             artworkRepository.findById(artworkId).ifPresent(art -> {
+                // 1. Constructor வழியா பேசிக் டீடைல்ஸ் செட் பண்றோம்
                 CartItem item = new CartItem(
                         art.getId(), art.getTitle(),
                         art.getImagePath(), art.getPrice(), 1
                 );
+
+                // 🚩 2. இதுதான் மிக முக்கியம்: முழு Artwork ஆப்ஜெக்ட்டையும் செட் பண்ணுங்க!
+                item.setArtwork(art);
+                item.setArtworkId(art.getId()); // ID-யும் தனியா இருந்தா செட் பண்ணிடுங்க
+
                 cart.add(item);
             });
         }

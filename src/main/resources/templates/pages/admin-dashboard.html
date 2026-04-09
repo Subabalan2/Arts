@@ -1,122 +1,1506 @@
+
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org" lang="en">-->
+<!--<head th:replace="~{fragments/layout :: head('Admin Dashboard')}"></head>-->
+
+<!--<style>-->
+<!--  /* ── Side Drawer ── */-->
+<!--  .od-overlay {-->
+<!--    position: fixed; inset: 0;-->
+<!--    background: rgba(0,0,0,0.65);-->
+<!--    backdrop-filter: blur(4px);-->
+<!--    z-index: 900;-->
+<!--    opacity: 0; pointer-events: none;-->
+<!--    transition: opacity 0.35s ease;-->
+<!--  }-->
+<!--  .od-overlay.open { opacity: 1; pointer-events: all; }-->
+
+<!--  .od-drawer {-->
+<!--    position: fixed; top: 0; right: 0; bottom: 0;-->
+<!--    width: 420px; max-width: 100vw;-->
+<!--    background: var(&#45;&#45;bg2);-->
+<!--    border-left: 1px solid var(&#45;&#45;border-gold);-->
+<!--    z-index: 901;-->
+<!--    transform: translateX(100%);-->
+<!--    transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);-->
+<!--    display: flex; flex-direction: column;-->
+<!--    overflow: hidden;-->
+<!--  }-->
+<!--  .od-drawer.open { transform: translateX(0); }-->
+
+<!--  /* Drawer header */-->
+<!--  .od-header {-->
+<!--    padding: 1.4rem 1.6rem;-->
+<!--    border-bottom: 1px solid var(&#45;&#45;border);-->
+<!--    display: flex; align-items: center; justify-content: space-between;-->
+<!--    flex-shrink: 0;-->
+<!--    background: var(&#45;&#45;surface);-->
+<!--  }-->
+<!--  .od-header-left { display: flex; flex-direction: column; gap: 2px; }-->
+<!--  .od-order-id {-->
+<!--    font-family: var(&#45;&#45;serif); font-size: 1.3rem; font-weight: 700;-->
+<!--    background: var(&#45;&#45;grad-gold);-->
+<!--    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;-->
+<!--  }-->
+<!--  .od-order-date { font-size: 0.7rem; color: var(&#45;&#45;muted); letter-spacing: 0.06em; }-->
+
+<!--  .od-close {-->
+<!--    width: 36px; height: 36px; border-radius: 50%;-->
+<!--    border: 1px solid var(&#45;&#45;border);-->
+<!--    background: transparent; color: var(&#45;&#45;muted);-->
+<!--    display: flex; align-items: center; justify-content: center;-->
+<!--    cursor: pointer; font-size: 1rem;-->
+<!--    transition: border-color 0.25s, color 0.25s, background 0.25s;-->
+<!--    flex-shrink: 0;-->
+<!--  }-->
+<!--  .od-close:hover { border-color: var(&#45;&#45;border-gold); color: var(&#45;&#45;gold); background: var(&#45;&#45;gold-dim); }-->
+
+<!--  /* Drawer body */-->
+<!--  .od-body {-->
+<!--    flex: 1; overflow-y: auto; padding: 1.5rem 1.6rem;-->
+<!--    display: flex; flex-direction: column; gap: 1.4rem;-->
+<!--  }-->
+<!--  .od-body::-webkit-scrollbar { width: 4px; }-->
+<!--  .od-body::-webkit-scrollbar-track { background: transparent; }-->
+<!--  .od-body::-webkit-scrollbar-thumb { background: var(&#45;&#45;border-gold); border-radius: 99px; }-->
+
+<!--  /* Artwork image card */-->
+<!--  .od-artwork {-->
+<!--    border-radius: 14px; overflow: hidden;-->
+<!--    border: 1px solid var(&#45;&#45;border);-->
+<!--    position: relative; height: 220px;-->
+<!--    background: var(&#45;&#45;surface);-->
+<!--    flex-shrink: 0;-->
+<!--  }-->
+<!--  .od-artwork img {-->
+<!--    width: 100%; height: 100%;-->
+<!--    object-fit: cover;-->
+<!--    filter: brightness(0.88) contrast(1.05);-->
+<!--    transition: transform 0.5s ease;-->
+<!--  }-->
+<!--  .od-artwork:hover img { transform: scale(1.04); }-->
+<!--  .od-artwork-label {-->
+<!--    position: absolute; bottom: 0; left: 0; right: 0;-->
+<!--    padding: 0.8rem 1rem;-->
+<!--    background: linear-gradient(to top, rgba(8,8,8,0.92), transparent);-->
+<!--    z-index: 1;-->
+<!--  }-->
+<!--  .od-artwork-title {-->
+<!--    font-family: var(&#45;&#45;serif); font-size: 1rem; font-weight: 700;-->
+<!--    color: var(&#45;&#45;white); display: block;-->
+<!--  }-->
+<!--  .od-artwork-price {-->
+<!--    font-size: 0.75rem;-->
+<!--    background: var(&#45;&#45;grad-gold);-->
+<!--    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;-->
+<!--    font-weight: 700;-->
+<!--  }-->
+
+<!--  /* Status badge */-->
+<!--  .od-status-row {-->
+<!--    display: flex; align-items: center; justify-content: space-between;-->
+<!--    padding: 0.9rem 1rem;-->
+<!--    background: var(&#45;&#45;surface); border: 1px solid var(&#45;&#45;border);-->
+<!--    border-radius: 12px;-->
+<!--  }-->
+<!--  .od-status-lbl { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(&#45;&#45;muted); }-->
+<!--  .od-status-pill {-->
+<!--    padding: 0.3rem 0.9rem; border-radius: 99px;-->
+<!--    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;-->
+<!--  }-->
+<!--  .od-status-pill.success { background: rgba(6,214,160,0.12); color: var(&#45;&#45;green); border: 1px solid rgba(6,214,160,0.3); }-->
+<!--  .od-status-pill.pending { background: rgba(201,168,76,0.12); color: var(&#45;&#45;gold); border: 1px solid var(&#45;&#45;border-gold); }-->
+<!--  .od-status-pill.failed  { background: rgba(255,77,109,0.12); color: var(&#45;&#45;red);  border: 1px solid rgba(255,77,109,0.3); }-->
+
+<!--  /* Section label */-->
+<!--  .od-section-label {-->
+<!--    font-size: 0.58rem; letter-spacing: 0.26em; text-transform: uppercase;-->
+<!--    color: var(&#45;&#45;gold); display: flex; align-items: center; gap: 7px;-->
+<!--    margin-bottom: 0.6rem;-->
+<!--  }-->
+<!--  .od-section-label::before { content:''; display:block; width:12px; height:1px; background:var(&#45;&#45;gold); }-->
+
+<!--  /* Customer info */-->
+<!--  .od-info-card {-->
+<!--    background: var(&#45;&#45;surface); border: 1px solid var(&#45;&#45;border);-->
+<!--    border-radius: 12px; overflow: hidden;-->
+<!--  }-->
+<!--  .od-info-row {-->
+<!--    display: flex; align-items: flex-start; gap: 12px;-->
+<!--    padding: 0.85rem 1rem;-->
+<!--    border-bottom: 1px solid var(&#45;&#45;border);-->
+<!--    transition: background 0.2s;-->
+<!--  }-->
+<!--  .od-info-row:last-child { border-bottom: none; }-->
+<!--  .od-info-row:hover { background: rgba(201,168,76,0.03); }-->
+<!--  .od-info-ico {-->
+<!--    width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;-->
+<!--    background: var(&#45;&#45;gold-dim); border: 1px solid var(&#45;&#45;border-gold);-->
+<!--    display: flex; align-items: center; justify-content: center;-->
+<!--    color: var(&#45;&#45;gold); font-size: 0.75rem; margin-top: 1px;-->
+<!--  }-->
+<!--  .od-info-content { flex: 1; min-width: 0; }-->
+<!--  .od-info-key { font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(&#45;&#45;muted); display: block; margin-bottom: 2px; }-->
+<!--  .od-info-val { font-size: 0.85rem; color: var(&#45;&#45;white2); line-height: 1.5; word-break: break-word; }-->
+
+<!--  /* Total row */-->
+<!--  .od-total-row {-->
+<!--    display: flex; justify-content: space-between; align-items: center;-->
+<!--    padding: 1rem 1.1rem;-->
+<!--    background: var(&#45;&#45;gold-dim); border: 1px solid var(&#45;&#45;border-gold);-->
+<!--    border-radius: 12px;-->
+<!--  }-->
+<!--  .od-total-label { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(&#45;&#45;gold); }-->
+<!--  .od-total-amt {-->
+<!--    font-family: var(&#45;&#45;serif); font-size: 1.5rem; font-weight: 900;-->
+<!--    background: var(&#45;&#45;grad-gold);-->
+<!--    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;-->
+<!--  }-->
+
+<!--  /* Drawer footer */-->
+<!--  .od-footer {-->
+<!--    padding: 1rem 1.6rem;-->
+<!--    border-top: 1px solid var(&#45;&#45;border);-->
+<!--    flex-shrink: 0;-->
+<!--    background: var(&#45;&#45;surface);-->
+<!--  }-->
+<!--  .od-footer-note {-->
+<!--    font-size: 0.65rem; color: var(&#45;&#45;muted); text-align: center;-->
+<!--    line-height: 1.6;-->
+<!--  }-->
+<!--  .od-footer-note span { color: var(&#45;&#45;gold); }-->
+
+<!--  /* Table row clickable */-->
+<!--  .order-row {-->
+<!--    cursor: pointer;-->
+<!--    transition: background 0.2s;-->
+<!--  }-->
+<!--  .order-row:hover { background: rgba(201,168,76,0.04) !important; }-->
+<!--  .order-row td:first-child { border-radius: 8px 0 0 8px; }-->
+<!--  .order-row td:last-child  { border-radius: 0 8px 8px 0; }-->
+
+<!--  .click-hint {-->
+<!--    display: inline-flex; align-items: center; gap: 5px;-->
+<!--    font-size: 0.62rem; color: var(&#45;&#45;muted); letter-spacing: 0.06em;-->
+<!--  }-->
+<!--  .click-hint i { color: var(&#45;&#45;gold); font-size: 0.7rem; }-->
+
+<!--  /* Skeleton loader */-->
+<!--  .od-skeleton {-->
+<!--    background: linear-gradient(90deg, var(&#45;&#45;surface) 25%, var(&#45;&#45;surface2) 50%, var(&#45;&#45;surface) 75%);-->
+<!--    background-size: 200% 100%;-->
+<!--    animation: odShimmer 1.4s infinite;-->
+<!--    border-radius: 8px;-->
+<!--  }-->
+<!--  @keyframes odShimmer { 0%{background-position:200% 0;} 100%{background-position:-200% 0;} }-->
+
+<!--  @media (max-width: 480px) {-->
+<!--    .od-drawer { width: 100vw; }-->
+<!--    .od-artwork { height: 180px; }-->
+<!--  }-->
+<!--</style>-->
+
+<!--<body class="bg-dark text-white">-->
+<!--<nav th:replace="~{fragments/layout :: navbar(0)}"></nav>-->
+
+<!--&lt;!&ndash; Overlay &ndash;&gt;-->
+<!--<div class="od-overlay" id="odOverlay" onclick="closeDrawer()"></div>-->
+
+<!--&lt;!&ndash; Side Drawer &ndash;&gt;-->
+<!--<div class="od-drawer" id="odDrawer">-->
+<!--  <div class="od-header">-->
+<!--    <div class="od-header-left">-->
+<!--      <span class="od-order-id" id="odOrderId">#—</span>-->
+<!--      <span class="od-order-date" id="odOrderDate">—</span>-->
+<!--    </div>-->
+<!--    <button class="od-close" onclick="closeDrawer()" aria-label="Close">-->
+<!--      <i class="fas fa-times"></i>-->
+<!--    </button>-->
+<!--  </div>-->
+
+<!--  <div class="od-body">-->
+
+<!--    &lt;!&ndash; Artwork image &ndash;&gt;-->
+<!--    <div class="od-artwork" id="odArtworkWrap">-->
+<!--      <img id="odArtworkImg" src="" alt="Artwork">-->
+<!--      <div class="od-artwork-label">-->
+<!--        <span class="od-artwork-title" id="odArtworkTitle">—</span>-->
+<!--        <span class="od-artwork-price" id="odArtworkPrice">—</span>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Status &ndash;&gt;-->
+<!--    <div class="od-status-row">-->
+<!--      <span class="od-status-lbl">Order Status</span>-->
+<!--      <span class="od-status-pill" id="odStatusPill">—</span>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Customer info &ndash;&gt;-->
+<!--    <div>-->
+<!--      <p class="od-section-label">Customer</p>-->
+<!--      <div class="od-info-card">-->
+<!--        <div class="od-info-row">-->
+<!--          <div class="od-info-ico"><i class="fas fa-user"></i></div>-->
+<!--          <div class="od-info-content">-->
+<!--            <span class="od-info-key">Name</span>-->
+<!--            <span class="od-info-val" id="odCustName">—</span>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="od-info-row">-->
+<!--          <div class="od-info-ico"><i class="fas fa-envelope"></i></div>-->
+<!--          <div class="od-info-content">-->
+<!--            <span class="od-info-key">Email</span>-->
+<!--            <span class="od-info-val" id="odCustEmail">—</span>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Address &ndash;&gt;-->
+<!--    <div>-->
+<!--      <p class="od-section-label">Shipping Address</p>-->
+<!--      <div class="od-info-card">-->
+<!--        <div class="od-info-row">-->
+<!--          <div class="od-info-ico"><i class="fas fa-map-marker-alt"></i></div>-->
+<!--          <div class="od-info-content">-->
+<!--            <span class="od-info-key">Deliver to</span>-->
+<!--            <span class="od-info-val" id="odAddress">—</span>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Total &ndash;&gt;-->
+<!--    <div class="od-total-row">-->
+<!--      <span class="od-total-label">Order Total</span>-->
+<!--      <span class="od-total-amt" id="odTotal">—</span>-->
+<!--    </div>-->
+
+<!--  </div>-->
+
+<!--  <div class="od-footer">-->
+<!--    <p class="od-footer-note">-->
+<!--      Click anywhere outside to close &nbsp;·&nbsp;-->
+<!--      Order ID: <span id="odFooterOrderId">—</span>-->
+<!--    </p>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; ─────────────────────────────────────────── &ndash;&gt;-->
+
+<!--<section class="gallery-section" style="margin-top: 100px; padding-bottom: 50px;">-->
+
+<!--  <div class="section-header" style="border-bottom: 1px solid var(&#45;&#45;gold); padding-bottom: 20px; margin-bottom: 40px;">-->
+<!--    <div>-->
+<!--      <p class="section-label" style="letter-spacing: 3px; color: var(&#45;&#45;gold);">SSARTZ CONTROL PANEL</p>-->
+<!--      <h2 class="section-title">Admin <em>Dashboard</em></h2>-->
+<!--      <div style="margin-top: 10px; display: flex; align-items: center; gap: 10px;">-->
+<!--        <i class="fas fa-user-shield" style="color: var(&#45;&#45;gold);"></i>-->
+<!--        <span style="color: var(&#45;&#45;white2); font-size: 0.9rem;">Logged in as: </span>-->
+<!--        <span th:text="${session.loggedInUser.email}" style="color: var(&#45;&#45;gold); font-weight: bold;">admin@ssartz.com</span>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div style="display: flex; gap: 15px;">-->
+<!--      <a th:href="@{/admin/artworks/add}" class="btn-primary" style="padding: 10px 25px; border-radius: 5px; font-weight: 500; text-decoration: none;">-->
+<!--        <i class="fas fa-plus"></i> Add New Art-->
+<!--      </a>-->
+<!--      <a th:href="@{/admin/logout}" style="color: var(&#45;&#45;red); text-decoration: none; align-self: center; font-size: 0.9rem; font-weight: bold;">-->
+<!--        <i class="fas fa-sign-out-alt"></i> Logout-->
+<!--      </a>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  &lt;!&ndash; Inventory Table &ndash;&gt;-->
+<!--  <div style="margin-bottom: 60px;">-->
+<!--    <h3 style="font-family: var(&#45;&#45;serif); margin-bottom: 20px; color: var(&#45;&#45;white);">-->
+<!--      <i class="fas fa-paint-brush" style="margin-right: 10px;"></i> Current Inventory-->
+<!--    </h3>-->
+<!--    <table class="cart-table" style="width: 100%; border-radius: 10px; overflow: hidden;">-->
+<!--      <thead>-->
+<!--      <tr>-->
+<!--        <th>Preview</th><th>Title</th><th>Price</th><th>Status</th><th>Actions</th>-->
+<!--      </tr>-->
+<!--      </thead>-->
+<!--      <tbody>-->
+<!--      <tr th:each="art : ${artworks}">-->
+<!--        <td><img th:src="@{${art.imagePath}}"-->
+<!--                 style="width:60px;height:60px;object-fit:cover;border-radius:5px;border:1px solid var(&#45;&#45;border);"></td>-->
+<!--        <td th:text="${art.title}" style="font-weight:500;"></td>-->
+<!--        <td th:text="'₹' + ${art.price}" style="color:var(&#45;&#45;gold);font-weight:bold;"></td>-->
+<!--        <td>-->
+<!--            <span th:text="${art.available ? 'LIVE' : 'HIDDEN'}"-->
+<!--                  th:style="${art.available ? 'color:#5cb88a;font-size:0.8rem;font-weight:bold;' : 'color:var(&#45;&#45;muted);font-size:0.8rem;'}"></span>-->
+<!--        </td>-->
+<!--        <td>-->
+<!--          <div style="display:flex;gap:15px;">-->
+<!--            <a th:href="@{/admin/edit/{id}(id=${art.id})}" style="color:var(&#45;&#45;white2);"><i class="fas fa-edit"></i></a>-->
+<!--            <form th:action="@{/admin/delete/{id}(id=${art.id})}" method="post"-->
+<!--                  onsubmit="return confirm('Are you sure you want to delete this masterpiece?')">-->
+<!--              <button type="submit" style="color:var(&#45;&#45;red);background:none;border:none;cursor:pointer;"><i class="fas fa-trash-alt"></i></button>-->
+<!--            </form>-->
+<!--          </div>-->
+<!--        </td>-->
+<!--      </tr>-->
+<!--      </tbody>-->
+<!--    </table>-->
+<!--  </div>-->
+
+<!--  &lt;!&ndash; Orders Table &ndash;&gt;-->
+<!--  <div>-->
+<!--    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;">-->
+<!--      <h3 style="font-family: var(&#45;&#45;serif); color: var(&#45;&#45;white); margin:0;">-->
+<!--        <i class="fas fa-shopping-bag" style="margin-right:10px;"></i> Recent Orders-->
+<!--      </h3>-->
+<!--      <span class="click-hint"><i class="fas fa-hand-pointer"></i> Click a row to see details</span>-->
+<!--    </div>-->
+
+<!--    <table class="cart-table" style="width:100%; border-radius:10px; overflow:hidden;">-->
+<!--      <thead>-->
+<!--      <tr>-->
+<!--        <th>Order ID</th>-->
+<!--        <th>Customer</th>-->
+<!--        <th>Total</th>-->
+<!--        <th>Date</th>-->
+<!--        <th>Status</th>-->
+<!--      </tr>-->
+<!--      </thead>-->
+<!--      <tbody>-->
+<!--      &lt;!&ndash;-->
+<!--        Each row calls openDrawer() with all order data.-->
+<!--        th:data-* attributes pass Thymeleaf values to JS safely.-->
+<!--      &ndash;&gt;-->
+<!--      <tr class="order-row"-->
+<!--          th:each="order : ${orders}"-->
+<!--          th:data-order-id="${order.id}"-->
+<!--          th:data-order-date="${#temporals.format(order.orderDate, 'dd MMM yyyy, hh:mm a')}"-->
+<!--          th:data-cust-name="${order.user != null ? order.user.name : 'Guest User'}"-->
+<!--          th:data-cust-email="${order.user != null ? order.user.email : 'No Email'}"-->
+<!--          th:data-address="${order.address}"-->
+<!--          th:data-total="${order.totalAmount}"-->
+<!--          th:data-status="${order.status}"-->
+
+<!--      /* ✅ MASTER SAFE LOGIC: Items empty-ah irundhaalum crash aagaadhu */-->
+<!--      th:data-artwork-img="${(order.items != null and !order.items.isEmpty() and order.items[0].artwork != null) ? order.items[0].artwork.imagePath : ''}"-->
+<!--      th:data-artwork-title="${(order.items != null and !order.items.isEmpty() and order.items[0].artwork != null) ? order.items[0].artwork.title : 'Artwork'}"-->
+
+<!--      th:data-artwork-price="${order.totalAmount}"-->
+<!--      onclick="openDrawer(this)">-->
+
+<!--        <td th:text="'#' + ${order.id}" style="color:var(&#45;&#45;gold);font-weight:bold;"></td>-->
+<!--        <td>-->
+<!--          <div style="display:flex;flex-direction:column;gap:2px;">-->
+<!--            <span th:text="${order.user != null ? order.user.name : 'Guest User'}" style="font-weight:500;"></span>-->
+<!--            <span th:text="${order.user != null ? order.user.email : 'No Email'}" style="font-size:0.75rem;color:var(&#45;&#45;muted);"></span>-->
+<!--          </div>-->
+<!--        </td>-->
+<!--        <td th:text="'₹' + ${order.totalAmount}" style="color:var(&#45;&#45;gold);font-weight:bold;"></td>-->
+<!--        <td th:text="${#temporals.format(order.orderDate, 'dd MMM, hh:mm a')}" style="font-size:0.85rem;"></td>-->
+<!--        <td>-->
+<!--            <span th:text="${order.status}"-->
+<!--                  th:style="${order.status == 'SUCCESS'-->
+<!--                              ? 'color:#5cb88a;font-weight:bold;font-size:0.8rem;'-->
+<!--                              : 'color:var(&#45;&#45;red);font-weight:bold;font-size:0.8rem;'}"></span>-->
+<!--        </td>-->
+<!--      </tr>-->
+
+<!--      <tr th:if="${#lists.isEmpty(orders)}">-->
+<!--        <td colspan="5" style="text-align:center;padding:50px;color:var(&#45;&#45;muted);">-->
+<!--          No orders yet. Your masterpiece is waiting for its first collector! 🎨-->
+<!--        </td>-->
+<!--      </tr>-->
+<!--      </tbody>-->
+<!--    </table>-->
+<!--  </div>-->
+
+<!--</section>-->
+
+<!--<footer th:replace="~{fragments/layout :: footer}"></footer>-->
+
+<!--<script>-->
+<!--  function openDrawer(row) {-->
+<!--    const d = row.dataset;-->
+
+<!--    document.getElementById('odOrderId').textContent      = '#' + d.orderId;-->
+<!--    document.getElementById('odOrderDate').textContent    = d.orderDate;-->
+<!--    document.getElementById('odFooterOrderId').textContent = '#' + d.orderId;-->
+
+<!--    const img = document.getElementById('odArtworkImg');-->
+
+<!--if (d.artworkImg && d.artworkImg.trim() !== "") {-->
+<!--    img.src = d.artworkImg;-->
+<!--} else {-->
+<!--    img.src = "/images/no-image.png";-->
+<!--}-->
+
+<!--    document.getElementById('odArtworkTitle').textContent = d.artworkTitle || '—';-->
+<!--    document.getElementById('odArtworkPrice').textContent = '₹' + d.total;-->
+
+<!--    const pill = document.getElementById('odStatusPill');-->
+<!--    pill.textContent = d.status;-->
+<!--    pill.className   = 'od-status-pill';-->
+<!--    if (d.status === 'SUCCESS') pill.classList.add('success');-->
+<!--    else if (d.status === 'PENDING') pill.classList.add('pending');-->
+<!--    else pill.classList.add('failed');-->
+
+<!--    document.getElementById('odCustName').textContent  = d.custName  || '—';-->
+<!--    document.getElementById('odCustEmail').textContent = d.custEmail || '—';-->
+<!--    document.getElementById('odAddress').textContent = d.address || '—';-->
+<!--    document.getElementById('odTotal').textContent = '₹' + d.total;-->
+
+<!--    document.getElementById('odOverlay').classList.add('open');-->
+<!--    document.getElementById('odDrawer').classList.add('open');-->
+<!--    document.body.style.overflow = 'hidden';-->
+<!--  }-->
+
+<!--  function closeDrawer() {-->
+<!--    document.getElementById('odOverlay').classList.remove('open');-->
+<!--    document.getElementById('odDrawer').classList.remove('open');-->
+<!--    document.body.style.overflow = '';-->
+<!--  }-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
+
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org" lang="en">-->
+<!--<head th:replace="~{fragments/layout :: head('Admin Dashboard')}"></head>-->
+
+<!--<style>-->
+<!--  /* ── Side Drawer ── */-->
+<!--  .od-overlay {-->
+<!--    position: fixed; inset: 0;-->
+<!--    background: rgba(0,0,0,0.65);-->
+<!--    backdrop-filter: blur(4px);-->
+<!--    z-index: 900;-->
+<!--    opacity: 0; pointer-events: none;-->
+<!--    transition: opacity 0.35s ease;-->
+<!--  }-->
+<!--  .od-overlay.open { opacity: 1; pointer-events: all; }-->
+
+<!--  .od-drawer {-->
+<!--    position: fixed; top: 0; right: 0; bottom: 0;-->
+<!--    width: 420px; max-width: 100vw;-->
+<!--    background: var(&#45;&#45;bg2);-->
+<!--    border-left: 1px solid var(&#45;&#45;border-gold);-->
+<!--    z-index: 901;-->
+<!--    transform: translateX(100%);-->
+<!--    transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);-->
+<!--    display: flex; flex-direction: column;-->
+<!--    overflow: hidden;-->
+<!--  }-->
+<!--  .od-drawer.open { transform: translateX(0); }-->
+
+<!--  .od-header {-->
+<!--    padding: 1.4rem 1.6rem;-->
+<!--    border-bottom: 1px solid var(&#45;&#45;border);-->
+<!--    display: flex; align-items: center; justify-content: space-between;-->
+<!--    flex-shrink: 0;-->
+<!--    background: var(&#45;&#45;surface);-->
+<!--  }-->
+<!--  .od-header-left { display: flex; flex-direction: column; gap: 2px; }-->
+<!--  .od-order-id {-->
+<!--    font-family: var(&#45;&#45;serif); font-size: 1.3rem; font-weight: 700;-->
+<!--    background: var(&#45;&#45;grad-gold);-->
+<!--    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;-->
+<!--  }-->
+<!--  .od-order-date { font-size: 0.7rem; color: var(&#45;&#45;muted); letter-spacing: 0.06em; }-->
+
+<!--  .od-close {-->
+<!--    width: 36px; height: 36px; border-radius: 50%;-->
+<!--    border: 1px solid var(&#45;&#45;border);-->
+<!--    background: transparent; color: var(&#45;&#45;muted);-->
+<!--    display: flex; align-items: center; justify-content: center;-->
+<!--    cursor: pointer; font-size: 1rem;-->
+<!--    transition: border-color 0.25s, color 0.25s, background 0.25s;-->
+<!--    flex-shrink: 0;-->
+<!--  }-->
+<!--  .od-close:hover { border-color: var(&#45;&#45;border-gold); color: var(&#45;&#45;gold); background: var(&#45;&#45;gold-dim); }-->
+
+<!--  .od-body {-->
+<!--    flex: 1; overflow-y: auto; padding: 1.5rem 1.6rem;-->
+<!--    display: flex; flex-direction: column; gap: 1.4rem;-->
+<!--  }-->
+<!--  .od-body::-webkit-scrollbar { width: 4px; }-->
+<!--  .od-body::-webkit-scrollbar-track { background: transparent; }-->
+<!--  .od-body::-webkit-scrollbar-thumb { background: var(&#45;&#45;border-gold); border-radius: 99px; }-->
+
+<!--  .od-artwork {-->
+<!--    border-radius: 14px; overflow: hidden;-->
+<!--    border: 1px solid var(&#45;&#45;border);-->
+<!--    position: relative; height: 220px;-->
+<!--    background: var(&#45;&#45;surface);-->
+<!--    flex-shrink: 0;-->
+<!--  }-->
+<!--  .od-artwork img {-->
+<!--    width: 100%; height: 100%;-->
+<!--    object-fit: cover;-->
+<!--    filter: brightness(0.88) contrast(1.05);-->
+<!--    transition: transform 0.5s ease;-->
+<!--  }-->
+<!--  .od-artwork:hover img { transform: scale(1.04); }-->
+<!--  .od-artwork-label {-->
+<!--    position: absolute; bottom: 0; left: 0; right: 0;-->
+<!--    padding: 0.8rem 1rem;-->
+<!--    background: linear-gradient(to top, rgba(8,8,8,0.92), transparent);-->
+<!--    z-index: 1;-->
+<!--  }-->
+<!--  .od-artwork-title { font-family: var(&#45;&#45;serif); font-size: 1rem; font-weight: 700; color: var(&#45;&#45;white); display: block; }-->
+<!--  .od-artwork-price { font-size: 0.75rem; background: var(&#45;&#45;grad-gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700; }-->
+
+<!--  .od-status-row { display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 1rem; background: var(&#45;&#45;surface); border: 1px solid var(&#45;&#45;border); border-radius: 12px; }-->
+<!--  .od-status-lbl { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(&#45;&#45;muted); }-->
+<!--  .od-status-pill { padding: 0.3rem 0.9rem; border-radius: 99px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }-->
+<!--  .od-status-pill.success { background: rgba(6,214,160,0.12); color: var(&#45;&#45;green); border: 1px solid rgba(6,214,160,0.3); }-->
+<!--  .od-status-pill.pending { background: rgba(201,168,76,0.12); color: var(&#45;&#45;gold); border: 1px solid var(&#45;&#45;border-gold); }-->
+<!--  .od-status-pill.failed  { background: rgba(255,77,109,0.12); color: var(&#45;&#45;red);  border: 1px solid rgba(255,77,109,0.3); }-->
+
+<!--  .od-section-label { font-size: 0.58rem; letter-spacing: 0.26em; text-transform: uppercase; color: var(&#45;&#45;gold); display: flex; align-items: center; gap: 7px; margin-bottom: 0.6rem; }-->
+<!--  .od-section-label::before { content:''; display:block; width:12px; height:1px; background:var(&#45;&#45;gold); }-->
+
+<!--  .od-info-card { background: var(&#45;&#45;surface); border: 1px solid var(&#45;&#45;border); border-radius: 12px; overflow: hidden; }-->
+<!--  .od-info-row { display: flex; align-items: flex-start; gap: 12px; padding: 0.85rem 1rem; border-bottom: 1px solid var(&#45;&#45;border); transition: background 0.2s; }-->
+<!--  .od-info-row:last-child { border-bottom: none; }-->
+<!--  .od-info-ico { width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0; background: var(&#45;&#45;gold-dim); border: 1px solid var(&#45;&#45;border-gold); display: flex; align-items: center; justify-content: center; color: var(&#45;&#45;gold); font-size: 0.75rem; margin-top: 1px; }-->
+<!--  .od-info-content { flex: 1; min-width: 0; }-->
+<!--  .od-info-key { font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(&#45;&#45;muted); display: block; margin-bottom: 2px; }-->
+<!--  .od-info-val { font-size: 0.85rem; color: var(&#45;&#45;white2); line-height: 1.5; word-break: break-word; }-->
+
+<!--  .od-total-row { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.1rem; background: var(&#45;&#45;gold-dim); border: 1px solid var(&#45;&#45;border-gold); border-radius: 12px; }-->
+<!--  .od-total-amt { font-family: var(&#45;&#45;serif); font-size: 1.5rem; font-weight: 900; background: var(&#45;&#45;grad-gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }-->
+
+<!--  .od-footer { padding: 1rem 1.6rem; border-top: 1px solid var(&#45;&#45;border); flex-shrink: 0; background: var(&#45;&#45;surface); }-->
+<!--  .od-footer-note { font-size: 0.65rem; color: var(&#45;&#45;muted); text-align: center; line-height: 1.6; }-->
+<!--  .order-row { cursor: pointer; transition: background 0.2s; }-->
+<!--  .order-row:hover { background: rgba(201,168,76,0.04) !important; }-->
+
+<!--  .click-hint { display: inline-flex; align-items: center; gap: 5px; font-size: 0.62rem; color: var(&#45;&#45;muted); letter-spacing: 0.06em; }-->
+<!--  @media (max-width: 480px) { .od-drawer { width: 100vw; } .od-artwork { height: 180px; } }-->
+<!--</style>-->
+
+<!--<body class="bg-dark text-white">-->
+<!--<nav th:replace="~{fragments/layout :: navbar(0)}"></nav>-->
+
+<!--<div class="od-overlay" id="odOverlay" onclick="closeDrawer()"></div>-->
+
+<!--<div class="od-drawer" id="odDrawer">-->
+<!--  <div class="od-header">-->
+<!--    <div class="od-header-left">-->
+<!--      <span class="od-order-id" id="odOrderId">#—</span>-->
+<!--      <span class="od-order-date" id="odOrderDate">—</span>-->
+<!--    </div>-->
+<!--    <button class="od-close" onclick="closeDrawer()"><i class="fas fa-times"></i></button>-->
+<!--  </div>-->
+
+<!--  <div class="od-body">-->
+<!--    <div class="od-artwork" id="odArtworkWrap">-->
+<!--      <img id="odArtworkImg" src="" alt="Artwork">-->
+<!--      <div class="od-artwork-label">-->
+<!--        <span class="od-artwork-title" id="odArtworkTitle">—</span>-->
+<!--        <span class="od-artwork-price" id="odArtworkPrice">—</span>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    <div class="od-status-row">-->
+<!--      <span class="od-status-lbl">Order Status</span>-->
+<!--      <span class="od-status-pill" id="odStatusPill">—</span>-->
+<!--    </div>-->
+
+<!--    <div>-->
+<!--      <p class="od-section-label">Customer</p>-->
+<!--      <div class="od-info-card">-->
+<!--        <div class="od-info-row">-->
+<!--          <div class="od-info-ico"><i class="fas fa-user"></i></div>-->
+<!--          <div class="od-info-content">-->
+<!--            <span class="od-info-key">Name</span>-->
+<!--            <span class="od-info-val" id="odCustName">—</span>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="od-info-row">-->
+<!--          <div class="od-info-ico"><i class="fas fa-envelope"></i></div>-->
+<!--          <div class="od-info-content">-->
+<!--            <span class="od-info-key">Email</span>-->
+<!--            <span class="od-info-val" id="odCustEmail">—</span>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    <div>-->
+<!--      <p class="od-section-label">Shipping Address</p>-->
+<!--      <div class="od-info-card">-->
+<!--        <div class="od-info-row">-->
+<!--          <div class="od-info-ico"><i class="fas fa-map-marker-alt"></i></div>-->
+<!--          <div class="od-info-content">-->
+<!--            <span class="od-info-key">Deliver to</span>-->
+<!--            <span class="od-info-val" id="odAddress">—</span>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    <div class="od-total-row">-->
+<!--      <span class="od-total-label" style="color:var(&#45;&#45;gold); font-size:0.7rem;">Order Total</span>-->
+<!--      <span class="od-total-amt" id="odTotal">—</span>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  <div class="od-footer">-->
+<!--    <p class="od-footer-note">Order ID: <span id="odFooterOrderId">—</span></p>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--<section class="gallery-section" style="margin-top: 100px; padding-bottom: 50px;">-->
+<!--  <div class="section-header" style="border-bottom: 1px solid var(&#45;&#45;gold); padding-bottom: 20px; margin-bottom: 40px;">-->
+<!--    <div>-->
+<!--      <p class="section-label" style="color: var(&#45;&#45;gold);">SSARTZ CONTROL PANEL</p>-->
+<!--      <h2 class="section-title">Admin <em>Dashboard</em></h2>-->
+<!--    </div>-->
+<!--    <div style="display: flex; gap: 15px;">-->
+<!--      <a th:href="@{/admin/artworks/add}" class="btn-primary" style="padding: 10px 25px; border-radius: 5px; text-decoration: none;">-->
+<!--        <i class="fas fa-plus"></i> Add New Art-->
+<!--      </a>-->
+<!--      <a th:href="@{/admin/logout}" style="color: var(&#45;&#45;red); text-decoration: none; align-self: center; font-weight: bold;">Logout</a>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  <div style="margin-bottom: 60px;">-->
+<!--    <h3 style="margin-bottom: 20px;"><i class="fas fa-paint-brush"></i> Current Inventory</h3>-->
+<!--    <table class="cart-table" style="width:100%; border-radius:10px; overflow:hidden;">-->
+<!--      <thead>-->
+<!--      <tr>-->
+<!--        <th>Order ID</th>-->
+<!--        <th>Customer</th>-->
+<!--        <th>Total</th>-->
+<!--        <th>Date</th>-->
+<!--        <th>Status</th>-->
+<!--        <th>Action</th> </tr>-->
+<!--      </thead>-->
+<!--      <tbody>-->
+<!--      <tr class="order-row"-->
+<!--          th:each="order : ${orders}"-->
+<!--          th:data-order-id="${order.id}"-->
+<!--          th:data-order-date="${#temporals.format(order.orderDate, 'dd MMM yyyy, hh:mm a')}"-->
+<!--          th:data-cust-name="${order.user != null ? order.user.name : 'Guest'}"-->
+<!--          th:data-cust-email="${order.user != null ? order.user.email : 'No Email'}"-->
+<!--          th:data-address="${order.address}"-->
+<!--          th:data-total="${order.totalAmount}"-->
+<!--          th:data-status="${order.status}"-->
+<!--          th:data-artwork-img="${order.items != null and !order.items.isEmpty() and order.items[0].artwork != null ? order.items[0].artwork.imagePath : ''}"-->
+<!--          th:data-artwork-title="${order.items != null and !order.items.isEmpty() and order.items[0].artwork != null ? order.items[0].artwork.title : 'Artwork'}"-->
+<!--          onclick="openDrawer(this)">-->
+
+<!--        <td th:text="'#' + ${order.id}" style="color:var(&#45;&#45;gold); font-weight:bold;"></td>-->
+<!--        <td th:text="${order.user != null ? order.user.name : 'Guest'}"></td>-->
+<!--        <td th:text="'₹' + ${order.totalAmount}"></td>-->
+<!--        <td th:text="${#temporals.format(order.orderDate, 'dd MMM, hh:mm a')}"></td>-->
+<!--        <td th:text="${order.status}" th:style="${order.status == 'SUCCESS' ? 'color:#5cb88a' : 'color:var(&#45;&#45;red)'}"></td>-->
+
+<!--        <td onclick="event.stopPropagation();">-->
+<!--          <form th:action="@{/admin/orders/delete/{id}(id=${order.id})}" method="post"-->
+<!--                onsubmit="return confirm('Intha order record-ah permanent-ah delete pannalaama?')">-->
+<!--            <button type="submit" style="color:var(&#45;&#45;red); background:none; border:none; cursor:pointer; padding: 5px;">-->
+<!--              <i class="fas fa-trash-alt"></i>-->
+<!--            </button>-->
+<!--          </form>-->
+<!--        </td>-->
+<!--      </tr>-->
+
+<!--      <tr th:if="${#lists.isEmpty(orders)}">-->
+<!--        <td colspan="6" style="text-align:center;padding:50px;color:var(&#45;&#45;muted);">-->
+<!--          No orders yet. 🎨-->
+<!--        </td>-->
+<!--      </tr>-->
+<!--      </tbody>-->
+<!--    </table>-->
+<!--&lt;!&ndash;    <table class="cart-table" style="width: 100%;">&ndash;&gt;-->
+<!--&lt;!&ndash;      <thead>&ndash;&gt;-->
+<!--&lt;!&ndash;      <tr><th>Preview</th><th>Title</th><th>Price</th><th>Status</th><th>Actions</th></tr>&ndash;&gt;-->
+<!--&lt;!&ndash;      </thead>&ndash;&gt;-->
+<!--&lt;!&ndash;      <tbody>&ndash;&gt;-->
+<!--&lt;!&ndash;      <tr th:each="art : ${artworks}">&ndash;&gt;-->
+<!--&lt;!&ndash;        <td><img th:src="${art.imagePath}" style="width:60px;height:60px;object-fit:cover;border-radius:5px;"></td>&ndash;&gt;-->
+<!--&lt;!&ndash;        <td th:text="${art.title}"></td>&ndash;&gt;-->
+<!--&lt;!&ndash;        <td th:text="'₹' + ${art.price}" style="color:var(&#45;&#45;gold);"></td>&ndash;&gt;-->
+<!--&lt;!&ndash;        <td th:text="${art.available ? 'LIVE' : 'HIDDEN'}"></td>&ndash;&gt;-->
+<!--&lt;!&ndash;        <td>&ndash;&gt;-->
+<!--&lt;!&ndash;          <div style="display:flex;gap:15px;">&ndash;&gt;-->
+<!--&lt;!&ndash;            <a th:href="@{/admin/edit/{id}(id=${art.id})}"><i class="fas fa-edit"></i></a>&ndash;&gt;-->
+<!--&lt;!&ndash;            <form th:action="@{/admin/delete/{id}(id=${art.id})}" method="post">&ndash;&gt;-->
+<!--&lt;!&ndash;              <button type="submit" style="color:var(&#45;&#45;red);background:none;border:none;"><i class="fas fa-trash-alt"></i></button>&ndash;&gt;-->
+<!--&lt;!&ndash;            </form>&ndash;&gt;-->
+<!--&lt;!&ndash;          </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        </td>&ndash;&gt;-->
+<!--&lt;!&ndash;      </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;      </tbody>&ndash;&gt;-->
+<!--&lt;!&ndash;    </table>&ndash;&gt;-->
+<!--&lt;!&ndash;  </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;  <div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <div style="display:flex; justify-content:space-between; margin-bottom:20px;">&ndash;&gt;-->
+<!--&lt;!&ndash;      <h3><i class="fas fa-shopping-bag"></i> Recent Orders</h3>&ndash;&gt;-->
+<!--&lt;!&ndash;      <span class="click-hint"><i class="fas fa-hand-pointer"></i> Click row for details</span>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <table class="cart-table" style="width:100%;">&ndash;&gt;-->
+<!--&lt;!&ndash;      <thead>&ndash;&gt;-->
+<!--&lt;!&ndash;      <tr><th>Order ID</th><th>Customer</th><th>Total</th><th>Date</th><th>Status</th></tr>&ndash;&gt;-->
+<!--&lt;!&ndash;      </thead>&ndash;&gt;-->
+<!--&lt;!&ndash;      <tbody>&ndash;&gt;-->
+<!--&lt;!&ndash;      <tr class="order-row"&ndash;&gt;-->
+<!--&lt;!&ndash;          th:each="order : ${orders}"&ndash;&gt;-->
+<!--&lt;!&ndash;          th:data-order-id="${order.id}"&ndash;&gt;-->
+<!--&lt;!&ndash;          th:data-order-date="${#temporals.format(order.orderDate, 'dd MMM yyyy, hh:mm a')}"&ndash;&gt;-->
+<!--&lt;!&ndash;          th:data-cust-name="${order.user != null ? order.user.name : 'Guest'}"&ndash;&gt;-->
+<!--&lt;!&ndash;          th:data-cust-email="${order.user != null ? order.user.email : 'No Email'}"&ndash;&gt;-->
+<!--&lt;!&ndash;          th:data-address="${order.address}"&ndash;&gt;-->
+<!--&lt;!&ndash;          th:data-total="${order.totalAmount}"&ndash;&gt;-->
+<!--&lt;!&ndash;          th:data-status="${order.status}"&ndash;&gt;-->
+<!--&lt;!&ndash;          th:data-artwork-img="${order.items != null and !order.items.isEmpty() and order.items[0].artwork != null ? order.items[0].artwork.imagePath : ''}"&ndash;&gt;-->
+<!--&lt;!&ndash;          th:data-artwork-title="${order.items != null and !order.items.isEmpty() and order.items[0].artwork != null ? order.items[0].artwork.title : 'Artwork'}"&ndash;&gt;-->
+<!--&lt;!&ndash;          onclick="openDrawer(this)">&ndash;&gt;-->
+
+<!--&lt;!&ndash;        <td th:text="'#' + ${order.id}" style="color:var(&#45;&#45;gold); font-weight:bold;"></td>&ndash;&gt;-->
+<!--&lt;!&ndash;        <td th:text="${order.user != null ? order.user.name : 'Guest'}"></td>&ndash;&gt;-->
+<!--&lt;!&ndash;        <td th:text="'₹' + ${order.totalAmount}"></td>&ndash;&gt;-->
+<!--&lt;!&ndash;        <td th:text="${#temporals.format(order.orderDate, 'dd MMM, hh:mm a')}"></td>&ndash;&gt;-->
+<!--&lt;!&ndash;        <td th:text="${order.status}" th:style="${order.status == 'SUCCESS' ? 'color:#5cb88a' : 'color:var(&#45;&#45;red)'}"></td>&ndash;&gt;-->
+<!--&lt;!&ndash;      </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;      </tbody>&ndash;&gt;-->
+<!--&lt;!&ndash;    </table>&ndash;&gt;-->
+<!--  </div>-->
+<!--</section>-->
+
+<!--<footer th:replace="~{fragments/layout :: footer}"></footer>-->
+
+<!--<script>-->
+<!--  function openDrawer(row) {-->
+<!--    const d = row.dataset;-->
+<!--    document.getElementById('odOrderId').textContent      = '#' + d.orderId;-->
+<!--    document.getElementById('odOrderDate').textContent    = d.orderDate;-->
+<!--    document.getElementById('odFooterOrderId').textContent = '#' + d.orderId;-->
+
+<!--    const img = document.getElementById('odArtworkImg');-->
+<!--    if (d.artworkImg && d.artworkImg.trim() !== "") {-->
+<!--      img.src = d.artworkImg;-->
+<!--      img.style.display = 'block';-->
+<!--    } else {-->
+<!--      img.src = "";-->
+<!--      img.style.display = 'none';-->
+<!--    }-->
+
+<!--    document.getElementById('odArtworkTitle').textContent = d.artworkTitle;-->
+<!--    document.getElementById('odArtworkPrice').textContent = 'Total: ₹' + d.total;-->
+
+<!--    const pill = document.getElementById('odStatusPill');-->
+<!--    pill.textContent = d.status;-->
+<!--    pill.className = 'od-status-pill ' + (d.status === 'SUCCESS' ? 'success' : 'failed');-->
+
+<!--    document.getElementById('odCustName').textContent  = d.custName;-->
+<!--    document.getElementById('odCustEmail').textContent = d.custEmail;-->
+<!--    document.getElementById('odAddress').textContent   = d.address;-->
+<!--    document.getElementById('odTotal').textContent     = '₹' + d.total;-->
+
+<!--    document.getElementById('odOverlay').classList.add('open');-->
+<!--    document.getElementById('odDrawer').classList.add('open');-->
+<!--  }-->
+
+<!--  function closeDrawer() {-->
+<!--    document.getElementById('odOverlay').classList.remove('open');-->
+<!--    document.getElementById('odDrawer').classList.remove('open');-->
+<!--  }-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/layout :: head('Admin Dashboard')}"></head>
+
+<style>
+  /* ── MOBILE RESPONSIVE BASE ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  .admin-section {
+    margin-top: 100px;
+    padding: 0 16px 60px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ── DASHBOARD HEADER ── */
+  .dash-header {
+    border-bottom: 1px solid var(--border-gold);
+    padding-bottom: 20px;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .dash-header-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  /* ── STATS CARDS ── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 14px;
+    margin-bottom: 40px;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.1rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: border-color 0.25s;
+  }
+  .stat-card:hover { border-color: var(--border-gold); }
+  .stat-card-ico {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: var(--gold-dim);
+    border: 1px solid var(--border-gold);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold); font-size: 0.9rem;
+    margin-bottom: 4px;
+  }
+  .stat-card-val {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-weight: 900;
+    background: var(--grad-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+  }
+  .stat-card-lbl {
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ── SECTION BLOCK ── */
+  .dash-block {
+    margin-bottom: 50px;
+  }
+  .dash-block-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .dash-block-title {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+  }
+  .dash-block-title i { color: var(--gold); }
+
+  /* ── TABLE WRAPPER (horizontal scroll on mobile) ── */
+  .table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+  .table-wrap::-webkit-scrollbar { height: 4px; }
+  .table-wrap::-webkit-scrollbar-track { background: transparent; }
+  .table-wrap::-webkit-scrollbar-thumb { background: var(--border-gold); border-radius: 99px; }
+
+  .admin-table {
+    width: 100%;
+    min-width: 560px;
+    border-collapse: collapse;
+  }
+  .admin-table thead tr {
+    background: var(--surface);
+  }
+  .admin-table th {
+    padding: 12px 16px;
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  .admin-table td {
+    padding: 14px 16px;
+    font-size: 0.85rem;
+    color: var(--white2);
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  .admin-table tbody tr:last-child td { border-bottom: none; }
+  .admin-table tbody tr { transition: background 0.2s; }
+  .admin-table tbody tr:hover { background: rgba(201,168,76,0.04); }
+
+  /* Artwork thumbnail */
+  .art-thumb {
+    width: 52px; height: 52px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    display: block;
+  }
+
+  /* Status pill */
+  .pill {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .pill-live    { background: rgba(6,214,160,0.12); color: var(--green); border: 1px solid rgba(6,214,160,0.3); }
+  .pill-hidden  { background: rgba(120,120,120,0.12); color: var(--muted); border: 1px solid rgba(120,120,120,0.2); }
+  .pill-success { background: rgba(6,214,160,0.12); color: var(--green); border: 1px solid rgba(6,214,160,0.3); }
+  .pill-failed  { background: rgba(255,77,109,0.12); color: var(--red); border: 1px solid rgba(255,77,109,0.3); }
+
+  /* Action buttons in table */
+  .action-group { display: flex; align-items: center; gap: 10px; }
+  .btn-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+    text-decoration: none;
+  }
+  .btn-icon-edit  { color: var(--white2); }
+  .btn-icon-edit:hover  { border-color: var(--border-gold); color: var(--gold); background: var(--gold-dim); }
+  .btn-icon-del   { color: var(--muted); }
+  .btn-icon-del:hover   { border-color: rgba(255,77,109,0.4); color: var(--red); background: rgba(255,77,109,0.08); }
+
+  /* Clickable order row */
+  .order-row { cursor: pointer; }
+
+  /* Click hint */
+  .click-hint {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 0.62rem; color: var(--muted); letter-spacing: 0.06em;
+  }
+  .click-hint i { color: var(--gold); }
+
+  /* Empty state */
+  .empty-row td {
+    text-align: center;
+    padding: 50px 20px !important;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  /* ── SIDE DRAWER ── */
+  .od-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.65);
+    backdrop-filter: blur(4px);
+    z-index: 900;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+  .od-overlay.open { opacity: 1; pointer-events: all; }
+
+  .od-drawer {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: 420px; max-width: 100vw;
+    background: var(--bg2);
+    border-left: 1px solid var(--border-gold);
+    z-index: 901;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  .od-drawer.open { transform: translateX(0); }
+
+  .od-header {
+    padding: 1.2rem 1.4rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-shrink: 0;
+    background: var(--surface);
+  }
+  .od-header-left { display: flex; flex-direction: column; gap: 2px; }
+  .od-order-id {
+    font-family: var(--serif); font-size: 1.25rem; font-weight: 700;
+    background: var(--grad-gold);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .od-order-date { font-size: 0.68rem; color: var(--muted); letter-spacing: 0.06em; }
+
+  .od-close {
+    width: 34px; height: 34px; border-radius: 50%;
+    border: 1px solid var(--border);
+    background: transparent; color: var(--muted);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 0.9rem;
+    transition: border-color 0.25s, color 0.25s, background 0.25s;
+  }
+  .od-close:hover { border-color: var(--border-gold); color: var(--gold); background: var(--gold-dim); }
+
+  .od-body {
+    flex: 1; overflow-y: auto; padding: 1.4rem;
+    display: flex; flex-direction: column; gap: 1.2rem;
+  }
+  .od-body::-webkit-scrollbar { width: 4px; }
+  .od-body::-webkit-scrollbar-track { background: transparent; }
+  .od-body::-webkit-scrollbar-thumb { background: var(--border-gold); border-radius: 99px; }
+
+  .od-artwork {
+    border-radius: 12px; overflow: hidden;
+    border: 1px solid var(--border);
+    position: relative; height: 200px;
+    background: var(--surface); flex-shrink: 0;
+  }
+  .od-artwork img {
+    width: 100%; height: 100%; object-fit: cover;
+    filter: brightness(0.88) contrast(1.05);
+    transition: transform 0.5s;
+  }
+  .od-artwork:hover img { transform: scale(1.04); }
+  .od-artwork-label {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 0.7rem 1rem;
+    background: linear-gradient(to top, rgba(8,8,8,0.92), transparent);
+    z-index: 1;
+  }
+  .od-artwork-title { font-family: var(--serif); font-size: 0.95rem; font-weight: 700; color: var(--white); display: block; }
+  .od-artwork-price { font-size: 0.72rem; background: var(--grad-gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700; }
+
+  .od-status-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.85rem 1rem;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  }
+  .od-status-lbl { font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  .od-status-pill {
+    padding: 0.28rem 0.85rem; border-radius: 99px;
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .od-status-pill.success { background: rgba(6,214,160,0.12); color: var(--green); border: 1px solid rgba(6,214,160,0.3); }
+  .od-status-pill.failed  { background: rgba(255,77,109,0.12); color: var(--red);  border: 1px solid rgba(255,77,109,0.3); }
+
+  .od-section-label {
+    font-size: 0.56rem; letter-spacing: 0.26em; text-transform: uppercase;
+    color: var(--gold); display: flex; align-items: center; gap: 7px; margin-bottom: 0.55rem;
+  }
+  .od-section-label::before { content:''; display:block; width:10px; height:1px; background:var(--gold); }
+
+  .od-info-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .od-info-row {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 0.8rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .od-info-row:last-child { border-bottom: none; }
+  .od-info-ico {
+    width: 28px; height: 28px; border-radius: 7px; flex-shrink: 0;
+    background: var(--gold-dim); border: 1px solid var(--border-gold);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold); font-size: 0.7rem; margin-top: 1px;
+  }
+  .od-info-content { flex: 1; min-width: 0; }
+  .od-info-key { font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 2px; }
+  .od-info-val { font-size: 0.82rem; color: var(--white2); line-height: 1.5; word-break: break-word; }
+
+  .od-total-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1rem 1.1rem;
+    background: var(--gold-dim); border: 1px solid var(--border-gold); border-radius: 10px;
+  }
+  .od-total-amt {
+    font-family: var(--serif); font-size: 1.4rem; font-weight: 900;
+    background: var(--grad-gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+
+  /* Delete in drawer */
+  .od-delete-btn {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 10px;
+    border: 1px solid rgba(255,77,109,0.3);
+    background: rgba(255,77,109,0.06);
+    color: var(--red);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .od-delete-btn:hover { background: rgba(255,77,109,0.14); border-color: rgba(255,77,109,0.5); }
+
+  .od-footer {
+    padding: 0.9rem 1.4rem;
+    border-top: 1px solid var(--border);
+    flex-shrink: 0; background: var(--surface);
+  }
+  .od-footer-note { font-size: 0.63rem; color: var(--muted); text-align: center; line-height: 1.6; }
+
+  /* ── MOBILE BREAKPOINTS ── */
+  @media (max-width: 768px) {
+    .admin-section { margin-top: 80px; padding: 0 12px 50px; }
+    .dash-header { flex-direction: column; align-items: flex-start; }
+    .dash-block-title { font-size: 1rem; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .stat-card-val { font-size: 1.3rem; }
+    .od-drawer { width: 100vw; }
+    .od-artwork { height: 170px; }
+  }
+
+  @media (max-width: 480px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .dash-header-actions { width: 100%; }
+    .dash-header-actions a, .dash-header-actions button { flex: 1; text-align: center; }
+    .admin-table { min-width: 480px; }
+    .admin-table td, .admin-table th { padding: 10px 12px; }
+  }
+</style>
+
 <body class="bg-dark text-white">
 <nav th:replace="~{fragments/layout :: navbar(0)}"></nav>
 
-<section class="gallery-section" style="margin-top: 100px; padding-bottom: 50px;">
+<!-- Overlay -->
+<div class="od-overlay" id="odOverlay" onclick="closeDrawer()"></div>
 
-  <div class="section-header" style="border-bottom: 1px solid var(--gold); padding-bottom: 20px; margin-bottom: 40px;">
-    <div>
-      <p class="section-label" style="letter-spacing: 3px; color: var(--gold);">SSARTZ CONTROL PANEL</p>
-      <h2 class="section-title">Admin <em>Dashboard</em></h2>
+<!-- Side Drawer -->
+<div class="od-drawer" id="odDrawer">
+  <div class="od-header">
+    <div class="od-header-left">
+      <span class="od-order-id" id="odOrderId">#—</span>
+      <span class="od-order-date" id="odOrderDate">—</span>
+    </div>
+    <button class="od-close" onclick="closeDrawer()"><i class="fas fa-times"></i></button>
+  </div>
 
-      <div style="margin-top: 10px; display: flex; align-items: center; gap: 10px;">
-        <i class="fas fa-user-shield" style="color: var(--gold);"></i>
-        <span style="color: var(--white2); font-size: 0.9rem;">Logged in as: </span>
-        <span th:text="${session.loggedInUser.email}" style="color: var(--gold); font-weight: bold; font-family: 'DM Sans', sans-serif;">admin@ssartz.com</span>
+  <div class="od-body">
+    <!-- Artwork preview -->
+    <div class="od-artwork" id="odArtworkWrap">
+      <img id="odArtworkImg" src="" alt="Artwork">
+      <div class="od-artwork-label">
+        <span class="od-artwork-title" id="odArtworkTitle">—</span>
+        <span class="od-artwork-price" id="odArtworkPrice">—</span>
       </div>
     </div>
 
-    <div style="display: flex; gap: 15px;">
-      <a th:href="@{/admin/artworks/add}" class="btn-primary" style="padding: 10px 25px; border-radius: 5px; font-weight: 500; text-decoration: none;">
+    <!-- Status -->
+    <div class="od-status-row">
+      <span class="od-status-lbl">Order Status</span>
+      <span class="od-status-pill" id="odStatusPill">—</span>
+    </div>
+
+    <!-- Customer -->
+    <div>
+      <p class="od-section-label">Customer</p>
+      <div class="od-info-card">
+        <div class="od-info-row">
+          <div class="od-info-ico"><i class="fas fa-user"></i></div>
+          <div class="od-info-content">
+            <span class="od-info-key">Name</span>
+            <span class="od-info-val" id="odCustName">—</span>
+          </div>
+        </div>
+        <div class="od-info-row">
+          <div class="od-info-ico"><i class="fas fa-envelope"></i></div>
+          <div class="od-info-content">
+            <span class="od-info-key">Email</span>
+            <span class="od-info-val" id="odCustEmail">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Address -->
+    <div>
+      <p class="od-section-label">Shipping Address</p>
+      <div class="od-info-card">
+        <div class="od-info-row">
+          <div class="od-info-ico"><i class="fas fa-map-marker-alt"></i></div>
+          <div class="od-info-content">
+            <span class="od-info-key">Deliver to</span>
+            <span class="od-info-val" id="odAddress">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total -->
+    <div class="od-total-row">
+      <span style="color:var(--gold); font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase;">Order Total</span>
+      <span class="od-total-amt" id="odTotal">—</span>
+    </div>
+
+    <!-- Delete order button -->
+    <form id="odDeleteForm" method="post" onsubmit="return confirm('Intha order-ah permanent-ah delete pannalaama?')">
+      <button type="submit" class="od-delete-btn">
+        <i class="fas fa-trash-alt"></i> Delete This Order
+      </button>
+    </form>
+  </div>
+
+  <div class="od-footer">
+    <p class="od-footer-note">Order ID: <span id="odFooterOrderId" style="color:var(--gold);">—</span> &nbsp;·&nbsp; Click outside to close</p>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────── -->
+
+<section class="admin-section">
+
+  <!-- Header -->
+  <div class="dash-header">
+    <div>
+      <p class="section-label" style="color:var(--gold); letter-spacing:3px; margin:0 0 4px;">SSARTZ CONTROL PANEL</p>
+      <h2 class="section-title" style="margin:0;">Admin <em>Dashboard</em></h2>
+    </div>
+    <div class="dash-header-actions">
+      <a th:href="@{/admin/artworks/add}" class="btn-primary" style="padding:10px 22px; border-radius:8px; text-decoration:none; font-size:0.85rem;">
         <i class="fas fa-plus"></i> Add New Art
       </a>
-      <a th:href="@{/admin/logout}" style="color: var(--red); text-decoration: none; align-self: center; font-size: 0.9rem; font-weight: bold;">
+      <a th:href="@{/admin/logout}" style="color:var(--red); text-decoration:none; font-weight:600; font-size:0.85rem; display:flex; align-items:center; gap:6px;">
         <i class="fas fa-sign-out-alt"></i> Logout
       </a>
     </div>
   </div>
 
-  <div style="margin-bottom: 60px;">
-    <h3 style="font-family: var(--serif); margin-bottom: 20px; color: var(--white);">
-      <i class="fas fa-paint-brush" style="margin-right: 10px; font-size: 1.2rem;"></i> Current Inventory
-    </h3>
-    <table class="cart-table" style="width: 100%; border-radius: 10px; overflow: hidden;">
-      <thead>
-      <tr>
-        <th>Preview</th>
-        <th>Title</th>
-        <th>Price</th>
-        <th>Status</th>
-        <th>Actions</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="art : ${artworks}">
-        <td>
-          <img th:src="${art.imagePath}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 5px; border: 1px solid var(--border);">
-        </td>
-        <td th:text="${art.title}" style="font-weight: 500;">Artwork Title</td>
-        <td th:text="'₹' + ${art.price}" style="color: var(--gold); font-weight: bold;">₹0.00</td>
-        <td>
-            <span th:text="${art.available ? 'LIVE' : 'HIDDEN'}"
-                  th:style="${art.available ? 'color: #5cb88a; font-size: 0.8rem; font-weight: bold;' : 'color: var(--muted); font-size: 0.8rem;'}">
-            </span>
-        </td>
-        <td>
-          <div style="display: flex; gap: 15px;">
-            <a th:href="@{/admin/edit/{id}(id=${art.id})}" style="color: var(--white2);"><i class="fas fa-edit"></i></a>
+  <!-- ── STATS CARDS ── -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-card-ico"><i class="fas fa-paint-brush"></i></div>
+      <span class="stat-card-val" th:text="${artworks.size()}">0</span>
+      <span class="stat-card-lbl">Total Artworks</span>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-ico"><i class="fas fa-shopping-bag"></i></div>
+      <span class="stat-card-val" th:text="${orders.size()}">0</span>
+      <span class="stat-card-lbl">Total Orders</span>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-ico"><i class="fas fa-check-circle"></i></div>
+      <span class="stat-card-val"
+            th:text="${#lists.size(orders.?[status == 'SUCCESS'])}">0</span>
+      <span class="stat-card-lbl">Successful</span>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-ico"><i class="fas fa-eye"></i></div>
+      <span class="stat-card-val"
+            th:text="${#lists.size(artworks.?[available == true])}">0</span>
+      <span class="stat-card-lbl">Live Artworks</span>
+    </div>
+  </div>
 
-            <form th:action="@{/admin/delete/{id}(id=${art.id})}" method="post"
-                  onsubmit="return confirm('Are you sure you want to delete this masterpiece?')">
-              <button type="submit" style="color: var(--red); background: none; border: none; cursor: pointer;">
+  <!-- ── CURRENT INVENTORY ── -->
+  <div class="dash-block">
+    <div class="dash-block-header">
+      <h3 class="dash-block-title">
+        <i class="fas fa-paint-brush"></i> Current Inventory
+      </h3>
+      <a th:href="@{/admin/artworks/add}" class="btn-primary" style="padding:8px 18px; border-radius:8px; text-decoration:none; font-size:0.78rem;">
+        <i class="fas fa-plus"></i> Add Art
+      </a>
+    </div>
+
+    <div class="table-wrap">
+      <table class="admin-table">
+        <thead>
+        <tr>
+          <th>Preview</th>
+          <th>Title</th>
+          <th>Price</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="art : ${artworks}">
+          <td>
+            <img th:src="${art.imagePath}" class="art-thumb" alt="artwork">
+          </td>
+          <td style="font-weight:500; color:var(--white);" th:text="${art.title}">Title</td>
+          <td style="color:var(--gold); font-weight:700;" th:text="'₹' + ${art.price}">₹0</td>
+          <td>
+              <span class="pill"
+                    th:classappend="${art.available} ? 'pill-live' : 'pill-hidden'"
+                    th:text="${art.available} ? 'LIVE' : 'HIDDEN'">LIVE</span>
+          </td>
+          <td>
+            <div class="action-group">
+              <a th:href="@{/admin/edit/{id}(id=${art.id})}" class="btn-icon btn-icon-edit" title="Edit">
+                <i class="fas fa-edit"></i>
+              </a>
+              <form th:action="@{/admin/delete/{id}(id=${art.id})}" method="post"
+                    onsubmit="return confirm('Intha artwork-ah delete pannalaama?')">
+                <button type="submit" class="btn-icon btn-icon-del" title="Delete">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        <tr class="empty-row" th:if="${#lists.isEmpty(artworks)}">
+          <td colspan="5">No artworks yet. Add your first masterpiece! 🎨</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── RECENT ORDERS ── -->
+  <div class="dash-block">
+    <div class="dash-block-header">
+      <h3 class="dash-block-title">
+        <i class="fas fa-shopping-bag"></i> Recent Orders
+      </h3>
+      <span class="click-hint"><i class="fas fa-hand-pointer"></i> Row click = details & delete</span>
+    </div>
+
+    <div class="table-wrap">
+      <table class="admin-table">
+        <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Customer</th>
+          <th>Artwork</th>
+          <th>Total</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="order-row"
+            th:each="order : ${orders}"
+            th:data-order-id="${order.id}"
+            th:data-order-date="${#temporals.format(order.orderDate, 'dd MMM yyyy, hh:mm a')}"
+            th:data-cust-name="${order.user != null ? order.user.name : 'Guest'}"
+            th:data-cust-email="${order.user != null ? order.user.email : 'No Email'}"
+            th:data-address="${order.address}"
+            th:data-total="${order.totalAmount}"
+            th:data-status="${order.status}"
+            th:data-artwork-img="${order.items != null and !order.items.isEmpty() and order.items[0].artwork != null ? order.items[0].artwork.imagePath : ''}"
+            th:data-artwork-title="${order.items != null and !order.items.isEmpty() and order.items[0].artwork != null ? order.items[0].artwork.title : 'Artwork'}"
+            onclick="openDrawer(this)">
+
+          <td style="color:var(--gold); font-weight:700;" th:text="'#' + ${order.id}">#1</td>
+          <td>
+            <div style="display:flex; flex-direction:column; gap:2px;">
+              <span style="font-weight:500; color:var(--white);" th:text="${order.user != null ? order.user.name : 'Guest'}">Name</span>
+              <span style="font-size:0.72rem; color:var(--muted);" th:text="${order.user != null ? order.user.email : ''}">email</span>
+            </div>
+          </td>
+          <td style="font-size:0.8rem;"
+              th:text="${order.items != null and !order.items.isEmpty() and order.items[0].artwork != null ? order.items[0].artwork.title : '—'}">—</td>
+          <td style="color:var(--gold); font-weight:700;" th:text="'₹' + ${order.totalAmount}">₹0</td>
+          <td style="font-size:0.78rem; color:var(--muted); white-space:nowrap;"
+              th:text="${#temporals.format(order.orderDate, 'dd MMM, hh:mm a')}">Date</td>
+          <td>
+              <span class="pill"
+                    th:classappend="${order.status == 'SUCCESS'} ? 'pill-success' : 'pill-failed'"
+                    th:text="${order.status}">STATUS</span>
+          </td>
+          <!-- Delete button — stopPropagation so drawer doesn't open -->
+          <td onclick="event.stopPropagation()">
+            <form th:action="@{/admin/orders/delete/{id}(id=${order.id})}" method="post"
+                  onsubmit="return confirm('Order #' + [[${order.id}]] + ' delete pannalaama?')">
+              <button type="submit" class="btn-icon btn-icon-del" title="Delete Order">
                 <i class="fas fa-trash-alt"></i>
               </button>
             </form>
-          </div>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+          </td>
+        </tr>
 
-  <div>
-    <h3 style="font-family: var(--serif); margin-bottom: 20px; color: var(--white);">
-      <i class="fas fa-shopping-bag" style="margin-right: 10px; font-size: 1.2rem;"></i> Recent Orders
-    </h3>
-    <table class="cart-table" style="width: 100%; border-radius: 10px; overflow: hidden;">
-      <thead>
-      <tr>
-        <th>Order ID</th>
-        <th>Customer</th>
-        <th>Shipping Address</th>
-        <th>Total</th>
-        <th>Date</th>
-        <th>Status</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="order : ${orders}">
-        <td th:text="'#' + ${order.id}" style="color: var(--gold); font-weight: bold;">#101</td>
-        <td>
-          <div style="display: flex; flex-direction: column;">
-            <span th:text="${order.user.name}" style="font-weight: 500;">User Name</span>
-            <span th:text="${order.user.email}" style="font-size: 0.75rem; color: var(--muted);">email@example.com</span>
-          </div>
-        </td>
-        <td th:text="${order.address}" style="font-size: 0.85rem; max-width: 250px; line-height: 1.4;">Shipping Address Here</td>
-        <td th:text="'₹' + ${order.totalAmount}" style="font-weight: bold; color: var(--gold);">₹0.00</td>
-        <td th:text="${#temporals.format(order.orderDate, 'dd MMM, hh:mm a')}" style="font-size: 0.85rem;">Date</td>
-        <td>
-            <span th:text="${order.status}"
-                  th:style="${order.status == 'SUCCESS' ? 'color: #5cb88a; font-weight: bold;' : 'color: var(--red); font-weight: bold;'}">
-              SUCCESS
-            </span>
-        </td>
-      </tr>
-      <tr th:if="${#lists.isEmpty(orders)}">
-        <td colspan="6" style="text-align: center; padding: 50px; color: var(--muted);">
-          No orders found. Your masterpiece is waiting for its first collector! 🎨
-        </td>
-      </tr>
-      </tbody>
-    </table>
+        <tr class="empty-row" th:if="${#lists.isEmpty(orders)}">
+          <td colspan="7">No orders yet. Your masterpiece is waiting for its first collector! 🎨</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
 </section>
 
 <footer th:replace="~{fragments/layout :: footer}"></footer>
 
+<script>
+  function openDrawer(row) {
+    const d = row.dataset;
+
+    document.getElementById('odOrderId').textContent       = '#' + d.orderId;
+    document.getElementById('odOrderDate').textContent     = d.orderDate;
+    document.getElementById('odFooterOrderId').textContent = '#' + d.orderId;
+
+    // Artwork image
+    const img = document.getElementById('odArtworkImg');
+    if (d.artworkImg && d.artworkImg.trim() !== '') {
+      img.src = d.artworkImg;
+      img.style.display = 'block';
+      document.getElementById('odArtworkWrap').style.display = 'block';
+    } else {
+      img.style.display = 'none';
+      document.getElementById('odArtworkWrap').style.display = 'none';
+    }
+
+    document.getElementById('odArtworkTitle').textContent = d.artworkTitle || '—';
+    document.getElementById('odArtworkPrice').textContent = 'Total: ₹' + d.total;
+
+    // Status pill
+    const pill = document.getElementById('odStatusPill');
+    pill.textContent = d.status;
+    pill.className   = 'od-status-pill ' + (d.status === 'SUCCESS' ? 'success' : 'failed');
+
+    // Customer info
+    document.getElementById('odCustName').textContent  = d.custName  || '—';
+    document.getElementById('odCustEmail').textContent = d.custEmail || '—';
+    document.getElementById('odAddress').textContent   = d.address   || '—';
+    document.getElementById('odTotal').textContent     = '₹' + d.total;
+
+    // Delete form action
+    document.getElementById('odDeleteForm').action = '/admin/orders/delete/' + d.orderId;
+
+    // Open drawer
+    document.getElementById('odOverlay').classList.add('open');
+    document.getElementById('odDrawer').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDrawer() {
+    document.getElementById('odOverlay').classList.remove('open');
+    document.getElementById('odDrawer').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Close on Escape key
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeDrawer();
+  });
+</script>
 </body>
 </html>

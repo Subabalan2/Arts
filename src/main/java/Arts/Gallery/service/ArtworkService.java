@@ -19,6 +19,9 @@ public class ArtworkService {
     public List<Artwork> getAllAvailable() {
         return artworkRepository.findByAvailableTrue();
     }
+    public List<Artwork> getAll() {
+        return artworkRepository.findAll();
+    }
 
     public List<Artwork> getByCategory(String category) {
         if (category == null || category.isEmpty() || category.equals("ALL")) {

@@ -1,8 +1,10 @@
 package Arts.Gallery.controller;
 
 import Arts.Gallery.entity.Order;
+import Arts.Gallery.entity.OrderItem; // 🚩 Pudhusa add pannadhu
 import Arts.Gallery.entity.User;
-import Arts.Gallery.repository.OrderRepository; // 1. Puthiyathaa add pannirukken
+import Arts.Gallery.entity.CartItem;  // 🚩 CartItem import (unga package path-kku etha maari mathikonga)
+import Arts.Gallery.repository.OrderRepository;
 import Arts.Gallery.service.CartService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList; // 🚩 Pudhusa add pannadhu
+import java.util.List;      // 🚩 Pudhusa add pannadhu
 
 @Controller
 @RequiredArgsConstructor
@@ -19,7 +23,7 @@ import java.time.LocalDateTime;
 public class CartController {
 
     private final CartService cartService;
-    private final OrderRepository orderRepository; // 2. Idha inject panna dhaan DB-la save aagum
+    private final OrderRepository orderRepository;
 
     @GetMapping
     public String viewCart(Model model, HttpSession session) {
@@ -63,21 +67,46 @@ public class CartController {
     @PostMapping("/checkout/confirm")
     public String confirmOrder(@RequestParam String address, HttpSession session) {
         User user = (User) session.getAttribute("loggedInUser");
+        if (user == null) {
+            return "redirect:/login";
+        }
 
-        // Inga dhaan problem: CartService oru BigDecimal tharaadhu nu check pannu
         BigDecimal totalBigDecimal = cartService.getTotal(session);
+
+        // 🚩 1. Cart-la irukkura items-ah edukkurom
+        List<CartItem> cartItems = cartService.getCartItems(session);
 
         Order order = new Order();
         order.setUser(user);
         order.setAddress(address);
-
-        // conversion inga dhaan nadakkudhu:
         order.setTotalAmount(totalBigDecimal.doubleValue());
-
         order.setOrderDate(LocalDateTime.now());
         order.setStatus("SUCCESS");
 
+        // 🚩 2. CartItems-ah eduthu OrderItems-ah mathurom
+        List<OrderItem> orderItemsList = new ArrayList<>();
+        if (cartItems != null) {
+            for (CartItem cartItem : cartItems) {
+                OrderItem item = new OrderItem();
+                item.setOrder(order); // Intha item intha order-odathu nu link pandrom
+
+                // Note: CartItem class-la getArtwork(), getPrice(), getQuantity() irukkanum
+                item.setArtwork(cartItem.getArtwork());
+
+                // Oruvela unga price BigDecimal-ah irundha `.doubleValue()` podunga, illana apdiye podunga
+                item.setPrice(cartItem.getPrice().doubleValue());
+                item.setQuantity(cartItem.getQuantity());
+
+                orderItemsList.add(item);
+            }
+        }
+
+        // 🚩 3. Order-kulla andha items list-ah set pandrom
+        order.setItems(orderItemsList);
+
+        // 🚩 4. Save pannumbodhu Order + OrderItems rendume DB-la save aagidum (Cascade logic)
         orderRepository.save(order);
+
         cartService.clearCart(session);
         return "redirect:/cart/success";
     }

@@ -18,26 +18,60 @@ public class AuthController {
 
     private final UserRepository userRepository;
 
-    @GetMapping("/login")
-    public String loginPage() {
-        return "pages/login";
-    }
+//    @GetMapping("/login")
+//    public String loginPage() {
+//        return "pages/login";
+//    }
+//
+//    // Normal User Login
+//    @PostMapping("/login")
+//    public String login(@RequestParam String username,
+//                        @RequestParam String password,
+//                        HttpSession session,
+//                        Model model) {
+//        Optional<User> userOpt = userRepository.findByEmail(username.trim());
+//        if (userOpt.isPresent()) {
+//            User user = userOpt.get();
+//            if (user.getPassword().equals(password)) {
+//                session.setAttribute("loggedInUser", user);
+//                return "ADMIN".equals(user.getRole()) ? "redirect:/admin/dashboard" : "redirect:/gallery";
+//            }
+//        }
+//        model.addAttribute("error", true);
+//        return "pages/login";
+//    }
+@GetMapping("/login")
+public String loginPage() {
+    return "pages/login";
+}
 
-    // Normal User Login
     @PostMapping("/login")
     public String login(@RequestParam String username,
                         @RequestParam String password,
                         HttpSession session,
                         Model model) {
+
         Optional<User> userOpt = userRepository.findByEmail(username.trim());
-        if (userOpt.isPresent()) {
+
+        if(userOpt.isPresent()) {
+
             User user = userOpt.get();
-            if (user.getPassword().equals(password)) {
+
+            if(user.getPassword().equals(password)) {
+
                 session.setAttribute("loggedInUser", user);
-                return "ADMIN".equals(user.getRole()) ? "redirect:/admin/dashboard" : "redirect:/gallery";
+
+                if("ADMIN".equals(user.getRole())){
+                    return "redirect:/admin/dashboard";
+                }else{
+                    return "redirect:/gallery";
+                }
+
             }
         }
+
         model.addAttribute("error", true);
+
         return "pages/login";
     }
 

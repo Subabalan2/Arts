@@ -62,63 +62,90 @@
 </section>
 
 <style>
-    @media (max-width: 992px) {
-        /* Section setup: Flex direction maathuróm */
-        section {
-            flex-direction: column !important;
-            height: auto !important;
-            min-height: 100vh;
-        }
+    /* =================================
+   MOBILE RESPONSIVE FIX
+================================= */
 
-        /* 1. Register Visual (Image) - Mobile-la mela show aagum */
-        .register-visual {
-            display: block !important;
-            flex: none !important;
-            width: 100% !important;
-            height: 250px !important;
-            order: 1; /* Image first */
-        }
+@media (max-width: 992px) {
 
-        .register-visual img {
-            height: 100% !important;
-            width: 100% !important;
-            object-fit: cover !important;
-            filter: brightness(0.4) !important;
-        }
-
-        /* Image-kulla irukkura text layout mobile-ku adjust pannuróm */
-        .register-visual div[style*="bottom: 60px"] {
-            bottom: 20px !important;
-            left: 20px !important;
-            right: 20px !important;
-        }
-
-        .register-visual h3 {
-            font-size: 1.6rem !important;
-        }
-
-        .register-visual p {
-            display: none; /* Mobile-la clean look-ku description hide pannirukkaen */
-        }
-
-        /* 2. Form Section - Mobile-la image-ku keezha varum */
-        div[style*="flex: 1"] {
-            flex: none !important;
-            width: 100% !important;
-            padding: 30px 20px !important;
-            order: 2; /* Form second */
-            background: #07070a !important;
-        }
-
-        body { overflow: auto !important; }
+    body{
+        overflow:auto !important;
     }
 
-    /* Input Focus Effects */
-    input:focus {
-        border-color: rgba(200, 169, 81, 0.5) !important;
-        background: #15151c !important;
-        box-shadow: 0 0 20px rgba(200, 169, 81, 0.05);
+    section{
+        flex-direction: column !important;
+        height:auto !important;
+        min-height:100vh;
     }
+
+    /* Image section first */
+    .register-visual{
+        order:1;
+        width:100% !important;
+        height:260px !important;
+        flex:none !important;
+    }
+
+    .register-visual img{
+        width:100% !important;
+        height:100% !important;
+        object-fit:cover !important;
+    }
+
+    /* Image text adjust */
+    .register-visual div[style*="bottom: 60px"]{
+        left:20px !important;
+        right:20px !important;
+        bottom:20px !important;
+    }
+
+    .register-visual h3{
+        font-size:1.6rem !important;
+    }
+
+    .register-visual p{
+        display:none;
+    }
+
+    /* Form section */
+    div[style*="flex: 1"]{
+        order:2;
+        width:100% !important;
+        padding:40px 20px !important;
+        flex:none !important;
+    }
+
+    /* Input fields full width */
+    input{
+        width:100% !important;
+    }
+
+    /* Button responsive */
+    button{
+        width:100%;
+    }
+}
+
+
+/* =================================
+   SMALL MOBILE DEVICES
+================================= */
+
+@media (max-width: 480px){
+
+    .register-visual{
+        height:200px !important;
+    }
+
+    .register-visual h3{
+        font-size:1.3rem !important;
+    }
+
+    div[style*="flex: 1"]{
+        padding:30px 18px !important;
+    }
+
+}
 </style>
 
 </body>

@@ -76,7 +76,8 @@ public class AdminController {
             return "redirect:/admin/login";
         }
 
-        model.addAttribute("artworks", artworkService.getAllAvailable());
+        // Controller-la dashboard method-kulla maathunga
+        model.addAttribute("artworks", artworkService.getAll());
         model.addAttribute("orders", orderRepository.findAll());
         return "pages/admin-dashboard";
     }
@@ -242,5 +243,23 @@ public class AdminController {
             return "redirect:/admin/edit/" + id + "?error";
         }
         return "redirect:/admin/dashboard?updated";
+    }
+    // Recent Order-ai delete seiya
+    @PostMapping("/orders/delete/{id}")
+    public String deleteOrder(@PathVariable Long id, HttpSession session) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if (user == null || !"ADMIN".equals(user.getRole())) {
+            return "redirect:/admin/login";
+        }
+
+        try {
+            orderRepository.deleteById(id);
+            System.out.println("✅ Order ID: " + id + " database-la irundhu remove aayiduchu!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/admin/dashboard?error=order_delete_failed";
+        }
+
+        return "redirect:/admin/dashboard?deleted_order";
     }
 }
